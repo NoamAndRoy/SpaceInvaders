@@ -19,9 +19,13 @@ namespace Infrastructure.ManagersInterfaces
 
         bool CheckCollision(ICollideable i_Collideable);
 
+        bool CheckPixelBasedCollision(ICollideable i_Collideable);
+
         void Collided(ICollideable i_Collideable);
 
         Rectangle Bounds { get; }
+
+        Color[] PixelsMatrix{ get; }
 
         bool Visible { get; }
     }

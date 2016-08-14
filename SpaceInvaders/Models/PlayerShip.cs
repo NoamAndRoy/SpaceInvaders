@@ -5,7 +5,6 @@ using Infrastructure.ManagersInterfaces;
 using Infrastructure.Managers;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
-using Infrastructure.Models.Animations;
 
 namespace SpaceInvaders.Models
 {
@@ -33,7 +32,6 @@ namespace SpaceInvaders.Models
             m_AmountOfAliveBullets = 0;
             r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
-
         }
 
         public override void Initialize()
@@ -41,7 +39,6 @@ namespace SpaceInvaders.Models
             base.Initialize();
 
             Position = new Vector2(0f, Game.GraphicsDevice.Viewport.Height - (Height * 2 * 0.6f));
-            RotationOrigin = new Vector2(Width / 2, Height / 2);
         }
 
         public override void Update(GameTime i_GameTime)
@@ -117,7 +114,6 @@ namespace SpaceInvaders.Models
 
             if (Souls == 0)
             {
-                new RotationAnimation(Game, this, TimeSpan.FromSeconds(2.6), 3);
                 //Game.EndGame();
             }
 
