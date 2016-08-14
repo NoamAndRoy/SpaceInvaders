@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Managers;
+using System;
 
 namespace Infrastructure.Models
 {
@@ -63,30 +64,27 @@ namespace Infrastructure.Models
 
         public virtual bool CheckCollision(ICollideable i_Collideable)
         {
-            bool intersects = false;
+            bool areIntersects = false;
 
             if(this.Bounds.Intersects(i_Collideable.Bounds))
             {
-                intersects = true;
+                areIntersects = true;
             }
 
-            return intersects;
+            return areIntersects;
         }
 
         public virtual bool CheckPixelBasedCollision(ICollideable i_Collideable)
         {
-            bool intersects = false;
+            bool areIntersects = false;
 
-            if (CheckCollision(i_Collideable))
+            if (CheckCollision(i_Collideable) ||
+                PixelsMatricesIntersects(m_PixelsMatrix, Bounds, i_Collideable.PixelsMatrix, i_Collideable.Bounds))
             {
-                intersects = true;
-            }
-            else if(m_PixelsMatrix == null)
-            { 
-                intersects = true;
+                areIntersects = true;
             }
 
-            return intersects;
+            return  areIntersects;
         }
 
         public virtual void Collided(ICollideable i_Collideable)
@@ -106,23 +104,37 @@ namespace Infrastructure.Models
 
         private bool PixelsMatricesIntersects(Color[] i_MatrixOne, Rectangle i_MatrixOneBounds, Color[] i_MatrixTwo, Rectangle i_MatrixTwoBounds)
         {
-            bool intersects = false;
+            bool areIntersects = false;
 
-            for (int i = 0; i < i_MatrixOneBounds.Height; i++)
+            int matrixOneInnerX,
+                matrixOneInnerY,
+                matrixTwoInnerX,
+                matrixTwoInnerY,
+                minX = Math.Min(i_MatrixOneBounds.X, i_MatrixTwoBounds.X),
+                minY = Math.Min(i_MatrixOneBounds.Y, i_MatrixTwoBounds.Y),
+                maxX = Math.Max(i_MatrixOneBounds.X + i_MatrixOneBounds.Width, i_MatrixTwoBounds.X + i_MatrixTwoBounds.Width),
+                maxY = Math.Max(i_MatrixOneBounds.Y + i_MatrixOneBounds.Height, i_MatrixTwoBounds.Y + i_MatrixTwoBounds.Height);
+
+            Point maxPoint = new Point(Math.Min(i_MatrixOneBounds.X, i_MatrixTwoBounds.X), Math.Min(i_MatrixOneBounds.Y, i_MatrixTwoBounds.Y));
+
+            for (int i = minX; !areIntersects && i < maxX; i++)
             {
-                for (int j = 0; j < i_MatrixOneBounds.Width; j++)
+                for (int j = minY; !areIntersects && j < maxY; j++)
                 {
-                    for (int k = 0; k < i_MatrixTwoBounds.Height; k++)
+                    matrixOneInnerX = i - i_MatrixOneBounds.X;
+                    matrixOneInnerY = j - i_MatrixOneBounds.Y;
+                    matrixTwoInnerX = i - i_MatrixTwoBounds.X;
+                    matrixTwoInnerY = j - i_MatrixTwoBounds.Y;
+
+                    if (i_MatrixOne[matrixOneInnerY * i_MatrixOneBounds.Width + matrixOneInnerX].A != 0 && 
+                        i_MatrixTwo[matrixTwoInnerY * i_MatrixTwoBounds.Width + matrixTwoInnerX].A != 0)
                     {
-                        for (int l = 0; l < i_MatrixTwoBounds.Width; l++)
-                        {
-                            if (i_MatrixOne[i * i_MatrixOneBounds.Width + j].A != 0 && i_MatrixTwo[k * i_MatrixTwoBounds.Width + l].A != 0 && i_MatrixOneBounds.X + i == 0) { }
-                        }
+                        areIntersects = true;
                     }
                 }
             }
 
-            return intersects; 
+            return areIntersects; 
         }
     }
 }
