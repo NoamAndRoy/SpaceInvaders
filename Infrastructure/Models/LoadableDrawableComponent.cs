@@ -1,24 +1,24 @@
-﻿using Infrastructure.ManagersInterfaces;
+﻿using System;
+using Infrastructure.ManagersInterfaces;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Models
 {
     public abstract class LoadableDrawableComponent : DrawableGameComponent
     {
-        protected string m_AssetName;
+        protected readonly string r_AssetName;
+
+        public event EventHandler<EventArgs> PositionChanged;
+
+        public event EventHandler<EventArgs> SizeChanged;
+
+        public event EventHandler<EventArgs> RotationChanged;
 
         public string AssetName
         {
-            get { return m_AssetName; }
-            set { m_AssetName = value; }
+            get { return r_AssetName; }
         }
 
-        public event EventHandler<EventArgs> PositionChanged;
         protected virtual void OnPositionChanged()
         {
             if (PositionChanged != null)
@@ -27,7 +27,6 @@ namespace Infrastructure.Models
             }
         }
 
-        public event EventHandler<EventArgs> SizeChanged;
         protected virtual void OnSizeChanged()
         {
             if (SizeChanged != null)
@@ -36,7 +35,6 @@ namespace Infrastructure.Models
             }
         }
 
-        public event EventHandler<EventArgs> RotationChanged;
         protected virtual void OnRotationChanged()
         {
             if (RotationChanged != null)
@@ -48,7 +46,7 @@ namespace Infrastructure.Models
         public LoadableDrawableComponent(Game i_Game, string i_AssetName)
             : base(i_Game)
         {
-            this.AssetName = i_AssetName;
+            r_AssetName = i_AssetName;
             this.UpdateOrder = int.MaxValue;
             this.DrawOrder = int.MaxValue;
 

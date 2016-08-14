@@ -25,8 +25,8 @@ namespace SpaceInvaders.Models
 
         private int m_SecondsToNextShoot;
 
-        public Alien(BaseGame i_Game, string i_TexturePath, Color i_Tint, int i_Score)
-            : base(i_Game, i_TexturePath, i_Tint)
+        public Alien(Game i_Game, string i_TexturePath, int i_Score)
+            : base(i_Game, i_TexturePath)
         {
             r_Score = i_Score;
 
@@ -37,9 +37,9 @@ namespace SpaceInvaders.Models
         {
             if(i_GameTime.TotalGameTime.Seconds > 0 && i_GameTime.TotalGameTime.Seconds % m_SecondsToNextShoot == 0)
             {
-                Bullet bullet = new Bullet(r_BaseGame, new Vector2(0, 1), Color.Blue, eBulletType.Enemy);
+                Bullet bullet = new Bullet(Game, new Vector2(0, 1), eBulletType.Enemy);
 
-                bullet.Pos = new Vector2(Pos.X + (m_Texture.Width / 2) - (bullet.Width / 2), Pos.Y + m_Texture.Height);
+                bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y + Height);
                 m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
             }
         }

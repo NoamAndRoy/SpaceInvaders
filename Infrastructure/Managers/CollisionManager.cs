@@ -10,8 +10,8 @@ namespace Infrastructure.Managers
     {
         private readonly List<ICollideable> r_Collideables;
 
-        public CollisionManager(BaseGame i_BaseGame)
-            : base(i_BaseGame)
+        public CollisionManager(Game i_Game)
+            : base(i_Game)
         {
             r_Collideables = new List<ICollideable>();
 
@@ -30,6 +30,8 @@ namespace Infrastructure.Managers
                 r_Collideables.Add(i_Collideable);
                 i_Collideable.PositionChanged += collideable_Changed;
                 i_Collideable.VisibleChanged += collideable_Changed;
+                i_Collideable.SizeChanged += collideable_Changed;
+                i_Collideable.RotationChanged += collideable_Changed;
             }
         }
 
@@ -37,11 +39,13 @@ namespace Infrastructure.Managers
         {
             ICollideable collideable = i_Sender as ICollideable;
 
-            if (collideable != null)
+            if (collideable != null && this.r_Collideables.Contains(collideable))
             {
                 r_Collideables.Remove(collideable);
                 collideable.PositionChanged -= collideable_Changed;
                 collideable.VisibleChanged -= collideable_Changed;
+                collideable.SizeChanged -= collideable_Changed;
+                collideable.RotationChanged -= collideable_Changed;
             }
         }
 
@@ -50,18 +54,21 @@ namespace Infrastructure.Managers
             List<ICollideable> collided = new List<ICollideable>();
             ICollideable source = i_Sender as ICollideable;
 
-            foreach (ICollideable collideable in r_Collideables)
+            if (source.Visible)
             {
-                if(source != collideable && source.Visible && collideable.Visible && source.CheckCollisions(collideable))
+                foreach (ICollideable collideable in r_Collideables)
                 {
-                    collided.Add(collideable);
+                    if (source != collideable && collideable.Visible && source.CheckCollision(collideable))
+                    {
+                        collided.Add(collideable);
+                    }
                 }
-            }
 
-            foreach(ICollideable collideable in collided)
-            {
-                source.Collided(collideable);
-                collideable.Collided(source);
+                foreach (ICollideable collideable in collided)
+                {
+                    source.Collided(collideable);
+                    collideable.Collided(source);
+                }
             }
         }
     }

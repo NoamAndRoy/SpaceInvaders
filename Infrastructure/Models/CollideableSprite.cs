@@ -8,21 +8,45 @@ namespace Infrastructure.Models
     {
         public event CollidedEventHandler CollidedAction;
 
-        public CollideableSprite(BaseGame i_Game, string i_TexturePath, Color i_Tint)
-            : base(i_Game, i_TexturePath, i_Tint)
+        public Rectangle Bounds
+        {
+            get
+            {
+                return new Rectangle(
+                    (int)TopLeftPosition.X,
+                    (int)TopLeftPosition.Y,
+                    (int)this.Width,
+                    (int)this.Height);
+            }
+        }
+
+        public Rectangle BoundsBeforeScale
+        {
+            get
+            {
+                return new Rectangle(
+                    (int)TopLeftPosition.X,
+                    (int)TopLeftPosition.Y,
+                    (int)this.WidthBeforeScale,
+                    (int)this.HeightBeforeScale);
+            }
+        }
+
+        public CollideableSprite(Game i_Game, string i_TexturePath)
+            : base(i_Game, i_TexturePath)
         {
         }
 
         public override void Initialize()
         {
             base.Initialize();
-            (r_BaseGame.Services.GetService(typeof(CollisionManager)) as CollisionManager).AddComponent(this);
         }
 
-        public virtual bool CheckCollisions(ICollideable i_Collideable)
+        public virtual bool CheckCollision(ICollideable i_Collideable)
         {
             bool intersects = false;
-           if(this.Bounds.Intersects(i_Collideable.Bounds))
+
+            if(this.Bounds.Intersects(i_Collideable.Bounds))
             {
                 intersects = true;
             }
@@ -32,10 +56,7 @@ namespace Infrastructure.Models
 
         public virtual void Collided(ICollideable i_Collideable)
         {
-            Visible = false;
-            Enabled = false;
-            this.Dispose();
-            Game.Components.Remove(this);
+            DeleteSprite();
 
             OnCollide(i_Collideable);
         }

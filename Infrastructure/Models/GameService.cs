@@ -4,10 +4,11 @@ namespace Infrastructure.Models
 {
     public class GameService : RegisteredComponent
     {
-        public GameService(BaseGame i_BaseGame)
-            : base(i_BaseGame)
+        public GameService(Game i_Game)
+            : base(i_Game)
         {
             this.UpdateOrder = int.MinValue;
+            registerService();
         }
 
         protected virtual void registerService()

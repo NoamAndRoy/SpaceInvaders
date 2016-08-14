@@ -17,11 +17,8 @@ namespace SpaceInvaders.Models
         private float m_JumpDistance;
         private int m_AlienCounter;
 
-        protected readonly BaseGame r_BaseGame;
-
-        public AlienMatrix(BaseGame i_Game) : base(i_Game)
+        public AlienMatrix(Game i_Game) : base(i_Game)
         {
-            r_BaseGame = i_Game;
             m_PasssedTime = 0;
             m_JumpRight = true;
             m_AlienCounter = k_Rows * k_Cols;
@@ -45,15 +42,15 @@ namespace SpaceInvaders.Models
                 {
                     if (i == 0)
                     {
-                        r_AlienMatrix[i, j] = new Alien(r_BaseGame, "Enemy0101_32x32", Color.Pink, 220);
+                        r_AlienMatrix[i, j] = new Alien(Game, "Enemy0101_32x32", 220);
                     }
                     else if (i >= 1 && i <= 2)
                     {
-                        r_AlienMatrix[i, j] = new Alien(r_BaseGame, "Enemy0201_32x32", Color.PowderBlue, 160);
+                        r_AlienMatrix[i, j] = new Alien(Game, "Enemy0201_32x32", 160);
                     }
                     else
                     {
-                        r_AlienMatrix[i, j] = new Alien(r_BaseGame, "Enemy0301_32x32", Color.LightGoldenrodYellow, 90);
+                        r_AlienMatrix[i, j] = new Alien(Game, "Enemy0301_32x32", 90);
                     }
 
                     r_AlienMatrix[i, j].VisibleChanged += alienStatusChanged;
@@ -72,7 +69,7 @@ namespace SpaceInvaders.Models
 
             if(m_AlienCounter == 0)
             {
-                r_BaseGame.EndGame();
+                //r_BaseGame.EndGame();
             }
         }
 
@@ -84,7 +81,7 @@ namespace SpaceInvaders.Models
             {
                 for (int j = 0; j < k_Cols; j++)
                 {
-                    r_AlienMatrix[i, j].Pos = new Vector2(0, r_AlienMatrix[i, j].Height * 3) + new Vector2(j * (r_AlienMatrix[i, j].Width * 1.6f), i * (r_AlienMatrix[i, j].Height * 1.6f));
+                    r_AlienMatrix[i, j].Position = new Vector2(0, r_AlienMatrix[i, j].Height * 3) + new Vector2(j * (r_AlienMatrix[i, j].Width * 1.6f), i * (r_AlienMatrix[i, j].Height * 1.6f));
                 }
             }
         }
@@ -101,7 +98,7 @@ namespace SpaceInvaders.Models
 
                 if (isAtBottom())
                 {
-                    r_BaseGame.EndGame();
+                    //r_BaseGame.EndGame();
                 }
 
                 if (distanceToJump == 0)
@@ -114,7 +111,7 @@ namespace SpaceInvaders.Models
                     {
                         for (int j = 0; j < k_Cols; j++)
                         {
-                            r_AlienMatrix[i, j].Pos += new Vector2(0, m_JumpDistance);
+                            r_AlienMatrix[i, j].Position += new Vector2(0, m_JumpDistance);
                         }
                     }
                 }
@@ -124,7 +121,7 @@ namespace SpaceInvaders.Models
                     {
                         for (int j = 0; j < k_Cols; j++)
                         {
-                            r_AlienMatrix[i, j].Pos += new Vector2(distanceToJump, 0);
+                            r_AlienMatrix[i, j].Position += new Vector2(distanceToJump, 0);
                         }
                     }
                 }
@@ -143,8 +140,8 @@ namespace SpaceInvaders.Models
                 {
                     if (r_AlienMatrix[i, j].Visible)
                     {
-                        remainSpace = (r_AlienMatrix[i, j].Pos.X + m_JumpDistance >= Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].Width) ?
-                            Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].Pos.X - r_AlienMatrix[i, j].Width : m_JumpDistance;
+                        remainSpace = (r_AlienMatrix[i, j].Position.X + m_JumpDistance >= Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].Width) ?
+                            Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].Position.X - r_AlienMatrix[i, j].Width : m_JumpDistance;
                     }
                 }
             }
@@ -162,8 +159,8 @@ namespace SpaceInvaders.Models
                 {
                     if (r_AlienMatrix[i, j].Visible)
                     {
-                        remainSpace = (r_AlienMatrix[i, j].Pos.X - m_JumpDistance <= 0) ? 
-                            -1 * r_AlienMatrix[i, j].Pos.X : -1 * m_JumpDistance;
+                        remainSpace = (r_AlienMatrix[i, j].Position.X - m_JumpDistance <= 0) ? 
+                            -1 * r_AlienMatrix[i, j].Position.X : -1 * m_JumpDistance;
                     }
                 }
             }
@@ -179,7 +176,7 @@ namespace SpaceInvaders.Models
             {
                 for (int i = k_Rows - 1; i >= 0; i--)
                 {
-                    if(r_AlienMatrix[i, j].Visible && r_AlienMatrix[i, j].Pos.Y + r_AlienMatrix[i, j].Height >= Game.GraphicsDevice.Viewport.Height)
+                    if(r_AlienMatrix[i, j].Visible && r_AlienMatrix[i, j].Position.Y + r_AlienMatrix[i, j].Height >= Game.GraphicsDevice.Viewport.Height)
                     {
                         isAtBottom = true;
                     }

@@ -26,8 +26,8 @@ namespace SpaceInvaders.Models
             get { return k_Score; }
         }
 
-        public MotherShip(BaseGame i_Game)
-            : base(i_Game, k_TexturePath, Color.Red)
+        public MotherShip(Game i_Game)
+            : base(i_Game, k_TexturePath)
         {
             m_RandomAppearTime = new Random();
             m_IsDead = true;
@@ -37,15 +37,15 @@ namespace SpaceInvaders.Models
         {
             base.Initialize();
 
-            m_StartingPos = new Vector2(-1 * m_Texture.Width, m_Texture.Height);
-            Pos = m_StartingPos;
+            m_StartingPos = new Vector2(-1 * Width, Height);
+            Position = m_StartingPos;
 
             m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
         }
 
         public override void Collided(ICollideable i_Collideable)
         {
-            Pos = m_StartingPos;
+            Position = m_StartingPos;
             m_IsDead = true;
             Velocity = Vector2.Zero;
             m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
@@ -61,10 +61,10 @@ namespace SpaceInvaders.Models
                 Velocity = new Vector2(k_Speed, 0);
             }
 
-            if (!m_IsDead && Pos.X >= Game.GraphicsDevice.Viewport.Width)
+            if (!m_IsDead && Position.X >= Game.GraphicsDevice.Viewport.Width)
             {
                 m_IsDead = true;
-                Pos = m_StartingPos;
+                Position = m_StartingPos;
                 Velocity = Vector2.Zero;
                 m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
             }

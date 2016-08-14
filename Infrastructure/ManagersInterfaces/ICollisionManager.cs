@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace Infrastructure.ManagersInterfaces
 {
@@ -17,7 +17,7 @@ namespace Infrastructure.ManagersInterfaces
 
         event CollidedEventHandler CollidedAction;
 
-        bool CheckCollisions(ICollideable i_Collideable);
+        bool CheckCollision(ICollideable i_Collideable);
 
         void Collided(ICollideable i_Collideable);
 

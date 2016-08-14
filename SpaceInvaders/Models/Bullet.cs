@@ -18,8 +18,8 @@ namespace SpaceInvaders.Models
 
         public eBulletType BulletType { get; }
 
-        public Bullet(BaseGame i_Game, Vector2 i_Direction, Color i_Tint, eBulletType i_BulletType)
-            : base(i_Game, k_TexturePath, i_Tint)
+        public Bullet(Game i_Game, Vector2 i_Direction, eBulletType i_BulletType)
+            : base(i_Game, k_TexturePath)
         {
             Velocity = i_Direction * k_Speed;
             BulletType = i_BulletType;
@@ -29,7 +29,7 @@ namespace SpaceInvaders.Models
         {
             base.Update(i_GameTime);
 
-            if (Pos.Y + m_Texture.Height < 0 || Pos.Y > Game.GraphicsDevice.Viewport.Height)
+            if (Position.Y + Height < 0 || Position.Y > Game.GraphicsDevice.Viewport.Height)
             {
                 DeleteSprite();
             }

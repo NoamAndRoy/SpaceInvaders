@@ -10,8 +10,8 @@ namespace Infrastructure.Managers
         private KeyboardState m_PrevKeyboardState;
         private KeyboardState m_KeyboardState;
 
-        public KeyboardManager(BaseGame i_BaseGame)
-            : base(i_BaseGame)
+        public KeyboardManager(Game i_Game)
+            : base(i_Game)
         {
         }
 

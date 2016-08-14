@@ -48,9 +48,10 @@
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MouseManager.cs" />
-    <Compile Include="Models\BaseGame.cs" />
     <Compile Include="Models\CollideableSprite.cs" />
     <Compile Include="Models\GameService.cs" />
+    <Compile Include="Models\LoadableDrawableComponent.cs" />
+    <Compile Include="Models\RegisteredComponent.cs" />
     <Compile Include="Models\Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

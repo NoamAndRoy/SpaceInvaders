@@ -10,8 +10,8 @@ namespace Infrastructure.Managers
         private MouseState m_PrevMouseState;
         private MouseState m_MouseState;
 
-        public MouseManager(BaseGame i_BaseGame)
-            : base(i_BaseGame)
+        public MouseManager(Game i_Game)
+            : base(i_Game)
         {
         }
 

@@ -15,8 +15,8 @@ namespace SpaceInvaders.Models
         private const int k_MaxAmountOfBullets = 2;
         private const string k_TexturePath = "Ship01_32x32";
 
-        private readonly KeyboardManager r_KeyboardManager;
-        private readonly MouseManager r_MouseManager;
+        private readonly IKeyboardManager r_KeyboardManager;
+        private readonly IMouseManager r_MouseManager;
 
         private int m_AmountOfAliveBullets;
 
@@ -24,21 +24,21 @@ namespace SpaceInvaders.Models
 
         public int PlayerScore { get; private set; }
 
-        public PlayerShip(BaseGame i_Game)
-            : base(i_Game, k_TexturePath, Color.White)
+        public PlayerShip(Game i_Game)
+            : base(i_Game, k_TexturePath)
         {
             PlayerScore = 0;
             Souls = 3;
             m_AmountOfAliveBullets = 0;
-            r_KeyboardManager = (KeyboardManager)r_BaseGame.Services.GetService(typeof(KeyboardManager));
-            r_MouseManager = (MouseManager)r_BaseGame.Services.GetService(typeof(MouseManager));
+            r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
+            r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
         }
 
         public override void Initialize()
         {
             base.Initialize();
 
-            Pos = new Vector2(0f, Game.GraphicsDevice.Viewport.Height - (m_Texture.Height * 2 * 0.6f));
+            Position = new Vector2(0f, Game.GraphicsDevice.Viewport.Height - (Height * 2 * 0.6f));
         }
 
         public override void Update(GameTime i_GameTime)
@@ -60,9 +60,9 @@ namespace SpaceInvaders.Models
             {
                 if (m_AmountOfAliveBullets < k_MaxAmountOfBullets)
                 {
-                    Bullet bullet = new Bullet(r_BaseGame, new Vector2(0, -1), Color.Red, eBulletType.Player);
+                    Bullet bullet = new Bullet(Game, new Vector2(0, -1), eBulletType.Player);
 
-                    bullet.Pos = new Vector2(Pos.X + (m_Texture.Width / 2) - (bullet.Width / 2), Pos.Y - bullet.Height);
+                    bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y - bullet.Height);
                     bullet.CollidedAction += bulletCollided;
                     bullet.VisibleChanged += bullet_VisibleChanged;
                     m_AmountOfAliveBullets++;
@@ -71,7 +71,7 @@ namespace SpaceInvaders.Models
 
             base.Update(i_GameTime);
 
-            Pos = new Vector2(MathHelper.Clamp(Pos.X, 0, this.Game.GraphicsDevice.Viewport.Width - m_Texture.Width), Pos.Y);
+            Position = new Vector2(MathHelper.Clamp(Position.X, 0, this.Game.GraphicsDevice.Viewport.Width - Width), Position.Y);
         }
 
         private void bullet_VisibleChanged(object i_Sender, EventArgs i_EventArgs)
@@ -101,7 +101,7 @@ namespace SpaceInvaders.Models
             if (bullet != null && bullet.BulletType == eBulletType.Enemy)
             {
                 Souls--;
-                Pos = new Vector2(0f, Pos.Y);
+                Position = new Vector2(0f, Position.Y);
 
                 PlayerScore -= k_Score;
                 PlayerScore = MathHelper.Max(0, PlayerScore);
@@ -114,7 +114,7 @@ namespace SpaceInvaders.Models
 
             if (Souls == 0)
             {
-                r_BaseGame.EndGame();
+                //Game.EndGame();
             }
 
             OnCollide(i_Collideable);
