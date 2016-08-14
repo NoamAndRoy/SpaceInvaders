@@ -249,5 +249,10 @@ namespace Infrastructure.Models
             this.Dispose();
             Game.Components.Remove(this);
         }
+
+         public Sprite ShallowClone()
+        {
+            return (Sprite)this.MemberwiseClone();
+        }
     }
 }

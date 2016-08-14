@@ -1,5 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Infrastructure.Models;
 using SpaceInvaders.Models;
 using Infrastructure.Managers;
 
@@ -7,6 +9,9 @@ namespace SpaceInvaders
 {
     public class Invaders : Game
     {
+        private GraphicsDeviceManager m_Graphics;
+        private SpriteBatch m_SpriteBatch;
+
         private readonly Background r_Background;
         private readonly PlayerShip r_Player;
         private readonly MotherShip r_MotherShip;
@@ -15,9 +20,6 @@ namespace SpaceInvaders
         private readonly CollisionManager r_CollisionManager;
         private readonly KeyboardManager r_KeyBoardManager;
         private readonly MouseManager r_MouseManager;
-
-        private GraphicsDeviceManager m_Graphics;
-        private SpriteBatch m_SpriteBatch;
 
         public Invaders()
         {
