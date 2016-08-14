@@ -105,6 +105,8 @@ namespace SpaceInvaders.Models
 
                 PlayerScore -= k_Score;
                 PlayerScore = MathHelper.Max(0, PlayerScore);
+
+                new Infrastructure.Models.Animations.BlinkAnimation(Game, this, TimeSpan.FromSeconds(3), 3);
             }
 
             if (i_Collideable is Alien)

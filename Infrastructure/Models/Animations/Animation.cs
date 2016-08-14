@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-
     public delegate void FinishedEventHandler(Animation i_Animation);
 
     public abstract class Animation : RegisteredComponent
@@ -48,20 +47,12 @@ namespace Infrastructure.Models.Animations
             m_TimeTillAnimationEnd = r_AnimationLength;
         }
 
-        public void Start()
-        {
-            Enabled = true;
-        }
-
-        public void Pause()
-        {
-            Enabled = false;
-        }
-
         public void Reset()
         {
             m_TimeTillAnimationEnd = r_AnimationLength;
+            revertSpriteState();
         }
+
 
         public override void Update(GameTime i_GameTime)
         {
@@ -74,7 +65,7 @@ namespace Infrastructure.Models.Animations
                 }
                 else
                 {
-                    DoAnimation(i_GameTime);
+                    doAnimation(i_GameTime);
                 }
             }
         }
@@ -92,6 +83,11 @@ namespace Infrastructure.Models.Animations
             }
         }
 
-        protected abstract void DoAnimation(GameTime i_GameTime);
+        protected virtual void revertSpriteState()
+        {
+
+        }
+
+        protected abstract void doAnimation(GameTime i_GameTime);
     }
 }
