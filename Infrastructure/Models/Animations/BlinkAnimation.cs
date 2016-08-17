@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public class BlinkAnimation : Animation
+    public class BlinkAnimation : SpriteAnimation
     {
         private readonly TimeSpan r_AmountOfSecondsTillBlink;
         private TimeSpan m_PassedTime = TimeSpan.Zero;
@@ -15,16 +15,22 @@ namespace Infrastructure.Models.Animations
 
         protected override void doAnimation(GameTime i_GameTime)
         {
-            m_PassedTime += i_GameTime.ElapsedGameTime;
-
             if(m_PassedTime >= r_AmountOfSecondsTillBlink)
             {
                 m_PassedTime -= r_AmountOfSecondsTillBlink;
                 m_Sprite.Visible = !m_Sprite.Visible;
             }
+            m_PassedTime += i_GameTime.ElapsedGameTime;
         }
 
-        protected override void revertSpriteState()
+        protected override void OnFinished()
+        {
+            m_Sprite.Visible = true;
+
+            base.OnFinished();
+        }
+
+        public override void RevertToOriginalStart()
         {
             m_Sprite.Visible = r_OriginalSpriteState.Visible;
         }

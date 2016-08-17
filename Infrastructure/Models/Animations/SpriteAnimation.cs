@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public delegate void FinishedEventHandler(Animation i_Animation);
+    public delegate void FinishedEventHandler(SpriteAnimation i_Animation);
 
-    public abstract class Animation : RegisteredComponent
+    public abstract class SpriteAnimation : RegisteredComponent
     {
         protected readonly Sprite r_OriginalSpriteState;
         private readonly TimeSpan r_AnimationLength;
@@ -32,13 +32,7 @@ namespace Infrastructure.Models.Animations
             }
         }
 
-        public bool ResetAfterFinished
-        {
-            get { return m_ResetAfterFinished; }
-            set { m_ResetAfterFinished = value; }
-        }
-
-        public Animation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
+        public SpriteAnimation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
             : base(i_Game)
         {
             m_Sprite = i_Sprite;
@@ -50,16 +44,19 @@ namespace Infrastructure.Models.Animations
         public void Reset()
         {
             m_TimeTillAnimationEnd = r_AnimationLength;
-            revertSpriteState();
+            RevertToOriginalStart();
         }
 
+        public virtual void RevertToOriginalStart()
+        {
+            
+        }
 
         public override void Update(GameTime i_GameTime)
         {
             if (!IsFinished)
             {
-                m_TimeTillAnimationEnd -= i_GameTime.ElapsedGameTime;
-                if (m_TimeTillAnimationEnd.TotalSeconds <= 0 && r_AnimationLength != TimeSpan.Zero)
+                if (m_TimeTillAnimationEnd.TotalSeconds < 0 && r_AnimationLength != TimeSpan.Zero)
                 {
                     IsFinished = true;
                 }
@@ -67,6 +64,8 @@ namespace Infrastructure.Models.Animations
                 {
                     doAnimation(i_GameTime);
                 }
+
+                m_TimeTillAnimationEnd -= i_GameTime.ElapsedGameTime;
             }
         }
 
@@ -76,15 +75,6 @@ namespace Infrastructure.Models.Animations
             {
                 Finished(this);
             }
-
-            if (ResetAfterFinished)
-            {
-                Reset();
-            }
-        }
-
-        protected virtual void revertSpriteState()
-        {
         }
 
         protected abstract void doAnimation(GameTime i_GameTime);
