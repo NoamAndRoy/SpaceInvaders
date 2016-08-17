@@ -85,7 +85,6 @@ namespace Infrastructure.Models.Animations
 
         protected virtual void revertSpriteState()
         {
-
         }
 
         protected abstract void doAnimation(GameTime i_GameTime);

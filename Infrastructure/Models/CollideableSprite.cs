@@ -43,9 +43,12 @@ namespace Infrastructure.Models
             }
         }
 
+        public bool PixelBasedCollision { get; set; }
+
         public CollideableSprite(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)
         {
+            PixelBasedCollision = false;
         }
 
         protected override void LoadContent()
@@ -78,7 +81,7 @@ namespace Infrastructure.Models
         {
             bool areIntersects = false;
 
-            if (CheckCollision(i_Collideable) ||
+            if (CheckCollision(i_Collideable) &&
                 PixelsMatricesIntersects(m_PixelsMatrix, Bounds, i_Collideable.PixelsMatrix, i_Collideable.Bounds))
             {
                 areIntersects = true;
@@ -102,7 +105,7 @@ namespace Infrastructure.Models
             }
         }
 
-        private bool PixelsMatricesIntersects(Color[] i_MatrixOne, Rectangle i_MatrixOneBounds, Color[] i_MatrixTwo, Rectangle i_MatrixTwoBounds)
+        protected bool PixelsMatricesIntersects(Color[] i_MatrixOne, Rectangle i_MatrixOneBounds, Color[] i_MatrixTwo, Rectangle i_MatrixTwoBounds)
         {
             bool areIntersects = false;
 
@@ -110,16 +113,14 @@ namespace Infrastructure.Models
                 matrixOneInnerY,
                 matrixTwoInnerX,
                 matrixTwoInnerY,
-                minX = Math.Min(i_MatrixOneBounds.X, i_MatrixTwoBounds.X),
-                minY = Math.Min(i_MatrixOneBounds.Y, i_MatrixTwoBounds.Y),
-                maxX = Math.Max(i_MatrixOneBounds.X + i_MatrixOneBounds.Width, i_MatrixTwoBounds.X + i_MatrixTwoBounds.Width),
-                maxY = Math.Max(i_MatrixOneBounds.Y + i_MatrixOneBounds.Height, i_MatrixTwoBounds.Y + i_MatrixTwoBounds.Height);
+                minX = Math.Max(i_MatrixOneBounds.X, i_MatrixTwoBounds.X),
+                minY = Math.Max(i_MatrixOneBounds.Y, i_MatrixTwoBounds.Y),
+                maxX = Math.Min(i_MatrixOneBounds.X + i_MatrixOneBounds.Width - 1, i_MatrixTwoBounds.X + i_MatrixTwoBounds.Width - 1),
+                maxY = Math.Min(i_MatrixOneBounds.Y + i_MatrixOneBounds.Height - 1, i_MatrixTwoBounds.Y + i_MatrixTwoBounds.Height - 1);
 
-            Point maxPoint = new Point(Math.Min(i_MatrixOneBounds.X, i_MatrixTwoBounds.X), Math.Min(i_MatrixOneBounds.Y, i_MatrixTwoBounds.Y));
-
-            for (int i = minX; !areIntersects && i < maxX; i++)
+            for (int i = minX; !areIntersects && i <= maxX; i++)
             {
-                for (int j = minY; !areIntersects && j < maxY; j++)
+                for (int j = minY; !areIntersects && j <= maxY; j++)
                 {
                     matrixOneInnerX = i - i_MatrixOneBounds.X;
                     matrixOneInnerY = j - i_MatrixOneBounds.Y;

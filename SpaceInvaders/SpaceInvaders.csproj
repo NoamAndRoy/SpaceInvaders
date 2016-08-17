@@ -48,6 +48,7 @@
     <Compile Include="Models\MotherShip.cs" />
     <Compile Include="Models\PlayerShip.cs" />
     <Compile Include="Models\Wall.cs" />
+    <Compile Include="Models\WallsLine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

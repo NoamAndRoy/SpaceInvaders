@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
 {
     public abstract class Sprite : LoadableDrawableComponent
     {
-        private const string k_SpritesPath = "Sprites/";
+        public const string k_SpritesPath = "Sprites/";
 
         private Texture2D m_Texture;
         private Vector2 m_Position = Vector2.Zero;
@@ -28,6 +27,7 @@ namespace Infrastructure.Models
         public Texture2D Texture
         {
             get { return m_Texture; }
+            protected set { m_Texture = value; }
         }
 
         public Vector2 TextureCenter
@@ -176,9 +176,12 @@ namespace Infrastructure.Models
             set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
         }
 
+        public bool AlphaBlending { get; set; }
+
         public Sprite(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)
         {
+            AlphaBlending = false;
         }
 
         public override void Initialize()
@@ -227,14 +230,18 @@ namespace Infrastructure.Models
 
         public override void Draw(GameTime i_GameTime)
         {
-            if (!m_UseSharedBatch)
+            if(AlphaBlending)
+            {
+                m_SpriteBatch.Begin(SpriteSortMode.Deferred,BlendState.NonPremultiplied);
+            }
+            else if (!m_UseSharedBatch)
             {
                 m_SpriteBatch.Begin();
             }
 
             m_SpriteBatch.Draw(m_Texture, this.PositionForDraw, this.SourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
 
-            if (!m_UseSharedBatch)
+            if (!m_UseSharedBatch || AlphaBlending)
             {
                 m_SpriteBatch.End();
             }
@@ -250,7 +257,7 @@ namespace Infrastructure.Models
             Game.Components.Remove(this);
         }
 
-         public Sprite ShallowClone()
+        public Sprite ShallowClone()
         {
             return (Sprite)this.MemberwiseClone();
         }

@@ -25,6 +25,8 @@ namespace Infrastructure.ManagersInterfaces
 
         Rectangle Bounds { get; }
 
+        bool PixelBasedCollision { get; set; }
+
         Color[] PixelsMatrix{ get; }
 
         bool Visible { get; }

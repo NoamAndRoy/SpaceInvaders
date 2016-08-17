@@ -23,6 +23,7 @@ namespace SpaceInvaders.Models
         {
             Velocity = i_Direction * k_Speed;
             BulletType = i_BulletType;
+            PixelBasedCollision = true;
         }
 
         public override void Update(GameTime i_GameTime)

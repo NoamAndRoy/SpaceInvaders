@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Managers;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 
@@ -10,10 +9,11 @@ namespace SpaceInvaders.Models
 {
     public class PlayerShip : CollideableSprite
     {
+        public const string k_TexturePath = "Ship01_32x32";
+
         private const int k_Speed = 130;
         private const int k_Score = -1500;
         private const int k_MaxAmountOfBullets = 2;
-        private const string k_TexturePath = "Ship01_32x32";
 
         private readonly IKeyboardManager r_KeyboardManager;
         private readonly IMouseManager r_MouseManager;
