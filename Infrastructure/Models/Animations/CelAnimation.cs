@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public class CelAnimation : Animation
+    public class CelAnimation : SpriteAnimation
     {
         private readonly Rectangle[] r_SourceRectangles;
         private readonly TimeSpan r_AmountOfSecondsTillNextSourceRectangle;
@@ -19,8 +19,6 @@ namespace Infrastructure.Models.Animations
 
         protected override void doAnimation(GameTime i_GameTime)
         {
-            m_PassedTime += i_GameTime.ElapsedGameTime;
-
             if (m_PassedTime >= r_AmountOfSecondsTillNextSourceRectangle)
             {
                 m_PassedTime -= r_AmountOfSecondsTillNextSourceRectangle;
@@ -31,6 +29,8 @@ namespace Infrastructure.Models.Animations
 
                 m_Sprite.SourceRectangle = r_SourceRectangles[m_CurrentSourceRectangleIndex];
             }
+
+            m_PassedTime += i_GameTime.ElapsedGameTime;
         }
     }
 }

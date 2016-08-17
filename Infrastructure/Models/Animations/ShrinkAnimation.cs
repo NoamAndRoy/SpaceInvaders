@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public class ShrinkAnimation : Animation
+    public class ShrinkAnimation : SpriteAnimation
     {
         private readonly Vector2 r_ShrinkVelocity;
 
@@ -22,7 +18,7 @@ namespace Infrastructure.Models.Animations
             m_Sprite.Scales -= r_ShrinkVelocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        protected override void revertSpriteState()
+        public override void RevertToOriginalStart()
         {
             m_Sprite.Scales = r_OriginalSpriteState.Scales;
         }

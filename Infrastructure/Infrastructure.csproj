@@ -48,7 +48,8 @@
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MouseManager.cs" />
-    <Compile Include="Models\Animations\Animation.cs" />
+    <Compile Include="Models\Animations\FadeOutAnimation.cs" />
+    <Compile Include="Models\Animations\SpriteAnimation.cs" />
     <Compile Include="Models\Animations\BlinkAnimation.cs" />
     <Compile Include="Models\Animations\CelAnimation.cs" />
     <Compile Include="Models\Animations\RotationAnimation.cs" />

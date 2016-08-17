@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public class RotationAnimation : Animation
+    public class RotationAnimation : SpriteAnimation
     {
         private readonly float r_AmountOfRotationInASecond;
 
@@ -18,7 +18,7 @@ namespace Infrastructure.Models.Animations
             m_Sprite.Rotation += r_AmountOfRotationInASecond * MathHelper.TwoPi * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        protected override void revertSpriteState()
+        public override void RevertToOriginalStart()
         {
             m_Sprite.Rotation = r_OriginalSpriteState.Rotation;
         }
