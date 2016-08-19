@@ -1,9 +1,8 @@
-﻿using Infrastructure.ManagersInterfaces;
+﻿using System;
+using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Diagnostics;
 
 namespace SpaceInvaders.Models
 {
@@ -59,14 +58,14 @@ namespace SpaceInvaders.Models
 
         public override void Collided(ICollideable i_Collideable)
         {
-            int minX, maxX, minY, maxY;
+            int minX, maxX, minY = 0, maxY = 0;
             Bullet bullet = i_Collideable as Bullet;
+
+            minX = Math.Max(bullet.Bounds.X, Bounds.X);
+            maxX = Math.Min(bullet.Bounds.X + bullet.Bounds.Width - 1, Bounds.X + Bounds.Width - 1);
 
             if (bullet != null)
             {
-                minX = Math.Max(bullet.Bounds.X, Bounds.X);
-                maxX = Math.Min(bullet.Bounds.X + bullet.Bounds.Width - 1, Bounds.X + Bounds.Width - 1);
-
                 if (bullet.BulletType == eBulletType.Player)
                 {
                     maxY = Math.Min(bullet.Bounds.Y + 1, Bounds.Y + Bounds.Height - 1);
@@ -77,10 +76,6 @@ namespace SpaceInvaders.Models
                     minY = Math.Max(bullet.Bounds.Y + bullet.Bounds.Height - 2, Bounds.Y);
                     maxY = Math.Min(minY + (int)(bullet.Bounds.Height * 0.4), Bounds.Y + Bounds.Height);
                 }
-
-                ClearArea(minX, maxX, minY, maxY);
-
-                OnCollide(i_Collideable);
             }
             else
             {
@@ -88,14 +83,13 @@ namespace SpaceInvaders.Models
 
                 if (alien != null)
                 {
-                    minX = Math.Max(Bounds.X, alien.Bounds.X);
                     minY = Math.Max(Bounds.Y, alien.Bounds.Y);
-                    maxX = Math.Min(Bounds.X + Bounds.Width - 1, alien.Bounds.X + alien.Bounds.Width - 1);
                     maxY = Math.Min(Bounds.Y + Bounds.Height - 1, alien.Bounds.Y + alien.Bounds.Height - 1);
-
-                    ClearArea(minX, maxX, minY, maxY);
                 }
             }
+
+            ClearArea(minX, maxX, minY, maxY);
+            OnCollide(i_Collideable);
         }
 
         private void ClearArea(int minX, int maxX, int minY, int maxY)
@@ -113,7 +107,7 @@ namespace SpaceInvaders.Models
             {
                 for (int j = matrixMinInnerY; j <= matrixMaxInnerY && matrixMaxInnerY < Bounds.Height; j++)
                 {
-                    PixelsMatrix[j * Bounds.Width + i].A = 0;
+                    PixelsMatrix[(j * Bounds.Width) + i].A = 0;
                 }
             }
 
@@ -130,7 +124,7 @@ namespace SpaceInvaders.Models
 
                     for (int j = 0; j < Bounds.Height; j++)
                     {
-                        if (PixelsMatrix[j * Bounds.Width + k].A != 0)
+                        if (PixelsMatrix[(j * Bounds.Width) + k].A != 0)
                         {
                             transparentLeftCol = false;
                             break;
@@ -149,7 +143,7 @@ namespace SpaceInvaders.Models
 
                     for (int j = 0; j < Bounds.Height; j++)
                     {
-                        if (PixelsMatrix[j * Bounds.Width + i].A != 0)
+                        if (PixelsMatrix[(j * Bounds.Width) + i].A != 0)
                         {
                             transparentRightCol = false;
                             break;

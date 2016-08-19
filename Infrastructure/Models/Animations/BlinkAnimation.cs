@@ -7,6 +7,7 @@ namespace Infrastructure.Models.Animations
     {
         private readonly TimeSpan r_AmountOfSecondsTillBlink;
         private TimeSpan m_PassedTime = TimeSpan.Zero;
+
         public BlinkAnimation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength, float i_AmountOfBlinksInASecond)
             : base(i_Game, i_Sprite, i_AnimationLength)
         {
@@ -20,6 +21,7 @@ namespace Infrastructure.Models.Animations
                 m_PassedTime -= r_AmountOfSecondsTillBlink;
                 m_Sprite.Visible = !m_Sprite.Visible;
             }
+
             m_PassedTime += i_GameTime.ElapsedGameTime;
         }
 

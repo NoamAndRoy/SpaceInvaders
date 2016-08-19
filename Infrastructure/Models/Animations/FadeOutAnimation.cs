@@ -11,7 +11,7 @@ namespace Infrastructure.Models.Animations
         public FadeOutAnimation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
             : base(i_Game, i_Sprite, i_AnimationLength)
         {
-            r_AmountOfFadeOutInASecond = (1 / (float)i_AnimationLength.TotalSeconds);
+            r_AmountOfFadeOutInASecond = 1 / (float)i_AnimationLength.TotalSeconds;
             m_Opacity = 1;
         }
 

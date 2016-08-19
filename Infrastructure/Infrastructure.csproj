@@ -55,10 +55,12 @@
     <Compile Include="Models\Animations\RotationAnimation.cs" />
     <Compile Include="Models\Animations\ShrinkAnimation.cs" />
     <Compile Include="Models\CollideableSprite.cs" />
+    <Compile Include="Models\Component2D.cs" />
     <Compile Include="Models\GameService.cs" />
     <Compile Include="Models\LoadableDrawableComponent.cs" />
     <Compile Include="Models\RegisteredComponent.cs" />
     <Compile Include="Models\Sprite.cs" />
+    <Compile Include="Models\Text.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

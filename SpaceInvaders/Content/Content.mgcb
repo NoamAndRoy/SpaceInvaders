@@ -169,3 +169,9 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Ship02_32x32.png
 
+#begin Fonts/Calibri.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Calibri.spritefont
+

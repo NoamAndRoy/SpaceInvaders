@@ -10,10 +10,13 @@ namespace SpaceInvaders.Models
     { 
         private const int k_MinTimeToShoot = 30;
         private const int k_MaxTimeToShoot = 100;
+        private const int k_MaxAmountOfBullets = 1;
 
         private static Random s_RandomShootTime = new Random();
 
         private readonly int r_Score;
+
+        private int m_AmountOfAliveBullets;
 
         public int Score
         {
@@ -31,11 +34,12 @@ namespace SpaceInvaders.Models
             r_Score = i_Score;
 
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
+            m_AmountOfAliveBullets = 0;
         }
 
         public override void Update(GameTime i_GameTime)
         {
-            if(i_GameTime.TotalGameTime.Seconds > 0 && i_GameTime.TotalGameTime.Seconds % m_SecondsToNextShoot == 0)
+            if(i_GameTime.TotalGameTime.Seconds > 0 && i_GameTime.TotalGameTime.Seconds % m_SecondsToNextShoot == 0 && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
             {
                 Bullet bullet = new Bullet(Game, new Vector2(0, 1), eBulletType.Enemy);
 

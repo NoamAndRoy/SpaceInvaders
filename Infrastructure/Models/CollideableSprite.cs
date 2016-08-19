@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Managers;
-using System;
 
 namespace Infrastructure.Models
 {
@@ -87,7 +86,7 @@ namespace Infrastructure.Models
                 areIntersects = true;
             }
 
-            return  areIntersects;
+            return areIntersects;
         }
 
         public virtual void Collided(ICollideable i_Collideable)
@@ -127,8 +126,8 @@ namespace Infrastructure.Models
                     matrixTwoInnerX = i - i_MatrixTwoBounds.X;
                     matrixTwoInnerY = j - i_MatrixTwoBounds.Y;
 
-                    if (i_MatrixOne[matrixOneInnerY * i_MatrixOneBounds.Width + matrixOneInnerX].A != 0 && 
-                        i_MatrixTwo[matrixTwoInnerY * i_MatrixTwoBounds.Width + matrixTwoInnerX].A != 0)
+                    if (i_MatrixOne[(matrixOneInnerY * i_MatrixOneBounds.Width) + matrixOneInnerX].A != 0 && 
+                        i_MatrixTwo[(matrixTwoInnerY * i_MatrixTwoBounds.Width) + matrixTwoInnerX].A != 0)
                     {
                         areIntersects = true;
                     }

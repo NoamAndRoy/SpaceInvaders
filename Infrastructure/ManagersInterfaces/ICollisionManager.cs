@@ -27,7 +27,7 @@ namespace Infrastructure.ManagersInterfaces
 
         bool PixelBasedCollision { get; set; }
 
-        Color[] PixelsMatrix{ get; }
+        Color[] PixelsMatrix { get; }
 
         bool Visible { get; }
     }
