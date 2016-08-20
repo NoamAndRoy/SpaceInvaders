@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
+using Infrastructure.Models.Animations;
 
 namespace SpaceInvaders.Models
 {
@@ -19,6 +20,8 @@ namespace SpaceInvaders.Models
         private readonly IMouseManager r_MouseManager;
 
         private int m_AmountOfAliveBullets;
+        private BlinkAnimation m_HitAnimation;
+        private AnimationRespository m_DeathAnimations;
 
         public int Souls { get; private set; }
 
@@ -32,6 +35,19 @@ namespace SpaceInvaders.Models
             m_AmountOfAliveBullets = 0;
             r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
+
+            AlphaBlending = true;
+        }
+
+        private void initializeAnimations()
+        {
+            m_HitAnimation = new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 9);
+            m_HitAnimation.Finished += HitAnimation_Finished;
+
+            m_DeathAnimations = new AnimationRespository(Game, this, TimeSpan.FromSeconds(2.6));
+            m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(2.6), 3));
+            m_DeathAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
+            m_DeathAnimations.Finished += DeathAnimations_Finished;
         }
 
         public override void Initialize()
@@ -39,6 +55,8 @@ namespace SpaceInvaders.Models
             base.Initialize();
 
             Position = new Vector2(0f, Game.GraphicsDevice.Viewport.Height - (Height * 2 * 0.6f));
+            RotationOrigin = TextureCenter;
+            initializeAnimations();
         }
 
         public override void Update(GameTime i_GameTime)
@@ -101,10 +119,14 @@ namespace SpaceInvaders.Models
             if (bullet != null && bullet.BulletType == eBulletType.Enemy)
             {
                 Souls--;
-                Position = new Vector2(0f, Position.Y);
 
                 PlayerScore -= k_Score;
                 PlayerScore = MathHelper.Max(0, PlayerScore);
+
+                if (Souls != 0)
+                {
+                    m_HitAnimation.Enabled = true;
+                }
             }
 
             if (i_Collideable is Alien)
@@ -114,10 +136,21 @@ namespace SpaceInvaders.Models
 
             if (Souls == 0)
             {
-                //Game.EndGame();
+                m_DeathAnimations.Start();
             }
 
             OnCollide(i_Collideable);
+        }
+
+        private void HitAnimation_Finished(Animation i_Animation)
+        {
+            Position = new Vector2(0f, Position.Y);
+            m_HitAnimation.Reset();
+        }
+
+        private void DeathAnimations_Finished(Animation i_Animation)
+        {
+            //Game.EndGame();
         }
     }
 }

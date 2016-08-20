@@ -3,25 +3,37 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public delegate void FinishedEventHandler(SpriteAnimation i_Animation);
+    public delegate void FinishedEventHandler(Animation i_Animation);
 
-    public abstract class SpriteAnimation : RegisteredComponent
+    public abstract class Animation : RegisteredComponent
     {
         protected readonly Sprite r_OriginalSpriteState;
-        private readonly TimeSpan r_AnimationLength;
 
         protected Sprite m_Sprite;
         private TimeSpan m_TimeTillAnimationEnd;
+        private TimeSpan m_AnimationLength;
 
         private bool m_IsFinished = false;
         private bool m_ResetAfterFinished = true;
 
         public event FinishedEventHandler Finished;
 
+        internal TimeSpan AnimationLength
+        {
+            get { return m_AnimationLength; }
+            set { m_AnimationLength = value; }
+        }
+
+        public Sprite Sprite
+        {
+            get { return m_Sprite; }
+            set { m_Sprite = value; }
+        }
+
         public bool IsFinished
         {
             get { return m_IsFinished; }
-            set
+            protected set
             {
                 m_IsFinished = value;
 
@@ -32,37 +44,39 @@ namespace Infrastructure.Models.Animations
             }
         }
 
-        public SpriteAnimation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
+        public Animation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
             : base(i_Game)
         {
             m_Sprite = i_Sprite;
             r_OriginalSpriteState = m_Sprite.ShallowClone();
-            r_AnimationLength = i_AnimationLength;
-            m_TimeTillAnimationEnd = r_AnimationLength;
+            m_AnimationLength = i_AnimationLength;
+            m_TimeTillAnimationEnd = m_AnimationLength;
+            Enabled = false;
         }
 
-        public void Reset()
+        public virtual void Reset()
         {
-            m_TimeTillAnimationEnd = r_AnimationLength;
+            m_TimeTillAnimationEnd = m_AnimationLength;
+            IsFinished = false;
+            Enabled = false;
             RevertToOriginalStart();
         }
 
         public virtual void RevertToOriginalStart()
         {
-            
         }
 
-        public override void Update(GameTime i_GameTime)
+        public sealed override void Update(GameTime i_GameTime)
         {
             if (!IsFinished)
             {
-                if (m_TimeTillAnimationEnd.TotalSeconds < 0 && r_AnimationLength != TimeSpan.Zero)
+                if (m_TimeTillAnimationEnd.TotalSeconds < 0 && m_AnimationLength != TimeSpan.Zero)
                 {
                     IsFinished = true;
                 }
                 else
                 {
-                    doAnimation(i_GameTime);
+                    updateFrame(i_GameTime);
                 }
 
                 m_TimeTillAnimationEnd -= i_GameTime.ElapsedGameTime;
@@ -77,6 +91,6 @@ namespace Infrastructure.Models.Animations
             }
         }
 
-        protected abstract void doAnimation(GameTime i_GameTime);
+        protected abstract void updateFrame(GameTime i_GameTime);
     }
 }

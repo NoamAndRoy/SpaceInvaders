@@ -43,9 +43,11 @@ namespace SpaceInvaders.Models
                 if ((BulletType == eBulletType.Player && !(i_Collideable is PlayerShip)) ||
                     (BulletType == eBulletType.Enemy && !(i_Collideable is Alien)))
                 {
-                    base.Collided(i_Collideable);
+                    DeleteSprite();
                 }
             }
+
+            base.Collided(i_Collideable);
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using Infrastructure.ManagersInterfaces;
+﻿using System;
+using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Diagnostics;
 
 namespace SpaceInvaders.Models
 {
@@ -113,7 +112,7 @@ namespace SpaceInvaders.Models
             {
                 for (int j = matrixMinInnerY; j <= matrixMaxInnerY && matrixMaxInnerY < Bounds.Height; j++)
                 {
-                    PixelsMatrix[j * Bounds.Width + i].A = 0;
+                    PixelsMatrix[(j * Bounds.Width) + i].A = 0;
                 }
             }
 
@@ -130,7 +129,7 @@ namespace SpaceInvaders.Models
 
                     for (int j = 0; j < Bounds.Height; j++)
                     {
-                        if (PixelsMatrix[j * Bounds.Width + k].A != 0)
+                        if (PixelsMatrix[(j * Bounds.Width) + k].A != 0)
                         {
                             transparentLeftCol = false;
                             break;
@@ -149,7 +148,7 @@ namespace SpaceInvaders.Models
 
                     for (int j = 0; j < Bounds.Height; j++)
                     {
-                        if (PixelsMatrix[j * Bounds.Width + i].A != 0)
+                        if (PixelsMatrix[(j * Bounds.Width) + i].A != 0)
                         {
                             transparentRightCol = false;
                             break;

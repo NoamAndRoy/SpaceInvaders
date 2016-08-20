@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace SpaceInvaders.Models
 {
@@ -38,7 +36,7 @@ namespace SpaceInvaders.Models
 
         private void initializeLinePositions()
         {
-            int x = (Game.GraphicsDevice.Viewport.Width - 7 * (int)r_WallsLine[0].Width) / 2;
+            int x = (Game.GraphicsDevice.Viewport.Width - (7 * (int)r_WallsLine[0].Width)) / 2;
             YPosition = 506;
             for (int i = 0; i < k_Cells; i++)
             {
@@ -66,7 +64,7 @@ namespace SpaceInvaders.Models
         {
             float remainSpace = 0;
             bool found = false;
-            int maxSpace = (Game.GraphicsDevice.Viewport.Width - 8 * (int)r_WallsLine[0].Width) / 2;
+            int maxSpace = (Game.GraphicsDevice.Viewport.Width - (8 * (int)r_WallsLine[0].Width)) / 2;
             
             for (int i = k_Cells - 1; !found && i >= 0; i--)
             {
@@ -84,7 +82,7 @@ namespace SpaceInvaders.Models
         {
             float remainSpace = 0;
             bool found = false;
-            int maxSpace = (Game.GraphicsDevice.Viewport.Width - 8 * (int)r_WallsLine[0].Width) / 2;
+            int maxSpace = (Game.GraphicsDevice.Viewport.Width - (8 * (int)r_WallsLine[0].Width)) / 2;
 
             for (int i = 0; !found && i < k_Cells; i++)
             {

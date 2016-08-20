@@ -23,6 +23,7 @@ namespace Infrastructure.Models
         private SpriteEffects m_SpriteEffects = SpriteEffects.None;
         private SpriteBatch m_SpriteBatch;
         private bool m_UseSharedBatch = true;
+        private bool m_AlphaBlending = false;
 
         public Texture2D Texture
         {
@@ -176,7 +177,11 @@ namespace Infrastructure.Models
             set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
         }
 
-        public bool AlphaBlending { get; set; }
+        public bool AlphaBlending
+        {
+            get { return m_AlphaBlending; }
+            protected set { m_AlphaBlending = value; }
+        }
 
         public Sprite(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)
@@ -232,7 +237,7 @@ namespace Infrastructure.Models
         {
             if(AlphaBlending)
             {
-                m_SpriteBatch.Begin(SpriteSortMode.Deferred,BlendState.NonPremultiplied);
+                m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             }
             else if (!m_UseSharedBatch)
             {

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public class ShrinkAnimation : SpriteAnimation
+    public class ShrinkAnimation : Animation
     {
         private readonly Vector2 r_ShrinkVelocity;
 
@@ -13,7 +13,7 @@ namespace Infrastructure.Models.Animations
             r_ShrinkVelocity = new Vector2((float)(1 / i_AnimationLength.TotalSeconds));
         }
 
-        protected override void doAnimation(GameTime i_GameTime)
+        protected override void updateFrame(GameTime i_GameTime)
         {
             m_Sprite.Scales -= r_ShrinkVelocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
         }

@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Managers;
-using System;
 
 namespace Infrastructure.Models
 {
@@ -65,7 +64,7 @@ namespace Infrastructure.Models
             base.Initialize();
         }
 
-        public virtual bool CheckCollision(ICollideable i_Collideable)
+        public virtual bool CheckRectangleCollision(ICollideable i_Collideable)
         {
             bool areIntersects = false;
 
@@ -81,19 +80,17 @@ namespace Infrastructure.Models
         {
             bool areIntersects = false;
 
-            if (CheckCollision(i_Collideable) &&
+            if (CheckRectangleCollision(i_Collideable) &&
                 PixelsMatricesIntersects(m_PixelsMatrix, Bounds, i_Collideable.PixelsMatrix, i_Collideable.Bounds))
             {
                 areIntersects = true;
             }
 
-            return  areIntersects;
+            return areIntersects;
         }
 
         public virtual void Collided(ICollideable i_Collideable)
         {
-            DeleteSprite();
-
             OnCollide(i_Collideable);
         }
 
@@ -127,8 +124,8 @@ namespace Infrastructure.Models
                     matrixTwoInnerX = i - i_MatrixTwoBounds.X;
                     matrixTwoInnerY = j - i_MatrixTwoBounds.Y;
 
-                    if (i_MatrixOne[matrixOneInnerY * i_MatrixOneBounds.Width + matrixOneInnerX].A != 0 && 
-                        i_MatrixTwo[matrixTwoInnerY * i_MatrixTwoBounds.Width + matrixTwoInnerX].A != 0)
+                    if (i_MatrixOne[(matrixOneInnerY * i_MatrixOneBounds.Width) + matrixOneInnerX].A != 0 && 
+                        i_MatrixTwo[(matrixTwoInnerY * i_MatrixTwoBounds.Width) + matrixTwoInnerX].A != 0)
                     {
                         areIntersects = true;
                     }

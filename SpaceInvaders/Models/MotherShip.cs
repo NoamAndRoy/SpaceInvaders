@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.ManagersInterfaces;
+using Infrastructure.Models.Animations;
 
 namespace SpaceInvaders.Models
 {
@@ -21,6 +22,8 @@ namespace SpaceInvaders.Models
         private int m_SecondsToNextAppear;
         private bool m_IsDead;
 
+        private AnimationRespository m_HitAnimations;
+
         public int Score
         {
             get { return k_Score; }
@@ -31,6 +34,7 @@ namespace SpaceInvaders.Models
         {
             m_RandomAppearTime = new Random();
             m_IsDead = true;
+            AlphaBlending = true;
         }
 
         public override void Initialize()
@@ -41,16 +45,28 @@ namespace SpaceInvaders.Models
             Position = m_StartingPos;
 
             m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
+
+            m_HitAnimations = new AnimationRespository(Game, this, TimeSpan.FromSeconds(2.6));
+            m_HitAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
+            m_HitAnimations.AddAnimation(new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 5));
+            m_HitAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
+
+            m_HitAnimations.Finished += HitAnimations_Finished;
         }
 
         public override void Collided(ICollideable i_Collideable)
         {
+            m_HitAnimations.Start();
+            OnCollide(i_Collideable);
+        }
+
+        private void HitAnimations_Finished(Animation i_Animation)
+        {
+            m_HitAnimations.Reset();
             Position = m_StartingPos;
             m_IsDead = true;
             Velocity = Vector2.Zero;
             m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
-
-            OnCollide(i_Collideable);
         }
 
         public override void Update(GameTime i_GameTime)
