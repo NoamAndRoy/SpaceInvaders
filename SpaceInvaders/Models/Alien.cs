@@ -110,7 +110,7 @@ namespace SpaceInvaders.Models
 
         private void DeathAnimations_Finished(Animation i_Animation)
         {
-            DeleteSprite();
+            DeleteComponent2D();
         }
     }
 }

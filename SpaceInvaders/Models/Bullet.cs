@@ -46,6 +46,7 @@ namespace SpaceInvaders.Models
                     (BulletType == eBulletType.Enemy && (i_Collideable is PlayerShip || i_Collideable is Wall)))
                 {
                     base.Collided(i_Collideable);
+                    DeleteComponent2D();
                 }
             }
             else
@@ -57,12 +58,14 @@ namespace SpaceInvaders.Models
                     if (BulletType == eBulletType.Player && bullet.BulletType == eBulletType.Enemy)
                     {
                         base.Collided(i_Collideable);
+                        DeleteComponent2D();
                     }
                     else if (BulletType == eBulletType.Enemy && bullet.BulletType == eBulletType.Player)
                     {
                         if(s_RandomDestroy.Next(0, 2) == 0)
                         {
                             base.Collided(i_Collideable);
+                            DeleteComponent2D();
                         }
                     }
                 }
