@@ -61,8 +61,8 @@ namespace SpaceInvaders.Models
             int minX, maxX, minY = 0, maxY = 0;
             Bullet bullet = i_Collideable as Bullet;
 
-            minX = Math.Max(bullet.Bounds.X, Bounds.X);
-            maxX = Math.Min(bullet.Bounds.X + bullet.Bounds.Width - 1, Bounds.X + Bounds.Width - 1);
+            minX = Math.Max(i_Collideable.Bounds.X, Bounds.X);
+            maxX = Math.Min(i_Collideable.Bounds.X + i_Collideable.Bounds.Width - 1, Bounds.X + Bounds.Width - 1);
 
             if (bullet != null)
             {

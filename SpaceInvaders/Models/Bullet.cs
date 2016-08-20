@@ -16,6 +16,8 @@ namespace SpaceInvaders.Models
         private const string k_TexturePath = "Bullet";
         private const int k_Speed = 110;
 
+        private static Random s_RandomDestroy = new Random();
+
         public eBulletType BulletType { get; }
 
         public Bullet(Game i_Game, Vector2 i_Direction, eBulletType i_BulletType)
@@ -32,7 +34,7 @@ namespace SpaceInvaders.Models
 
             if (Position.Y + Height < 0 || Position.Y > Game.GraphicsDevice.Viewport.Height)
             {
-                DeleteSprite();
+                DeleteComponent2D();
             }
         }
 
@@ -40,10 +42,29 @@ namespace SpaceInvaders.Models
         {
             if (!(i_Collideable is Bullet))
             {
-                if ((BulletType == eBulletType.Player && !(i_Collideable is PlayerShip)) ||
-                    (BulletType == eBulletType.Enemy && !(i_Collideable is Alien)))
+                if ((BulletType == eBulletType.Player && (i_Collideable is Alien || i_Collideable is MotherShip || i_Collideable is Wall)) ||
+                    (BulletType == eBulletType.Enemy && (i_Collideable is PlayerShip || i_Collideable is Wall)))
                 {
                     base.Collided(i_Collideable);
+                }
+            }
+            else
+            {
+                Bullet bullet = i_Collideable as Bullet;
+
+                if(bullet != null)
+                {
+                    if (BulletType == eBulletType.Player && bullet.BulletType == eBulletType.Enemy)
+                    {
+                        base.Collided(i_Collideable);
+                    }
+                    else if (BulletType == eBulletType.Enemy && bullet.BulletType == eBulletType.Player)
+                    {
+                        if(s_RandomDestroy.Next(0, 2) == 0)
+                        {
+                            base.Collided(i_Collideable);
+                        }
+                    }
                 }
             }
         }

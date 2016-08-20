@@ -45,7 +45,26 @@ namespace SpaceInvaders.Models
 
                 bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y + Height);
                 m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
+
+                bullet.CollidedAction += bulletCollided;
+                bullet.VisibleChanged += bullet_VisibleChanged;
+                m_AmountOfAliveBullets++;
             }
+        }
+
+        private void bullet_VisibleChanged(object i_Sender, EventArgs e)
+        {
+            bulletDead(i_Sender as Bullet);
+        }
+
+        private void bulletCollided(ICollideable i_Source, ICollideable I_Collided)
+        {
+            bulletDead(i_Source as Bullet);
+        }
+        private void bulletDead(Bullet i_Bullet)
+        {
+            i_Bullet.CollidedAction -= bulletCollided;
+            m_AmountOfAliveBullets--;
         }
 
         public override void Collided(ICollideable i_Collideable)

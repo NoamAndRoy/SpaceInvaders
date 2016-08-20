@@ -91,7 +91,7 @@ namespace Infrastructure.Models
 
         public virtual void Collided(ICollideable i_Collideable)
         {
-            DeleteSprite();
+            DeleteComponent2D();
 
             OnCollide(i_Collideable);
         }
