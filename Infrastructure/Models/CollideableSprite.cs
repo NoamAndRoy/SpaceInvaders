@@ -64,7 +64,7 @@ namespace Infrastructure.Models
             base.Initialize();
         }
 
-        public virtual bool CheckCollision(ICollideable i_Collideable)
+        public virtual bool CheckRectangleCollision(ICollideable i_Collideable)
         {
             bool areIntersects = false;
 
@@ -80,7 +80,7 @@ namespace Infrastructure.Models
         {
             bool areIntersects = false;
 
-            if (CheckCollision(i_Collideable) &&
+            if (CheckRectangleCollision(i_Collideable) &&
                 PixelsMatricesIntersects(m_PixelsMatrix, Bounds, i_Collideable.PixelsMatrix, i_Collideable.Bounds))
             {
                 areIntersects = true;
@@ -91,8 +91,6 @@ namespace Infrastructure.Models
 
         public virtual void Collided(ICollideable i_Collideable)
         {
-            DeleteComponent2D();
-
             OnCollide(i_Collideable);
         }
 

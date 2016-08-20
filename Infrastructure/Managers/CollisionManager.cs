@@ -58,10 +58,16 @@ namespace Infrastructure.Managers
             {
                 foreach (ICollideable collideable in r_Collideables)
                 {
-                    if (source != collideable && collideable.Visible && source.CheckCollision(collideable) && 
-                        ((source.PixelBasedCollision && source.CheckPixelBasedCollision(collideable)) || !source.PixelBasedCollision))
+                    if (source != collideable && collideable.Visible)
                     {
-                        collided.Add(collideable);
+                        if (!source.PixelBasedCollision && source.CheckRectangleCollision(collideable))
+                        {
+                            collided.Add(collideable);
+                        }
+                        else if (source.PixelBasedCollision && source.CheckPixelBasedCollision(collideable))
+                        {
+                            collided.Add(collideable);
+                        }
                     }
                 }
 

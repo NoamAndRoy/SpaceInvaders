@@ -17,7 +17,7 @@ namespace Infrastructure.ManagersInterfaces
 
         event CollidedEventHandler CollidedAction;
 
-        bool CheckCollision(ICollideable i_Collideable);
+        bool CheckRectangleCollision(ICollideable i_Collideable);
 
         bool CheckPixelBasedCollision(ICollideable i_Collideable);
 

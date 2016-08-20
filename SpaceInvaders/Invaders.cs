@@ -37,6 +37,7 @@ namespace SpaceInvaders
 
             r_Background = new Background(this);
             r_MotherShip = new MotherShip(this);
+            r_MotherShip.TintColor = Color.Red;
             r_Aliens = new AlienMatrix(this);
             r_Walls = new WallsLine(this);
 
