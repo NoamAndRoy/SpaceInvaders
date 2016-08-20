@@ -38,6 +38,7 @@ namespace SpaceInvaders.Models
         {
             int x = (Game.GraphicsDevice.Viewport.Width - (7 * (int)r_WallsLine[0].Width)) / 2;
             YPosition = 506;
+
             for (int i = 0; i < k_Cells; i++)
             {
                 r_WallsLine[i].Position = new Vector2(x + (i * 2 * r_WallsLine[i].Width), YPosition);

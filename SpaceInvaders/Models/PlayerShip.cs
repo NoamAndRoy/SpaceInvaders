@@ -5,14 +5,13 @@ using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.Models.Animations;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceInvaders.Models
 {
     public class PlayerShip : CollideableSprite
     {
-        public const string k_TexturePath = "Ship01_32x32";
-
-        private const int k_Speed = 130;
+        private const int k_Speed = 140;
         private const int k_Score = -1500;
         private const int k_MaxAmountOfBullets = 2;
 
@@ -23,16 +22,25 @@ namespace SpaceInvaders.Models
         private BlinkAnimation m_HitAnimation;
         private AnimationRespository m_DeathAnimations;
 
+        public bool UseMouse { get; set; }
+
         public int Souls { get; private set; }
 
         public int PlayerScore { get; private set; }
 
-        public PlayerShip(Game i_Game)
-            : base(i_Game, k_TexturePath)
+        public Keys MoveLeftKey { get; set; }
+
+        public Keys MoveRightKey { get; set; }
+
+        public Keys ShootKey { get; set; }
+
+        public PlayerShip(Game i_Game, string i_TexturePath)
+            : base(i_Game, i_TexturePath)
         {
             PlayerScore = 0;
             Souls = 3;
             m_AmountOfAliveBullets = 0;
+
             r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
 
@@ -61,20 +69,25 @@ namespace SpaceInvaders.Models
 
         public override void Update(GameTime i_GameTime)
         {
-            if (r_KeyboardManager.IsKeyHeld(Keys.Right))
+            if (r_KeyboardManager.IsKeyHeld(MoveRightKey))
             {
                 Velocity = k_Speed * new Vector2(1, 0);
             }
-            else if (r_KeyboardManager.IsKeyHeld(Keys.Left))
+            else if (r_KeyboardManager.IsKeyHeld(MoveLeftKey))
             {
                 Velocity = k_Speed * new Vector2(-1, 0);
             }
-            else
+            else if (UseMouse)
             {
                 Velocity = new Vector2(r_MouseManager.DeltaX / (float)i_GameTime.ElapsedGameTime.TotalSeconds, 0);
             }
+            else
+            {
+                Velocity = Vector2.Zero;
+            }
 
-            if (r_KeyboardManager.IsKeyPressed(Keys.Enter) || r_MouseManager.IsKeyPressed(eMouseButton.LeftButton))
+            if (r_KeyboardManager.IsKeyPressed(ShootKey) || 
+                (UseMouse && r_MouseManager.IsKeyPressed(eMouseButton.LeftButton)))
             {
                 if (m_AmountOfAliveBullets < k_MaxAmountOfBullets)
                 {
@@ -100,6 +113,7 @@ namespace SpaceInvaders.Models
         private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
         {
             bulletDead(i_Source as Bullet);
+
             if (i_Collided is IScoreable)
             {
                 PlayerScore += (i_Collided as IScoreable).Score;
