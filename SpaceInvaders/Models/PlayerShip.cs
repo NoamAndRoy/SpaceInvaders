@@ -19,6 +19,7 @@ namespace SpaceInvaders.Models
         private readonly IMouseManager r_MouseManager;
 
         private int m_AmountOfAliveBullets;
+        private bool m_CanShoot = true;
         private BlinkAnimation m_HitAnimation;
         private AnimationRespository m_DeathAnimations;
 
@@ -93,7 +94,7 @@ namespace SpaceInvaders.Models
             if (r_KeyboardManager.IsKeyPressed(ShootKey) || 
                 (UseMouse && r_MouseManager.IsKeyPressed(eMouseButton.LeftButton)))
             {
-                if (m_AmountOfAliveBullets < k_MaxAmountOfBullets)
+                if (m_CanShoot && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
                 {
                     Bullet bullet = new Bullet(Game, new Vector2(0, -1), eBulletType.Player);
 
@@ -155,6 +156,7 @@ namespace SpaceInvaders.Models
             if (Souls == 0)
             {
                 m_DeathAnimations.Start();
+                m_CanShoot = false;
             }
 
             OnCollide(i_Collideable);
