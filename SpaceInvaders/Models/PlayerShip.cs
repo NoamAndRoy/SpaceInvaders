@@ -21,6 +21,7 @@ namespace SpaceInvaders.Models
         private int m_AmountOfAliveBullets;
         private BlinkAnimation m_HitAnimation;
         private AnimationRespository m_DeathAnimations;
+        private Player m_Player;
 
         public bool UseMouse { get; set; }
 
@@ -33,10 +34,6 @@ namespace SpaceInvaders.Models
         public Keys MoveRightKey { get; set; }
 
         public Keys ShootKey { get; set; }
-
-        public Vector2 ScorePosition { get; set; }
-
-        public Vector2 SoulsPostion { get; set; }
 
         public PlayerShip(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)

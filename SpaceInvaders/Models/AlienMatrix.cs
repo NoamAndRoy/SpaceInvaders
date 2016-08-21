@@ -95,7 +95,7 @@ namespace SpaceInvaders.Models
 
         private void initializeBoardPositions()
         {
-            m_JumpDistance = r_AlienMatrix[0, 0].Width / 2;
+            m_JumpDistance = r_AlienMatrix[0, 0].SourceRectangle.Width / 2;
 
             for (int i = 0; i < k_Rows; i++)
             {

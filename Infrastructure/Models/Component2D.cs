@@ -169,7 +169,6 @@ namespace Infrastructure.Models
 
         protected virtual void initBounds()
         {
-            Position = Vector2.Zero;
         }
 
         protected override void LoadContent()

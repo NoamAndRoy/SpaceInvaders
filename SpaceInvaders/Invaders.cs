@@ -35,15 +35,15 @@ namespace SpaceInvaders
             r_KeyBoardManager = new KeyboardManager(this);
             r_MouseManager = new MouseManager(this);
 
-            r_Background = new Background(this);
+            //r_Background = new Background(this);
 
             r_MotherShip = new MotherShip(this);
-            
-            r_Aliens = new AlienMatrix(this);
-            r_Walls = new WallsLine(this);
 
             r_PlayerOne = new PlayerShip(this, "Ship01_32x32");
             r_PlayerTwo = new PlayerShip(this, "Ship02_32x32"); 
+
+            r_Aliens = new AlienMatrix(this);
+            r_Walls = new WallsLine(this);
         }
 
         protected override void Initialize()
@@ -51,12 +51,9 @@ namespace SpaceInvaders
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
 
-            base.Initialize();
-
-            r_Walls.YPosition = r_PlayerOne.TopLeftPosition.Y - Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height;
-
             r_MotherShip.TintColor = Color.Red;
 
+            r_PlayerOne.Initialize();
             r_PlayerOne.Position = new Vector2(0f, GraphicsDevice.Viewport.Height - (r_PlayerOne.Height * 2 * 0.6f));
             r_PlayerOne.UseMouse = true;
             r_PlayerOne.MoveLeftKey = Keys.Left;
@@ -68,10 +65,15 @@ namespace SpaceInvaders
             r_PlayerTwo.MoveLeftKey = Keys.S;
             r_PlayerTwo.MoveRightKey = Keys.F;
             r_PlayerTwo.ShootKey = Keys.E;
+
+            r_Walls.YPosition = r_PlayerOne.TopLeftPosition.Y - (2 * Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height);
+            base.Initialize();
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            m_Graphics.GraphicsDevice.Clear(Color.Black);
+
             m_SpriteBatch.Begin();
             base.Draw(gameTime);
             m_SpriteBatch.End();
