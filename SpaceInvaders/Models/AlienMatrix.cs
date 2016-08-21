@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Infrastructure.Models;
 
 namespace SpaceInvaders.Models
 {
-    public class AlienMatrix : GameComponent
+    public class AlienMatrix : RegisteredComponent
     {
         private const int k_Rows = 5;
         private const int k_Cols = 9;
@@ -40,7 +41,6 @@ namespace SpaceInvaders.Models
 
             r_AlienMatrix = new Alien[k_Rows, k_Cols];
             initializeBoard();
-            i_Game.Components.Add(this);
         }
 
         public override void Initialize()
@@ -114,7 +114,8 @@ namespace SpaceInvaders.Models
             {
                 m_PasssedTime -= m_TimeToJump;
 
-                float distanceToJump = m_JumpRight ? getDistanceToJumpRight() : getDistanceToJumpLeft();
+                float right = getDistanceToJumpRight(), left = getDistanceToJumpLeft();
+                float distanceToJump = m_JumpRight ? right : left;
 
                 if (isAtBottom())
                 {

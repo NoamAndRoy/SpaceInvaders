@@ -17,8 +17,8 @@ namespace Infrastructure.Models
         private float m_AngularVelocity = 0;
         private Color m_TintColor = Color.White;
         private SpriteEffects m_SpriteEffects = SpriteEffects.None;
-        private SpriteBatch m_SpriteBatch;
-        private bool m_UseSharedBatch = true;
+        protected SpriteBatch m_SpriteBatch;
+        protected bool m_UseSharedBatch = true;
 
         public Vector2 Position
         {
@@ -178,7 +178,7 @@ namespace Infrastructure.Models
             {
                 m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
 
-                if (m_SpriteBatch == null)
+                if (m_SpriteBatch == null || AlphaBlending)
                 {
                     m_SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
                     m_UseSharedBatch = false;
@@ -199,27 +199,6 @@ namespace Infrastructure.Models
         }
 
         public override void Draw(GameTime i_GameTime)
-        {
-            if (AlphaBlending)
-            {
-                m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-            }
-            else if (!m_UseSharedBatch)
-            {
-                m_SpriteBatch.Begin();
-            }
-
-            DrawComponent2D(i_GameTime);
-
-            if (!m_UseSharedBatch || AlphaBlending)
-            {
-                m_SpriteBatch.End();
-            }
-
-            base.Draw(i_GameTime);
-        }
-
-        protected virtual void DrawComponent2D(GameTime i_GameTime)
         {
         }
 

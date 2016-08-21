@@ -73,11 +73,13 @@ namespace SpaceInvaders.Models
                 Bullet bullet = new Bullet(Game, new Vector2(0, 1), eBulletType.Enemy);
 
                 bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y + Height);
-                m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
-
                 bullet.CollidedAction += bulletCollided;
                 bullet.VisibleChanged += bullet_VisibleChanged;
+                bullet.TintColor = Color.Blue;
+
                 m_AmountOfAliveBullets++;
+
+                m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
             }
         }
 

@@ -34,6 +34,10 @@ namespace SpaceInvaders.Models
 
         public Keys ShootKey { get; set; }
 
+        public Vector2 ScorePosition { get; set; }
+
+        public Vector2 SoulsPostion { get; set; }
+
         public PlayerShip(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)
         {
@@ -96,6 +100,8 @@ namespace SpaceInvaders.Models
                     bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y - bullet.Height);
                     bullet.CollidedAction += bulletCollided;
                     bullet.VisibleChanged += bullet_VisibleChanged;
+                    bullet.TintColor = Color.Red;
+
                     m_AmountOfAliveBullets++;
                 }
             }
@@ -112,8 +118,6 @@ namespace SpaceInvaders.Models
 
         private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
         {
-            bulletDead(i_Source as Bullet);
-
             if (i_Collided is IScoreable)
             {
                 PlayerScore += (i_Collided as IScoreable).Score;
@@ -154,6 +158,12 @@ namespace SpaceInvaders.Models
             }
 
             OnCollide(i_Collideable);
+        }
+
+        public void DrawPlayerInfo()
+        {
+            Text score = new Text(Game, "Calibri");
+            score.Content = "";
         }
 
         private void HitAnimation_Finished(Animation i_Animation)

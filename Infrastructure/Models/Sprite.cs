@@ -58,11 +58,25 @@ namespace Infrastructure.Models
             base.LoadContent();
         }
 
-        protected override void DrawComponent2D(GameTime i_GameTime)
+        public override void Draw(GameTime i_GameTime)
         {
+            if (AlphaBlending)
+            {
+                m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            }
+            else if (!m_UseSharedBatch)
+            {
+                m_SpriteBatch.Begin();
+            }
+
             SpriteBatch.Draw(m_Texture, this.PositionForDraw, this.SourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
 
-            base.DrawComponent2D(i_GameTime);
+            if (!m_UseSharedBatch || AlphaBlending)
+            {
+                m_SpriteBatch.End();
+            }
+
+            base.Draw(i_GameTime);
         }
     }
 }

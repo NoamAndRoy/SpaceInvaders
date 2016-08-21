@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
 {
-    public abstract class Text : Component2D
+    public class Text : Component2D
     {
         public const string k_FontsPath = "Fonts/";
 
@@ -64,11 +64,21 @@ namespace Infrastructure.Models
             base.LoadContent();
         }
 
-        protected override void DrawComponent2D(GameTime i_GameTime)
+        public override void Draw(GameTime i_GameTime)
         {
+            if (!m_UseSharedBatch)
+            {
+                m_SpriteBatch.Begin();
+            }
+
             SpriteBatch.DrawString(m_Font, m_Content, this.PositionForDraw, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
 
-            base.DrawComponent2D(i_GameTime);
+            if (!m_UseSharedBatch || AlphaBlending)
+            {
+                m_SpriteBatch.End();
+            }
+
+            base.Draw(i_GameTime);
         }
     }
 }
