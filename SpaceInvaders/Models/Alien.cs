@@ -58,16 +58,17 @@ namespace SpaceInvaders.Models
             m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(1.8), 7));
 
             m_DeathAnimations.Finished += DeathAnimations_Finished;
+
+            m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
+            m_AmountOfAliveBullets = 0;
         }
 
         protected override void initBounds()
         {
-            WidthBeforeScale = 32;
-            HeightBeforeScale = 32;
+            Width = 32;
+            Height = 32;
             
             RotationOrigin = new Vector2(WidthBeforeScale / 2, HeightBeforeScale / 2);
-            m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
-            m_AmountOfAliveBullets = 0;
         }
 
         public override void Update(GameTime i_GameTime)

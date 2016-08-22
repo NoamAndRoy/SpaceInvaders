@@ -50,9 +50,7 @@ namespace SpaceInvaders.Models
         }
 
         private void initializeBoard()
-        {
-            Rectangle[,] sourceRectangles = new Rectangle[3, 2];
-
+        { 
             for (int i = 0; i < k_Rows; i++)
             {
                 for (int j = 0; j < k_Cols; j++)
@@ -101,7 +99,7 @@ namespace SpaceInvaders.Models
             {
                 for (int j = 0; j < k_Cols; j++)
                 {
-                    r_AlienMatrix[i, j].Position = new Vector2(0, r_AlienMatrix[i, j].SourceRectangle.Height * 3) + new Vector2(j * (r_AlienMatrix[i, j].SourceRectangle.Width * 1.6f), i * (r_AlienMatrix[i, j].SourceRectangle.Height * 1.6f));
+                    r_AlienMatrix[i, j].Position = new Vector2(0, r_AlienMatrix[i, j].SourceRectangle.Height * 3) + new Vector2((int)Math.Round(j * r_AlienMatrix[i, j].SourceRectangle.Width * 1.6), (int)Math.Round(i * r_AlienMatrix[i, j].SourceRectangle.Height * 1.6f));
                 }
             }
         }
