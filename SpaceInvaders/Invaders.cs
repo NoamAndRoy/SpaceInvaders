@@ -35,7 +35,7 @@ namespace SpaceInvaders
             r_KeyBoardManager = new KeyboardManager(this);
             r_MouseManager = new MouseManager(this);
 
-            //r_Background = new Background(this);
+            r_Background = new Background(this);
 
             r_MotherShip = new MotherShip(this);
 

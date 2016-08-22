@@ -62,6 +62,7 @@ namespace Infrastructure.Models
         {
             if (AlphaBlending)
             {
+                (Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch).End();
                 m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             }
             else if (!m_UseSharedBatch)
@@ -74,6 +75,7 @@ namespace Infrastructure.Models
             if (!m_UseSharedBatch || AlphaBlending)
             {
                 m_SpriteBatch.End();
+                (Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch).Begin();
             }
 
             base.Draw(i_GameTime);
