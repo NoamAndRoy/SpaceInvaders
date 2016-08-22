@@ -17,6 +17,8 @@ namespace SpaceInvaders.Models
         private float m_JumpDistance;
         private int m_AlienCounter;
 
+        public int YBottomPosition { get; set; }
+
         private float TimeToJump
         {
             get { return m_TimeToJump; }

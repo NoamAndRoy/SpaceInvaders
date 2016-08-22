@@ -5,12 +5,6 @@ using Infrastructure.ManagersInterfaces;
 
 namespace SpaceInvaders.Models
 {
-    public enum eBulletType
-    {
-        Player,
-        Enemy
-    }
-
     public class Bullet : CollideableSprite
     {
         private const string k_TexturePath = "Bullet";
@@ -34,7 +28,14 @@ namespace SpaceInvaders.Models
 
             if (Position.Y + Height < 0 || Position.Y > Game.GraphicsDevice.Viewport.Height)
             {
-                DeleteComponent2D();
+                if (BulletType == eBulletType.Enemy)
+                {
+                    DeleteComponent2D();
+                }
+                else
+                {
+                    this.Visible = false;
+                }
             }
         }
 
@@ -46,7 +47,10 @@ namespace SpaceInvaders.Models
                     (BulletType == eBulletType.Enemy && (i_Collideable is PlayerShip || i_Collideable is Wall)))
                 {
                     base.Collided(i_Collideable);
-                    DeleteComponent2D();
+                    if (BulletType == eBulletType.Enemy)
+                    {
+                        DeleteComponent2D();
+                    }
                 }
             }
             else
@@ -58,7 +62,7 @@ namespace SpaceInvaders.Models
                     if (BulletType == eBulletType.Player && bullet.BulletType == eBulletType.Enemy)
                     {
                         base.Collided(i_Collideable);
-                        DeleteComponent2D();
+                        //DeleteComponent2D();
                     }
                     else if (BulletType == eBulletType.Enemy && bullet.BulletType == eBulletType.Player)
                     {

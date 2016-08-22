@@ -23,6 +23,7 @@ namespace SpaceInvaders.Models
         private BlinkAnimation m_HitAnimation;
         private AnimationRespository m_DeathAnimations;
         private Player m_Player;
+        private Bullet[] m_BulletsArray;
 
         public bool UseMouse { get; set; }
 
@@ -47,6 +48,17 @@ namespace SpaceInvaders.Models
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
 
             AlphaBlending = true;
+
+            m_BulletsArray = new Bullet[k_MaxAmountOfBullets];
+
+            for (int i = 0; i < k_MaxAmountOfBullets; i++)
+            {
+                m_BulletsArray[i] = new Bullet(Game, Vector2.Zero, eBulletType.Player);
+                m_BulletsArray[i].Visible = false;
+                m_BulletsArray[i].CollidedAction += bulletCollided;
+                m_BulletsArray[i].VisibleChanged += bullet_VisibleChanged;
+                m_BulletsArray[i].TintColor = Color.Red;
+            }
         }
 
         private void initializeAnimations()
@@ -93,12 +105,9 @@ namespace SpaceInvaders.Models
             {
                 if (m_CanShoot && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
                 {
-                    Bullet bullet = new Bullet(Game, new Vector2(0, -1), eBulletType.Player);
-
-                    bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y - bullet.Height);
-                    bullet.CollidedAction += bulletCollided;
-                    bullet.VisibleChanged += bullet_VisibleChanged;
-                    bullet.TintColor = Color.Red;
+                    m_BulletsArray[m_AmountOfAliveBullets].Velocity = new Vector2(0, -1);
+                    m_BulletsArray[m_AmountOfAliveBullets].Position = new Vector2(Position.X + (Width / 2) - (m_BulletsArray[m_AmountOfAliveBullets].Width / 2), Position.Y - m_BulletsArray[m_AmountOfAliveBullets].Height);
+                    m_BulletsArray[m_AmountOfAliveBullets].Visible = true;
 
                     m_AmountOfAliveBullets++;
                 }
@@ -117,6 +126,7 @@ namespace SpaceInvaders.Models
         private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
         {
             IScoreable scoreable = i_Collided as IScoreable;
+
             if (scoreable != null && scoreable.IsScoreAvailable)
             {
                 PlayerScore += scoreable.Score;
@@ -126,7 +136,6 @@ namespace SpaceInvaders.Models
 
         private void bulletDead(Bullet i_Bullet)
         {
-            i_Bullet.CollidedAction -= bulletCollided;
             m_AmountOfAliveBullets--;
         }
 
