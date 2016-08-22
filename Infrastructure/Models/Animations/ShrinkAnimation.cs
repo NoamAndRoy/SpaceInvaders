@@ -20,7 +20,7 @@ namespace Infrastructure.Models.Animations
 
         public override void RevertToOriginalStart()
         {
-            m_Sprite.Scales = r_OriginalSpriteState.Scales;
+            m_Sprite.Scales = r_OriginalSprite.Scales;
         }
     }
 }

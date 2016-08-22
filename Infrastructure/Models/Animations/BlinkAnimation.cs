@@ -40,7 +40,7 @@ namespace Infrastructure.Models.Animations
 
         public override void RevertToOriginalStart()
         {
-            m_Sprite.Visible = r_OriginalSpriteState.Visible;
+            m_Sprite.Visible = r_OriginalSprite.Visible;
         }
     }
 }

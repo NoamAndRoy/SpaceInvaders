@@ -116,9 +116,11 @@ namespace SpaceInvaders.Models
 
         private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
         {
-            if (i_Collided is IScoreable)
+            IScoreable scoreable = i_Collided as IScoreable;
+            if (scoreable != null && scoreable.IsScoreAvailable)
             {
-                PlayerScore += (i_Collided as IScoreable).Score;
+                PlayerScore += scoreable.Score;
+                Game.Window.Title = PlayerScore.ToString();
             }
         }
 

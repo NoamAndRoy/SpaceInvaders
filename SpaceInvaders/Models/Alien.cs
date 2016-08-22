@@ -28,9 +28,12 @@ namespace SpaceInvaders.Models
         {
             get
             {
+                IsScoreAvailable = false;
                 return r_Score;
             }
         }
+
+        public bool IsScoreAvailable { get; set; }
 
         private int m_SecondsToNextShoot;
 
@@ -41,6 +44,7 @@ namespace SpaceInvaders.Models
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
             CelAnimation = new CelAnimation(Game, this, 2, i_SourceRectangles);
             CelAnimation.Enabled = true;
+            IsScoreAvailable = true;
 
             SourceRectangle = i_SourceRectangles[0];
         }
