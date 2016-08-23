@@ -19,6 +19,8 @@ namespace Infrastructure.Models
             get { return r_AssetName; }
         }
 
+        public new BaseGame Game { get { return (BaseGame)base.Game; } }
+
         protected virtual void OnPositionChanged()
         {
             if (PositionChanged != null)
