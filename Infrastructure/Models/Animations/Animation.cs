@@ -7,7 +7,7 @@ namespace Infrastructure.Models.Animations
 
     public abstract class Animation : RegisteredComponent
     {
-        protected readonly Sprite r_OriginalSpriteState;
+        protected readonly Sprite r_OriginalSprite;
 
         protected Sprite m_Sprite;
         private TimeSpan m_TimeTillAnimationEnd;
@@ -48,7 +48,7 @@ namespace Infrastructure.Models.Animations
             : base(i_Game)
         {
             m_Sprite = i_Sprite;
-            r_OriginalSpriteState = m_Sprite.ShallowClone();
+            r_OriginalSprite = m_Sprite.ShallowClone();
             m_AnimationLength = i_AnimationLength;
             m_TimeTillAnimationEnd = m_AnimationLength;
             Enabled = false;

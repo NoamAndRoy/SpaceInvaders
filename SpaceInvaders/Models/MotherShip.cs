@@ -26,8 +26,14 @@ namespace SpaceInvaders.Models
 
         public int Score
         {
-            get { return k_Score; }
+            get
+            {
+                IsScoreAvailable = false;
+                return k_Score;
+            }
         }
+
+        public bool IsScoreAvailable { get; private set; }
 
         public MotherShip(Game i_Game)
             : base(i_Game, k_TexturePath)

@@ -7,13 +7,11 @@ namespace Infrastructure.Models
     public abstract class LoadableDrawableComponent : DrawableGameComponent
     {
         protected readonly string r_AssetName;
-
         public event EventHandler<EventArgs> PositionChanged;
 
         public event EventHandler<EventArgs> SizeChanged;
 
         public event EventHandler<EventArgs> RotationChanged;
-
         public string AssetName
         {
             get { return r_AssetName; }
@@ -48,7 +46,7 @@ namespace Infrastructure.Models
         public LoadableDrawableComponent(Game i_Game, string i_AssetName)
             : base(i_Game)
         {
-            r_AssetName = i_AssetName;
+            this.r_AssetName = i_AssetName;
             this.UpdateOrder = int.MaxValue;
             this.DrawOrder = int.MaxValue;
 

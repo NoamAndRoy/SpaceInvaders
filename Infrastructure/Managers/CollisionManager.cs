@@ -60,11 +60,11 @@ namespace Infrastructure.Managers
                 {
                     if (source != collideable && collideable.Visible)
                     {
-                        if (!source.PixelBasedCollision && source.CheckRectangleCollision(collideable))
+                        if ((!source.PixelBasedCollision || !collideable.PixelBasedCollision) && source.CheckRectangleCollision(collideable))
                         {
                             collided.Add(collideable);
                         }
-                        else if (source.PixelBasedCollision && source.CheckPixelBasedCollision(collideable))
+                        else if (source.PixelBasedCollision && collideable.PixelBasedCollision && source.CheckPixelBasedCollision(collideable))
                         {
                             collided.Add(collideable);
                         }

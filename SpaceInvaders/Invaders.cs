@@ -33,8 +33,12 @@ namespace SpaceInvaders
 
         protected override void Initialize()
         {
-            base.Initialize();
+            m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
+            this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
 
+            r_MotherShip.TintColor = Color.Red;
+
+            r_PlayerOne.Initialize();
             r_PlayerOne.Position = new Vector2(0f, GraphicsDevice.Viewport.Height - (r_PlayerOne.Height * 2 * 0.6f));
             r_PlayerOne.UseMouse = true;
             r_PlayerOne.MoveLeftKey = Keys.Left;
@@ -50,9 +54,12 @@ namespace SpaceInvaders
 
         protected override void LoadContent()
         {
-            base.LoadContent();
+            m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
+            this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
 
             r_Walls.YPosition = r_PlayerOne.TopLeftPosition.Y - Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height;
+
+            base.LoadContent();
         }
 
 

@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="Models\Alien.cs" />
     <Compile Include="Models\AlienMatrix.cs" />
+    <Compile Include="Models\eBulletType.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\Background.cs" />
     <Compile Include="Models\Bullet.cs" />

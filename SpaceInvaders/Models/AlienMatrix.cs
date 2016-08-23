@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Infrastructure.Models;
 
 namespace SpaceInvaders.Models
 {
-    public class AlienMatrix : GameComponent
+    public class AlienMatrix : RegisteredComponent
     {
         private const int k_Rows = 5;
         private const int k_Cols = 9;
@@ -15,6 +16,8 @@ namespace SpaceInvaders.Models
         private bool m_JumpRight;
         private float m_JumpDistance;
         private int m_AlienCounter;
+
+        public int YBottomPosition { get; set; }
 
         private float TimeToJump
         {
@@ -40,7 +43,6 @@ namespace SpaceInvaders.Models
 
             r_AlienMatrix = new Alien[k_Rows, k_Cols];
             initializeBoard();
-            i_Game.Components.Add(this);
         }
 
         public override void Initialize()
@@ -50,9 +52,7 @@ namespace SpaceInvaders.Models
         }
 
         private void initializeBoard()
-        {
-            Rectangle[,] sourceRectangles = new Rectangle[3, 2];
-
+        { 
             for (int i = 0; i < k_Rows; i++)
             {
                 for (int j = 0; j < k_Cols; j++)
@@ -95,13 +95,13 @@ namespace SpaceInvaders.Models
 
         private void initializeBoardPositions()
         {
-            m_JumpDistance = r_AlienMatrix[0, 0].Width / 2;
+            m_JumpDistance = r_AlienMatrix[0, 0].SourceRectangle.Width / 2;
 
             for (int i = 0; i < k_Rows; i++)
             {
                 for (int j = 0; j < k_Cols; j++)
                 {
-                    r_AlienMatrix[i, j].Position = new Vector2(0, r_AlienMatrix[i, j].SourceRectangle.Height * 3) + new Vector2(j * (r_AlienMatrix[i, j].SourceRectangle.Width * 1.6f), i * (r_AlienMatrix[i, j].SourceRectangle.Height * 1.6f));
+                    r_AlienMatrix[i, j].Position = new Vector2(0, r_AlienMatrix[i, j].SourceRectangle.Height * 3) + new Vector2((int)Math.Round(j * r_AlienMatrix[i, j].SourceRectangle.Width * 1.6), (int)Math.Round(i * r_AlienMatrix[i, j].SourceRectangle.Height * 1.6f));
                 }
             }
         }
@@ -114,7 +114,8 @@ namespace SpaceInvaders.Models
             {
                 m_PasssedTime -= m_TimeToJump;
 
-                float distanceToJump = m_JumpRight ? getDistanceToJumpRight() : getDistanceToJumpLeft();
+                float right = getDistanceToJumpRight(), left = getDistanceToJumpLeft();
+                float distanceToJump = m_JumpRight ? right : left;
 
                 if (isAtBottom())
                 {

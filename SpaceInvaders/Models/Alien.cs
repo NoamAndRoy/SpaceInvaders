@@ -28,9 +28,12 @@ namespace SpaceInvaders.Models
         {
             get
             {
+                IsScoreAvailable = false;
                 return r_Score;
             }
         }
+
+        public bool IsScoreAvailable { get; set; }
 
         private int m_SecondsToNextShoot;
 
@@ -41,6 +44,7 @@ namespace SpaceInvaders.Models
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
             CelAnimation = new CelAnimation(Game, this, 2, i_SourceRectangles);
             CelAnimation.Enabled = true;
+            IsScoreAvailable = true;
 
             SourceRectangle = i_SourceRectangles[0];
         }
@@ -54,16 +58,17 @@ namespace SpaceInvaders.Models
             m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(1.8), 7));
 
             m_DeathAnimations.Finished += DeathAnimations_Finished;
+
+            m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
+            m_AmountOfAliveBullets = 0;
         }
 
         protected override void initBounds()
         {
-            WidthBeforeScale = 32;
-            HeightBeforeScale = 32;
+            Width = 32;
+            Height = 32;
             
             RotationOrigin = new Vector2(WidthBeforeScale / 2, HeightBeforeScale / 2);
-            m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
-            m_AmountOfAliveBullets = 0;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -73,11 +78,13 @@ namespace SpaceInvaders.Models
                 Bullet bullet = new Bullet(Game, new Vector2(0, 1), eBulletType.Enemy);
 
                 bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y + Height);
-                m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
-
                 bullet.CollidedAction += bulletCollided;
                 bullet.VisibleChanged += bullet_VisibleChanged;
+                bullet.TintColor = Color.Blue;
+
                 m_AmountOfAliveBullets++;
+
+                m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
             }
         }
 

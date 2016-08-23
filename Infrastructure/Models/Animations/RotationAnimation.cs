@@ -20,7 +20,7 @@ namespace Infrastructure.Models.Animations
 
         public override void RevertToOriginalStart()
         {
-            m_Sprite.Rotation = r_OriginalSpriteState.Rotation;
+            m_Sprite.Rotation = r_OriginalSprite.Rotation;
         }
     }
 }

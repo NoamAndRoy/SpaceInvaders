@@ -29,7 +29,7 @@ namespace Infrastructure.Models.Animations
 
         public override void RevertToOriginalStart()
         {
-            m_Sprite.Opacity = r_OriginalSpriteState.Opacity;
+            m_Sprite.Opacity = r_OriginalSprite.Opacity;
         }
     }
 }

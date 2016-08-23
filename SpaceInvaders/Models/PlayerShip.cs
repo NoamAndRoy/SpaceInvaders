@@ -19,8 +19,11 @@ namespace SpaceInvaders.Models
         private readonly IMouseManager r_MouseManager;
 
         private int m_AmountOfAliveBullets;
+        private bool m_CanShoot = true;
         private BlinkAnimation m_HitAnimation;
         private AnimationRespository m_DeathAnimations;
+        private Player m_Player;
+        private Bullet[] m_BulletsArray;
 
         public bool UseMouse { get; set; }
 
@@ -45,6 +48,17 @@ namespace SpaceInvaders.Models
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
 
             AlphaBlending = true;
+
+            m_BulletsArray = new Bullet[k_MaxAmountOfBullets];
+
+            for (int i = 0; i < k_MaxAmountOfBullets; i++)
+            {
+                m_BulletsArray[i] = new Bullet(Game, Vector2.Zero, eBulletType.Player);
+                m_BulletsArray[i].Visible = false;
+                m_BulletsArray[i].CollidedAction += bulletCollided;
+                m_BulletsArray[i].VisibleChanged += bullet_VisibleChanged;
+                m_BulletsArray[i].TintColor = Color.Red;
+            }
         }
 
         private void initializeAnimations()
@@ -89,13 +103,12 @@ namespace SpaceInvaders.Models
             if (r_KeyboardManager.IsKeyPressed(ShootKey) || 
                 (UseMouse && r_MouseManager.IsKeyPressed(eMouseButton.LeftButton)))
             {
-                if (m_AmountOfAliveBullets < k_MaxAmountOfBullets)
+                if (m_CanShoot && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
                 {
-                    Bullet bullet = new Bullet(Game, new Vector2(0, -1), eBulletType.Player);
+                    m_BulletsArray[m_AmountOfAliveBullets].Velocity = new Vector2(0, -1);
+                    m_BulletsArray[m_AmountOfAliveBullets].Position = new Vector2(Position.X + (Width / 2) - (m_BulletsArray[m_AmountOfAliveBullets].Width / 2), Position.Y - m_BulletsArray[m_AmountOfAliveBullets].Height);
+                    m_BulletsArray[m_AmountOfAliveBullets].Visible = true;
 
-                    bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y - bullet.Height);
-                    bullet.CollidedAction += bulletCollided;
-                    bullet.VisibleChanged += bullet_VisibleChanged;
                     m_AmountOfAliveBullets++;
                 }
             }
@@ -112,17 +125,17 @@ namespace SpaceInvaders.Models
 
         private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
         {
-            bulletDead(i_Source as Bullet);
+            IScoreable scoreable = i_Collided as IScoreable;
 
-            if (i_Collided is IScoreable)
+            if (scoreable != null && scoreable.IsScoreAvailable)
             {
-                PlayerScore += (i_Collided as IScoreable).Score;
+                PlayerScore += scoreable.Score;
+                Game.Window.Title = PlayerScore.ToString();
             }
         }
 
         private void bulletDead(Bullet i_Bullet)
         {
-            i_Bullet.CollidedAction -= bulletCollided;
             m_AmountOfAliveBullets--;
         }
 
@@ -151,9 +164,16 @@ namespace SpaceInvaders.Models
             if (Souls == 0)
             {
                 m_DeathAnimations.Start();
+                m_CanShoot = false;
             }
 
             OnCollide(i_Collideable);
+        }
+
+        public void DrawPlayerInfo()
+        {
+            Text score = new Text(Game, "Calibri");
+            score.Content = "";
         }
 
         private void HitAnimation_Finished(Animation i_Animation)

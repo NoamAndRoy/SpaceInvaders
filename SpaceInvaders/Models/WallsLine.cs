@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.Models;
+using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.Models
 {
-    public class WallsLine : GameComponent
+    public class WallsLine : RegisteredComponent
     {
         private const int k_Cells = 4;
 
@@ -12,17 +13,19 @@ namespace SpaceInvaders.Models
 
         public float YPosition { get; set; }
 
-        public WallsLine(Game i_Game) : base(i_Game)
+        public WallsLine(Game i_Game) 
+            : base(i_Game)
         {
             r_WallsLine = new Wall[k_Cells];
             initializeLine();
-            i_Game.Components.Add(this);
         }
 
         public override void Initialize()
         {
             base.Initialize();
+
             initializeLinePositions();
+
             m_JumpRight = true;
         }
 
@@ -36,12 +39,16 @@ namespace SpaceInvaders.Models
 
         private void initializeLinePositions()
         {
+            for (int i = 0; i < k_Cells; i++)
+            {
+                r_WallsLine[i].Initialize();
+            }
+
             int x = (Game.GraphicsDevice.Viewport.Width - (7 * (int)r_WallsLine[0].Width)) / 2;
-            YPosition = 506;
 
             for (int i = 0; i < k_Cells; i++)
             {
-                r_WallsLine[i].Position = new Vector2(x + (i * 2 * r_WallsLine[i].Width), YPosition);
+                r_WallsLine[i].Position = new Vector2( x + (i * 2 * r_WallsLine[i].SourceRectangle.Width), YPosition);
                 r_WallsLine[i].SpeedFactor = new Vector2(1, 0);
             }
         }
@@ -57,7 +64,7 @@ namespace SpaceInvaders.Models
             {
                 r_WallsLine[i].SpeedFactor *= new Vector2(m_JumpRight ? 1 : -1, 0);
             }
-
+            
             base.Update(i_GameTime);
         }
 

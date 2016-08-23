@@ -76,6 +76,9 @@ namespace SpaceInvaders.Models
                     minY = Math.Max(bullet.Bounds.Y + bullet.Bounds.Height - 2, Bounds.Y);
                     maxY = Math.Min(minY + (int)(bullet.Bounds.Height * 0.4), Bounds.Y + Bounds.Height);
                 }
+
+                ClearArea(minX, maxX, minY, maxY);
+                OnCollide(i_Collideable);
             }
             else
             {
@@ -85,11 +88,11 @@ namespace SpaceInvaders.Models
                 {
                     minY = Math.Max(Bounds.Y, alien.Bounds.Y);
                     maxY = Math.Min(Bounds.Y + Bounds.Height - 1, alien.Bounds.Y + alien.Bounds.Height - 1);
+
+                    ClearArea(minX, maxX, minY, maxY);
+                    OnCollide(i_Collideable);
                 }
             }
-
-            ClearArea(minX, maxX, minY, maxY);
-            OnCollide(i_Collideable);
         }
 
         private void ClearArea(int minX, int maxX, int minY, int maxY)
