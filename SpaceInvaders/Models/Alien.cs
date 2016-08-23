@@ -97,6 +97,7 @@ namespace SpaceInvaders.Models
         {
             bulletDead(i_Source as Bullet);
         }
+
         private void bulletDead(Bullet i_Bullet)
         {
             i_Bullet.CollidedAction -= bulletCollided;

@@ -3,6 +3,7 @@
     public interface IScoreable
     {
         int Score { get; }
-        bool IsScoreAvailable { get;}
+
+        bool IsScoreAvailable { get; }
     }
 }

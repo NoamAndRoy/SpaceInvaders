@@ -173,7 +173,7 @@ namespace SpaceInvaders.Models
         public void DrawPlayerInfo()
         {
             Text score = new Text(Game, "Calibri");
-            score.Content = "";
+            score.Content = string.Empty;
         }
 
         private void HitAnimation_Finished(Animation i_Animation)
@@ -184,7 +184,7 @@ namespace SpaceInvaders.Models
 
         private void DeathAnimations_Finished(Animation i_Animation)
         {
-            //Game.EndGame();
+            Game.EndGame();
         }
     }
 }

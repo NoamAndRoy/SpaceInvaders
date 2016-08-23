@@ -7,17 +7,22 @@ namespace Infrastructure.Models
     public abstract class LoadableDrawableComponent : DrawableGameComponent
     {
         protected readonly string r_AssetName;
+
         public event EventHandler<EventArgs> PositionChanged;
 
         public event EventHandler<EventArgs> SizeChanged;
 
         public event EventHandler<EventArgs> RotationChanged;
+
         public string AssetName
         {
             get { return r_AssetName; }
         }
 
-        public new BaseGame Game { get { return (BaseGame)base.Game; } }
+        public new BaseGame Game
+        {
+            get { return (BaseGame)base.Game; }
+        }
 
         protected virtual void OnPositionChanged()
         {

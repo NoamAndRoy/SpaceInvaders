@@ -23,14 +23,13 @@ namespace Infrastructure.Models
             r_MouseManager = new MouseManager(this);
         }
 
-
-        protected override void LoadContent()
+        protected override void Initialize()
         {
             m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
-            base.LoadContent();
-        }
 
+            base.Initialize();
+        }
 
         protected override void Draw(GameTime gameTime)
         {

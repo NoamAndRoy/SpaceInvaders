@@ -4,7 +4,10 @@ namespace Infrastructure.Models
 {
     public class RegisteredComponent : GameComponent
     {
-        public new BaseGame Game { get { return (BaseGame)base.Game; } }
+        public new BaseGame Game
+        {
+            get { return (BaseGame)base.Game; }
+        }
 
         public RegisteredComponent(Game i_Game)
             : base(i_Game)
