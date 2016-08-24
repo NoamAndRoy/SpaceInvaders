@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Models;
-using SpaceInvaders.Interfaces;
-using Infrastructure.Models.Animations;
 
 namespace SpaceInvaders.Models
 {
     public class Shooter
     {
         public event CollidedEventHandler BulletCollided;
-
-        public event EventHandler<EventArgs> BulletVisibleChanged;
 
         private readonly int r_MaxAmountOfBullets;
 
@@ -93,24 +87,16 @@ namespace SpaceInvaders.Models
             }
         }
 
-        private void OnBulletVisibleChanged(object i_Sender, EventArgs i_EventArgs)
+        private void Bullet_CollidedAction(ICollideable i_Source, ICollideable i_Collided)
         {
-            if(BulletVisibleChanged != null)
-            {
-                BulletVisibleChanged.Invoke(i_Sender, i_EventArgs);
-            }
+            OnBulletCollide(i_Source, i_Collided);
         }
 
-        private void Bullet_CollidedAction(ICollideable i_Source, ICollideable I_Collided)
-        {
-            OnBulletCollide(i_Source, I_Collided);
-        }
-
-        private void OnBulletCollide(ICollideable i_Source, ICollideable I_Collided)
+        private void OnBulletCollide(ICollideable i_Source, ICollideable i_Collided)
         {
             if (BulletCollided != null)
             {
-                BulletCollided.Invoke(i_Source, I_Collided);
+                BulletCollided.Invoke(i_Source, i_Collided);
             }
         }
 
