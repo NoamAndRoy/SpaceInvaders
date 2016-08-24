@@ -5,7 +5,7 @@ using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.Models.Animations;
-using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace SpaceInvaders.Models
 {
@@ -23,7 +23,7 @@ namespace SpaceInvaders.Models
         private BlinkAnimation m_HitAnimation;
         private AnimationRepository m_DeathAnimations;
         private Player m_Player;
-        private Bullet[] m_BulletsArray;
+        private HashSet<Bullet> m_Bullets;
 
         public bool UseMouse { get; set; }
 
@@ -49,15 +49,17 @@ namespace SpaceInvaders.Models
 
             AlphaBlending = true;
 
-            m_BulletsArray = new Bullet[k_MaxAmountOfBullets];
+            m_Bullets = new HashSet<Bullet>();
 
             for (int i = 0; i < k_MaxAmountOfBullets; i++)
             {
-                m_BulletsArray[i] = new Bullet(Game, Vector2.Zero, eBulletType.Player);
-                m_BulletsArray[i].Visible = false;
-                m_BulletsArray[i].CollidedAction += bulletCollided;
-                m_BulletsArray[i].VisibleChanged += bullet_VisibleChanged;
-                m_BulletsArray[i].TintColor = Color.Red;
+                Bullet bullet = new Bullet(Game, new Vector2(0, -1), eBulletType.Player);
+                bullet.Visible = false;
+                bullet.CollidedAction += bulletCollided;
+                bullet.VisibleChanged += bullet_VisibleChanged;
+                bullet.TintColor = Color.Red;
+
+                m_Bullets.Add(bullet);
             }
         }
 
@@ -105,9 +107,9 @@ namespace SpaceInvaders.Models
             {
                 if (m_CanShoot && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
                 {
-                    m_BulletsArray[m_AmountOfAliveBullets].Velocity = new Vector2(0, -1);
-                    m_BulletsArray[m_AmountOfAliveBullets].Position = new Vector2(Position.X + (Width / 2) - (m_BulletsArray[m_AmountOfAliveBullets].Width / 2), Position.Y - m_BulletsArray[m_AmountOfAliveBullets].Height);
-                    m_BulletsArray[m_AmountOfAliveBullets].Visible = true;
+                    m_Bullets.//[m_AmountOfAliveBullets].Position = new Vector2(Position.X + (Width / 2) - (m_BulletsArray[m_AmountOfAliveBullets].Width / 2), Position.Y - m_BulletsArray[m_AmountOfAliveBullets].Height);
+                    m_Bullets[m_AmountOfAliveBullets].Visible = true;
+                    m_Bullets[m_AmountOfAliveBullets].Enabled = true;
 
                     m_AmountOfAliveBullets++;
                 }
@@ -120,7 +122,14 @@ namespace SpaceInvaders.Models
 
         private void bullet_VisibleChanged(object i_Sender, EventArgs i_EventArgs)
         {
-            bulletDead(i_Sender as Bullet);
+            Bullet bullet = i_Sender as Bullet;
+            if(bullet != null)
+            {
+                if(!bullet.Visible)
+                {
+                    bulletDead(i_Sender as Bullet);
+                }
+            }
         }
 
         private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
