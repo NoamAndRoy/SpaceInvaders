@@ -115,6 +115,7 @@ namespace SpaceInvaders
             {
                 message = string.Format(
 @"The winner is {0}!
+
 {1} Score: {3}
 {2} Score: {4}",
 r_PlayerOne.PlayerScore > r_PlayerTwo.PlayerScore ? r_PlayerOne.PlayerName : r_PlayerTwo.PlayerName,
