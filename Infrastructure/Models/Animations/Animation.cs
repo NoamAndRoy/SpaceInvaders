@@ -54,10 +54,20 @@ namespace Infrastructure.Models.Animations
             Enabled = false;
         }
 
+        public virtual void Start()
+        {
+            Enabled = true;
+            IsFinished = false;
+        }
+
+        public virtual void Pause()
+        {
+            Enabled = false;
+        }
+
         public virtual void Reset()
         {
             m_TimeTillAnimationEnd = m_AnimationLength;
-            IsFinished = false;
             Enabled = false;
             RevertToOriginalStart();
         }
@@ -68,7 +78,8 @@ namespace Infrastructure.Models.Animations
         {
             if (!IsFinished)
             {
-                if (m_TimeTillAnimationEnd.TotalSeconds < 0 && m_AnimationLength != TimeSpan.Zero)
+                m_TimeTillAnimationEnd -= i_GameTime.ElapsedGameTime;
+                if (m_TimeTillAnimationEnd.TotalSeconds <= 0 && m_AnimationLength != TimeSpan.Zero)
                 {
                     IsFinished = true;
                 }
@@ -76,8 +87,6 @@ namespace Infrastructure.Models.Animations
                 {
                     updateFrame(i_GameTime);
                 }
-
-                m_TimeTillAnimationEnd -= i_GameTime.ElapsedGameTime;
             }
         }
 

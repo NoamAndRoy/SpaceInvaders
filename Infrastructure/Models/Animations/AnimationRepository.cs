@@ -37,22 +37,24 @@ namespace Infrastructure.Models.Animations
             }
         }
 
-        public void Start()
+        public override void Start()
         {
-            Enabled = true;
             foreach(Animation animation in r_Animations.Values)
             {
-                animation.Enabled = true;
+                animation.Start();
             }
+
+            base.Start();
         }
 
-        public void Stop()
+        public override void Pause()
         {
-            Enabled = false;
             foreach (Animation animation in r_Animations.Values)
             {
-                animation.Enabled = false;
+                animation.Pause();
             }
+
+            base.Pause();
         }
 
         public override void Reset()

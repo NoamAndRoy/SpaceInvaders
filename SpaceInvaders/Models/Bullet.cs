@@ -59,7 +59,7 @@ namespace SpaceInvaders.Models
         {
             if (!(i_Collideable is Bullet))
             {
-                if (BulletType == eBulletType.Enemy && !(i_Collideable is Alien))
+                if (!(BulletType == eBulletType.Enemy && i_Collideable is Alien))
                 {
                     this.Visible = false;
                     this.Enabled = false;

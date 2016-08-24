@@ -6,7 +6,6 @@ namespace Infrastructure.Models.Animations
     public class FadeOutAnimation : Animation
     {
         private readonly float r_AmountOfFadeOutInASecond;
-        private float m_Opacity = 1;
 
         public FadeOutAnimation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
             : base(i_Game, i_Sprite, i_AnimationLength)
@@ -16,15 +15,7 @@ namespace Infrastructure.Models.Animations
 
         protected override void updateFrame(GameTime i_GameTime)
         {
-            m_Opacity -= r_AmountOfFadeOutInASecond * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            if (m_Opacity > 0)
-            {
-                m_Sprite.Opacity = m_Opacity;
-            }
-            else
-            {
-                m_Sprite.Opacity = 0;
-            }           
+            m_Sprite.Opacity = Math.Max(0, m_Sprite.Opacity - (r_AmountOfFadeOutInASecond * (float)i_GameTime.ElapsedGameTime.TotalSeconds));
         }
 
         public override void RevertToOriginalStart()

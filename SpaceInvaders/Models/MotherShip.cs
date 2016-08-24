@@ -41,6 +41,7 @@ namespace SpaceInvaders.Models
             m_RandomAppearTime = new Random();
             m_IsDead = true;
             AlphaBlending = true;
+            IsScoreAvailable = true;
         }
 
         public override void Initialize()
@@ -64,17 +65,12 @@ namespace SpaceInvaders.Models
         {
             m_HitAnimations.Start();
             OnCollide(i_Collideable);
-
-            IsScoreAvailable = false;
         }
 
         private void HitAnimations_Finished(Animation i_Animation)
         {
             m_HitAnimations.Reset();
-            Position = m_StartingPos;
-            m_IsDead = true;
-            Velocity = Vector2.Zero;
-            m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
+            resetMotherShip();
         }
 
         public override void Update(GameTime i_GameTime)
@@ -84,16 +80,22 @@ namespace SpaceInvaders.Models
                 m_IsDead = false;
                 Velocity = new Vector2(k_Speed, 0);
             }
-
+            
             if (!m_IsDead && Position.X >= Game.GraphicsDevice.Viewport.Width)
             {
-                m_IsDead = true;
-                Position = m_StartingPos;
-                Velocity = Vector2.Zero;
-                m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
+                resetMotherShip();
             }
 
             base.Update(i_GameTime);
+        }
+
+        private void resetMotherShip()
+        {
+            Position = m_StartingPos;
+            m_IsDead = true;
+            Velocity = Vector2.Zero;
+            m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
+            IsScoreAvailable = true;
         }
     }
 }

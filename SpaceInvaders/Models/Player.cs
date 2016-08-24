@@ -113,11 +113,7 @@ namespace SpaceInvaders.Models
 
                     if (Souls > 1)
                     {
-                        PlayerShip.HitAnimation.Enabled = true;
-                    }
-                    else
-                    {
-                        PlayerShip.DeathAnimations.Start();
+                        PlayerShip.HitAnimation.Start();
                     }
                 }
             }
