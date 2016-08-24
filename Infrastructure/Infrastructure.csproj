@@ -48,14 +48,13 @@
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MouseManager.cs" />
-    <Compile Include="Models\Animations\AnimationRespository.cs" />
+    <Compile Include="Models\Animations\AnimationRepository.cs" />
     <Compile Include="Models\Animations\FadeOutAnimation.cs" />
     <Compile Include="Models\Animations\Animation.cs" />
     <Compile Include="Models\Animations\BlinkAnimation.cs" />
     <Compile Include="Models\Animations\CelAnimation.cs" />
     <Compile Include="Models\Animations\RotationAnimation.cs" />
     <Compile Include="Models\Animations\ShrinkAnimation.cs" />
-    <Compile Include="Models\BaseGame.cs" />
     <Compile Include="Models\CollideableSprite.cs" />
     <Compile Include="Models\Component2D.cs" />
     <Compile Include="Models\GameService.cs" />

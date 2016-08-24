@@ -62,9 +62,7 @@ namespace Infrastructure.Models.Animations
             RevertToOriginalStart();
         }
 
-        public virtual void RevertToOriginalStart()
-        {
-        }
+        public abstract void RevertToOriginalStart();
 
         public sealed override void Update(GameTime i_GameTime)
         {

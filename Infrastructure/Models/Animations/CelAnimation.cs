@@ -45,5 +45,10 @@ namespace Infrastructure.Models.Animations
 
             m_PassedTime += i_GameTime.ElapsedGameTime;
         }
+
+        public override void RevertToOriginalStart()
+        {
+            m_Sprite.SourceRectangle = r_OriginalSprite.SourceRectangle;
+        }
     }
 }
