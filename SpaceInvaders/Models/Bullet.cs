@@ -62,7 +62,7 @@ namespace SpaceInvaders.Models
                     if (BulletType == eBulletType.Player && bullet.BulletType == eBulletType.Enemy)
                     {
                         base.Collided(i_Collideable);
-                        //DeleteComponent2D();
+                        DeleteComponent2D();
                     }
                     else if (BulletType == eBulletType.Enemy && bullet.BulletType == eBulletType.Player)
                     {

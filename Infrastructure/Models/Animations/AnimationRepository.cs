@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Animations
 {
-    public class AnimationRespository : Animation
+    public class AnimationRepository : Animation
     {
         private readonly Dictionary<Type, Animation> r_Animations;
 
-        public AnimationRespository(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
+        public AnimationRepository(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)
             : base(i_Game, i_Sprite, i_AnimationLength)
         {
             r_Animations = new Dictionary<Type, Animation>();

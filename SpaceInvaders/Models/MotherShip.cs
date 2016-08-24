@@ -22,7 +22,7 @@ namespace SpaceInvaders.Models
         private int m_SecondsToNextAppear;
         private bool m_IsDead;
 
-        private AnimationRespository m_HitAnimations;
+        private AnimationRepository m_HitAnimations;
 
         public int Score
         {
@@ -52,7 +52,7 @@ namespace SpaceInvaders.Models
 
             m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
 
-            m_HitAnimations = new AnimationRespository(Game, this, TimeSpan.FromSeconds(2.6));
+            m_HitAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(2.6));
             m_HitAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
             m_HitAnimations.AddAnimation(new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 5));
             m_HitAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));

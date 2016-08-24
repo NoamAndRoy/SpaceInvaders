@@ -21,7 +21,7 @@ namespace SpaceInvaders.Models
         private int m_AmountOfAliveBullets;
         private bool m_CanShoot = true;
         private BlinkAnimation m_HitAnimation;
-        private AnimationRespository m_DeathAnimations;
+        private AnimationRepository m_DeathAnimations;
         private Player m_Player;
         private Bullet[] m_BulletsArray;
 
@@ -66,7 +66,7 @@ namespace SpaceInvaders.Models
             m_HitAnimation = new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 9);
             m_HitAnimation.Finished += HitAnimation_Finished;
 
-            m_DeathAnimations = new AnimationRespository(Game, this, TimeSpan.FromSeconds(2.6));
+            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(2.6));
             m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(2.6), 3));
             m_DeathAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
             m_DeathAnimations.Finished += DeathAnimations_Finished;
@@ -147,7 +147,7 @@ namespace SpaceInvaders.Models
             {
                 Souls--;
 
-                PlayerScore -= k_Score;
+                PlayerScore += k_Score;
                 PlayerScore = MathHelper.Max(0, PlayerScore);
 
                 if (Souls != 0)

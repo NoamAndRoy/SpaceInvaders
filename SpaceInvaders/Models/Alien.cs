@@ -18,7 +18,7 @@ namespace SpaceInvaders.Models
 
         public CelAnimation CelAnimation { get; private set; }
 
-        private AnimationRespository m_DeathAnimations;
+        private AnimationRepository m_DeathAnimations;
 
         private readonly int r_Score;
 
@@ -53,7 +53,7 @@ namespace SpaceInvaders.Models
         {
             base.Initialize();
 
-            m_DeathAnimations = new AnimationRespository(Game, this, TimeSpan.FromSeconds(1.8));
+            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(1.8));
             m_DeathAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(1.8)));
             m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(1.8), 7));
 
