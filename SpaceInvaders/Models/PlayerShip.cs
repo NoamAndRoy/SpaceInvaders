@@ -1,18 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.Models.Animations;
-using System.Collections.Generic;
 
 namespace SpaceInvaders.Models
 {
     public class PlayerShip : CollideableSprite
     {
         private const int k_Speed = 140;
-        private const int k_Score = -1500;
+        public const int k_Score = -1500;
         private const int k_MaxAmountOfBullets = 2;
 
         private readonly IKeyboardManager r_KeyboardManager;
@@ -26,21 +26,33 @@ namespace SpaceInvaders.Models
 
         public bool UseMouse { get; set; }
 
-        public int Souls { get; private set; }
-
-        public int PlayerScore { get; private set; }
-
         public Keys MoveLeftKey { get; set; }
 
         public Keys MoveRightKey { get; set; }
 
         public Keys ShootKey { get; set; }
 
+        public BlinkAnimation HitAnimation
+        {
+            get { return m_HitAnimation; }
+        }
+
+        public AnimationRepository DeathAnimations
+        {
+            get { return m_DeathAnimations; }
+        }
+
+        public bool CanShoot
+        {
+            get { return m_CanShoot; }
+            set { m_CanShoot = value; }
+        }
+
+        public event EventHandler LostSoul;
+
         public PlayerShip(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)
         {
-            PlayerScore = 0;
-            Souls = 3;
             m_AmountOfAliveBullets = 0;
 
             r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
@@ -66,11 +78,14 @@ namespace SpaceInvaders.Models
         {
             m_HitAnimation = new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 9);
             m_HitAnimation.Finished += HitAnimation_Finished;
+            m_HitAnimation.Finished += DeathAnimationOrHitAnimation_Finished;
 
             m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(2.6));
             m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(2.6), 3));
             m_DeathAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
-            m_DeathAnimations.Finished += DeathAnimations_Finished;
+
+            m_DeathAnimations.Finished += deathAnimations_Finished;
+            m_DeathAnimations.Finished += DeathAnimationOrHitAnimation_Finished;
         }
 
         public override void Initialize()
@@ -137,45 +152,13 @@ namespace SpaceInvaders.Models
 
             if (scoreable != null && scoreable.IsScoreAvailable)
             {
-                PlayerScore += scoreable.Score;
-                Game.Window.Title = PlayerScore.ToString();
+                //PlayerScore += scoreable.Score;
             }
         }
 
         private void bulletDead(Bullet i_Bullet)
         {
             m_AmountOfAliveBullets--;
-        }
-
-        public override void Collided(ICollideable i_Collideable)
-        {
-            Bullet bullet = i_Collideable as Bullet;
-
-            if (bullet != null && bullet.BulletType == eBulletType.Enemy)
-            {
-                Souls--;
-
-                PlayerScore += k_Score;
-                PlayerScore = MathHelper.Max(0, PlayerScore);
-
-                if (Souls != 0)
-                {
-                    m_HitAnimation.Enabled = true;
-                }
-            }
-
-            if (i_Collideable is Alien)
-            {
-                Souls = 0;
-            }
-
-            if (Souls == 0)
-            {
-                m_DeathAnimations.Start();
-                m_CanShoot = false;
-            }
-
-            OnCollide(i_Collideable);
         }
 
         public void DrawPlayerInfo()
@@ -190,9 +173,22 @@ namespace SpaceInvaders.Models
             m_HitAnimation.Reset();
         }
 
-        private void DeathAnimations_Finished(Animation i_Animation)
+        private void deathAnimations_Finished(Animation i_Animation)
         {
-            Game.EndGame();
+            this.DeleteComponent2D();
+        }
+
+        private void DeathAnimationOrHitAnimation_Finished(Animation i_Animation)
+        {
+            OnSoulLost();
+        }
+
+        protected virtual void OnSoulLost()
+        {
+            if(LostSoul != null)
+            {
+                LostSoul(this, EventArgs.Empty);
+            }
         }
     }
 }

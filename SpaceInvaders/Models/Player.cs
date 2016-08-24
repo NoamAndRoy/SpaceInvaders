@@ -1,7 +1,8 @@
-﻿using Infrastructure.Models;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
+using Infrastructure.Models;
+using Microsoft.Xna.Framework;
+using Infrastructure.ManagersInterfaces;
 
 namespace SpaceInvaders.Models
 {
@@ -13,7 +14,9 @@ namespace SpaceInvaders.Models
 
         private readonly Text r_ScoreText;
 
-        private readonly Game m_Game;
+        private readonly Game r_Game;
+
+        private PlayerShip m_PlayerShip;
 
         public int PlayerScore { get; private set; }
 
@@ -21,7 +24,22 @@ namespace SpaceInvaders.Models
 
         public int Souls { get; private set; }
 
-        public PlayerShip PlayerShip { get; set; }
+        public PlayerShip PlayerShip
+        {
+            get { return m_PlayerShip; }
+            set
+            {
+                if(m_PlayerShip != null)
+                {
+                    m_PlayerShip.LostSoul -= playerShip_LostSoul;
+                    m_PlayerShip.CollidedAction -= playerShip_CollidedAction;
+                }
+
+                m_PlayerShip = value;
+                m_PlayerShip.LostSoul += playerShip_LostSoul;
+                m_PlayerShip.CollidedAction += playerShip_CollidedAction;
+            }
+        }
 
         public Color TextColor { get; set; }
 
@@ -41,15 +59,16 @@ namespace SpaceInvaders.Models
             r_ScoreText = new Text(i_Game, "Calibri");
             r_ScoreText.Content = string.Format("{0} Score: 0", m_PlayerName);
 
-            m_Game = i_Game;
+            r_Game = i_Game;
+
+            Souls = 3;
+            PlayerScore = 0;
 
             i_Game.Components.Add(this);
         }
 
         private void initializeSouls()
         {
-            Souls = 3;
-
             for(int i = 0; i < Souls; i++)
             {
                 r_SoulsSprites.Add(new Sprite(PlayerShip.Game, PlayerShip.AssetName));
@@ -57,25 +76,64 @@ namespace SpaceInvaders.Models
                 r_SoulsSprites[i].AlphaBlending = true;
                 r_SoulsSprites[i].Opacity = 0.5f;
                 r_SoulsSprites[i].Scales = new Vector2(0.5f, 0.5f);
-                r_SoulsSprites[i].Position = new Vector2(m_Game.GraphicsDevice.Viewport.Width - r_SoulsSprites[i].Width * (Souls * 1.5f) + i * r_SoulsSprites[i].Width * 1.5f, YPosition);
+                r_SoulsSprites[i].Position = new Vector2(r_Game.GraphicsDevice.Viewport.Width - (r_SoulsSprites[i].Width * Souls * 1.5f) + (i * r_SoulsSprites[i].Width * 1.5f), YPosition);
             }
-
-            //register to event soul is lost
-
         }
 
         private void initializeScore()
         {
-            PlayerScore = 0;
-            r_ScoreText.Position = new Vector2(10 , YPosition);
+            r_ScoreText.Position = new Vector2(10, YPosition);
             r_ScoreText.TintColor = TextColor;
-            //register to event hit
         }
 
         public void Initialize()
         {
             initializeSouls();
             initializeScore();
+        }
+
+        private void playerShip_CollidedAction(ICollideable i_Source, ICollideable I_Collided)
+        {
+            Bullet bullet = I_Collided as Bullet;
+
+            if (PlayerShip.HitAnimation != null && PlayerShip.DeathAnimations != null && !PlayerShip.HitAnimation.Enabled && !PlayerShip.DeathAnimations.Enabled)
+            {
+                if (bullet != null && bullet.BulletType == eBulletType.Enemy)
+                {
+                    PlayerScore += PlayerShip.k_Score;
+                    PlayerScore = MathHelper.Max(0, PlayerScore);
+
+                    if (Souls > 1)
+                    {
+                        PlayerShip.HitAnimation.Enabled = true;
+                    }
+                    else
+                    {
+                        PlayerShip.DeathAnimations.Start();
+                    }
+                }
+            }
+
+                if (I_Collided is Alien)
+                {
+                    Souls = 0;
+                }
+
+                if (Souls == 0)
+                {
+                    PlayerShip.DeathAnimations.Start();
+                    PlayerShip.CanShoot = false;
+                }
+        }
+
+        private void playerShip_LostSoul(object sender, EventArgs e)
+        {
+            if (Souls > 0)
+            {
+                Souls--;
+                r_SoulsSprites[Souls].DeleteComponent2D();
+                r_SoulsSprites.RemoveAt(Souls);
+            }
         }
     }
 }

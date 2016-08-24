@@ -114,6 +114,11 @@ namespace SpaceInvaders.Models
             }
 
             base.Collided(i_Collideable);
+
+            if(m_DeathAnimations.Enabled)
+            {
+                IsScoreAvailable = false;
+            }
         }
 
         private void DeathAnimations_Finished(Animation i_Animation)

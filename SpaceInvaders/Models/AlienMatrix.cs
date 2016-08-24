@@ -89,7 +89,7 @@ namespace SpaceInvaders.Models
 
             if(m_AlienCounter == 0)
             {
-                Game.EndGame();
+                //Game.EndGame();
             }
         }
 
@@ -119,7 +119,7 @@ namespace SpaceInvaders.Models
 
                 if (isAtBottom())
                 {
-                    Game.EndGame();
+                    //Game.EndGame();
                 }
 
                 if (distanceToJump == 0)

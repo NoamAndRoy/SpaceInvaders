@@ -64,6 +64,8 @@ namespace SpaceInvaders.Models
         {
             m_HitAnimations.Start();
             OnCollide(i_Collideable);
+
+            IsScoreAvailable = false;
         }
 
         private void HitAnimations_Finished(Animation i_Animation)
