@@ -60,10 +60,12 @@ namespace Infrastructure.Models
 
         public override void Draw(GameTime i_GameTime)
         {
+            SpriteBatch serviceSpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+
             if (AlphaBlending)
             {
-                (Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch).End();
-                m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+                serviceSpriteBatch.End();
+                serviceSpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             }
             else if (!m_UseSharedBatch)
             {
@@ -74,8 +76,8 @@ namespace Infrastructure.Models
 
             if (!m_UseSharedBatch || AlphaBlending)
             {
-                m_SpriteBatch.End();
-                (Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch).Begin();
+                serviceSpriteBatch.End();
+                serviceSpriteBatch.Begin();
             }
 
             base.Draw(i_GameTime);
