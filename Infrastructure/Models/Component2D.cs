@@ -190,8 +190,7 @@ namespace Infrastructure.Models
         public override void Update(GameTime i_GameTime)
         {
             float totalSeconds = (float)i_GameTime.ElapsedGameTime.TotalSeconds;
-            Vector2 g = this.Velocity * totalSeconds;
-            this.Position += g;
+            this.Position += this.Velocity * totalSeconds;
             this.Rotation += this.AngularVelocity * totalSeconds;
 
             base.Update(i_GameTime);

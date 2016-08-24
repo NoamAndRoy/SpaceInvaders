@@ -22,21 +22,35 @@ namespace SpaceInvaders.Models
             PixelBasedCollision = true;
         }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            float yBullet;
+
+            switch (BulletType)
+            {
+                case eBulletType.Player:
+                    yBullet = 1000;
+                    break;
+                case eBulletType.Enemy:
+                    yBullet = 0;
+                    break;
+                default:
+                    break;
+            }
+
+            PositionOrigin = new Vector2(Width / 2, Height);
+        }
+
         public override void Update(GameTime i_GameTime)
         {
             base.Update(i_GameTime);
 
             if (Position.Y + Height < 0 || Position.Y > Game.GraphicsDevice.Viewport.Height)
             {
-                if (BulletType == eBulletType.Enemy)
-                {
-                    DeleteComponent2D();
-                }
-                else
-                {
-                    this.Visible = false;
-                    this.Enabled = false;
-                }
+                this.Visible = false;
+                this.Enabled = false;
             }
         }
 
@@ -47,15 +61,8 @@ namespace SpaceInvaders.Models
                 if ((BulletType == eBulletType.Player && (i_Collideable is Alien || i_Collideable is MotherShip || i_Collideable is Wall)) ||
                     (BulletType == eBulletType.Enemy && (i_Collideable is PlayerShip || i_Collideable is Wall)))
                 {
-                    if (BulletType == eBulletType.Enemy)
-                    {
-                        DeleteComponent2D();
-                    }
-                    else
-                    {
-                        this.Visible = false;
-                        this.Enabled = false;
-                    }
+                    this.Visible = false;
+                    this.Enabled = false;
                 }
             }
             else
@@ -73,7 +80,8 @@ namespace SpaceInvaders.Models
                     {
                         if(s_RandomDestroy.Next(0, 2) == 0)
                         {
-                            DeleteComponent2D();
+                            this.Visible = false;
+                            this.Enabled = false;
                         }
                     }
                 }

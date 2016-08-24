@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.Models.Animations;
-using System.Collections.Generic;
 
 namespace SpaceInvaders.Models
 {
@@ -18,12 +18,11 @@ namespace SpaceInvaders.Models
         private readonly IKeyboardManager r_KeyboardManager;
         private readonly IMouseManager r_MouseManager;
 
-        private int m_AmountOfAliveBullets;
         private bool m_CanShoot = true;
         private BlinkAnimation m_HitAnimation;
         private AnimationRespository m_DeathAnimations;
         private Player m_Player;
-        private HashSet<Bullet> m_Bullets;
+        private Shooter m_Shooter;
 
         public bool UseMouse { get; set; }
 
@@ -37,30 +36,27 @@ namespace SpaceInvaders.Models
 
         public Keys ShootKey { get; set; }
 
+        public Shooter Shooter
+        {
+            get
+            {
+                return m_Shooter;
+            }
+        }
+
         public PlayerShip(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)
         {
             PlayerScore = 0;
             Souls = 3;
-            m_AmountOfAliveBullets = 0;
 
             r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
 
             AlphaBlending = true;
 
-            m_Bullets = new HashSet<Bullet>();
-
-            for (int i = 0; i < k_MaxAmountOfBullets; i++)
-            {
-                Bullet bullet = new Bullet(Game, new Vector2(0, -1), eBulletType.Player);
-                bullet.Visible = false;
-                bullet.CollidedAction += bulletCollided;
-                bullet.VisibleChanged += bullet_VisibleChanged;
-                bullet.TintColor = Color.Red;
-
-                m_Bullets.Add(bullet);
-            }
+            m_Shooter = new Shooter(i_Game, new Vector2(0, -1), eBulletType.Player, k_MaxAmountOfBullets, Color.Red);
+            m_Shooter.BulletCollided += bulletCollided;
         }
 
         private void initializeAnimations()
@@ -80,7 +76,7 @@ namespace SpaceInvaders.Models
 
             Position = new Vector2(0f, Game.GraphicsDevice.Viewport.Height - (Height * 2 * 0.6f));
             RotationOrigin = TextureCenter;
-            initializeAnimations();
+            initializeAnimations();      
         }
 
         public override void Update(GameTime i_GameTime)
@@ -105,31 +101,16 @@ namespace SpaceInvaders.Models
             if (r_KeyboardManager.IsKeyPressed(ShootKey) || 
                 (UseMouse && r_MouseManager.IsKeyPressed(eMouseButton.LeftButton)))
             {
-                if (m_CanShoot && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
+                if (m_CanShoot)
                 {
-                    m_Bullets.//[m_AmountOfAliveBullets].Position = new Vector2(Position.X + (Width / 2) - (m_BulletsArray[m_AmountOfAliveBullets].Width / 2), Position.Y - m_BulletsArray[m_AmountOfAliveBullets].Height);
-                    m_Bullets[m_AmountOfAliveBullets].Visible = true;
-                    m_Bullets[m_AmountOfAliveBullets].Enabled = true;
-
-                    m_AmountOfAliveBullets++;
+                    m_Shooter.Position = new Vector2(Position.X + (Width / 2), Position.Y);
+                    m_Shooter.Shoot();
                 }
             }
 
             base.Update(i_GameTime);
 
             Position = new Vector2(MathHelper.Clamp(Position.X, 0, this.Game.GraphicsDevice.Viewport.Width - Width), Position.Y);
-        }
-
-        private void bullet_VisibleChanged(object i_Sender, EventArgs i_EventArgs)
-        {
-            Bullet bullet = i_Sender as Bullet;
-            if(bullet != null)
-            {
-                if(!bullet.Visible)
-                {
-                    bulletDead(i_Sender as Bullet);
-                }
-            }
         }
 
         private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
@@ -141,11 +122,6 @@ namespace SpaceInvaders.Models
                 PlayerScore += scoreable.Score;
                 Game.Window.Title = PlayerScore.ToString();
             }
-        }
-
-        private void bulletDead(Bullet i_Bullet)
-        {
-            m_AmountOfAliveBullets--;
         }
 
         public override void Collided(ICollideable i_Collideable)

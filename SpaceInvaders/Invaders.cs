@@ -51,11 +51,6 @@ namespace SpaceInvaders
             r_Walls.YPosition = r_PlayerOne.TopLeftPosition.Y - (Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height * 2);
         }
 
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-        }
-
         public override void EndGame()
         {
             string message = string.Format(

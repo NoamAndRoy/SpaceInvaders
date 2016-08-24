@@ -11,18 +11,17 @@ namespace SpaceInvaders.Models
     { 
         private const int k_MinTimeToShoot = 30;
         private const int k_MaxTimeToShoot = 100;
-        private const string k_TexturePath = "Enemies";
         private const int k_MaxAmountOfBullets = 1;
+        private const string k_TexturePath = "Enemies";
 
         private static Random s_RandomShootTime = new Random();
+
+        private readonly int r_Score;
 
         public CelAnimation CelAnimation { get; private set; }
 
         private AnimationRespository m_DeathAnimations;
-
-        private readonly int r_Score;
-
-        private int m_AmountOfAliveBullets;
+        private Shooter m_Shooter;
 
         public int Score
         {
@@ -30,6 +29,14 @@ namespace SpaceInvaders.Models
             {
                 IsScoreAvailable = false;
                 return r_Score;
+            }
+        }
+
+        public Shooter Shooter
+        {
+            get
+            {
+                return m_Shooter;
             }
         }
 
@@ -47,6 +54,8 @@ namespace SpaceInvaders.Models
             IsScoreAvailable = true;
 
             SourceRectangle = i_SourceRectangles[0];
+
+            m_Shooter = new Shooter(i_Game, new Vector2(0, 1), eBulletType.Enemy, k_MaxAmountOfBullets, Color.Blue);
         }
 
         public override void Initialize()
@@ -60,7 +69,6 @@ namespace SpaceInvaders.Models
             m_DeathAnimations.Finished += DeathAnimations_Finished;
 
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
-            m_AmountOfAliveBullets = 0;
         }
 
         protected override void initBounds()
@@ -73,35 +81,13 @@ namespace SpaceInvaders.Models
 
         public override void Update(GameTime i_GameTime)
         {
-            if(i_GameTime.TotalGameTime.Seconds > 0 && i_GameTime.TotalGameTime.Seconds % m_SecondsToNextShoot == 0 && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
+            if (i_GameTime.TotalGameTime.Seconds > 0 && i_GameTime.TotalGameTime.Seconds % m_SecondsToNextShoot == 0)
             {
-                Bullet bullet = new Bullet(Game, new Vector2(0, 1), eBulletType.Enemy);
-
-                bullet.Position = new Vector2(Position.X + (Width / 2) - (bullet.Width / 2), Position.Y + Height);
-                bullet.CollidedAction += bulletCollided;
-                bullet.VisibleChanged += bullet_VisibleChanged;
-                bullet.TintColor = Color.Blue;
-
-                m_AmountOfAliveBullets++;
+                m_Shooter.Position = new Vector2(Position.X + (Width / 2), Position.Y + Height);
+                m_Shooter.Shoot();
 
                 m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
             }
-        }
-
-        private void bullet_VisibleChanged(object i_Sender, EventArgs e)
-        {
-            bulletDead(i_Sender as Bullet);
-        }
-
-        private void bulletCollided(ICollideable i_Source, ICollideable I_Collided)
-        {
-            bulletDead(i_Source as Bullet);
-        }
-
-        private void bulletDead(Bullet i_Bullet)
-        {
-            i_Bullet.CollidedAction -= bulletCollided;
-            m_AmountOfAliveBullets--;
         }
 
         public override void Collided(ICollideable i_Collideable)
