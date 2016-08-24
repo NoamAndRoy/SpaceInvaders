@@ -12,7 +12,6 @@ namespace Infrastructure.Models.Animations
         protected Sprite m_Sprite;
         private TimeSpan m_TimeTillAnimationEnd;
         private TimeSpan m_AnimationLength;
-
         private bool m_IsFinished = false;
         private bool m_ResetAfterFinished = true;
 

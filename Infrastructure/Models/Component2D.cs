@@ -45,7 +45,7 @@ namespace Infrastructure.Models
             set { m_RotationOrigin = value; }
         }
 
-        protected Vector2 PositionForDraw
+        protected Vector2 positionForDraw
         {
             get { return this.Position - this.PositionOrigin + this.RotationOrigin; }
         }
@@ -177,7 +177,7 @@ namespace Infrastructure.Models
             {
                 m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
 
-                if (m_SpriteBatch == null || AlphaBlending)
+                if (m_SpriteBatch == null)
                 {
                     m_SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
                     m_UseSharedBatch = false;

@@ -55,7 +55,7 @@ namespace SpaceInvaders.Models
                 Bullet bullet = new Bullet(i_Game, Direction, m_BulletType);
                 bullet.Visible = false;
                 bullet.VisibleChanged += bullet_VisibleChanged;
-                bullet.CollidedAction += Bullet_CollidedAction;
+                bullet.CollidedAction += bullet_CollidedAction;
                 bullet.TintColor = i_Tint;
 
                 m_Bullets.Enqueue(bullet);
@@ -87,7 +87,7 @@ namespace SpaceInvaders.Models
             }
         }
 
-        private void Bullet_CollidedAction(ICollideable i_Source, ICollideable i_Collided)
+        private void bullet_CollidedAction(ICollideable i_Source, ICollideable i_Collided)
         {
             OnBulletCollide(i_Source, i_Collided);
         }

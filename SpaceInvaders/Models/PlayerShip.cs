@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
-using SpaceInvaders.Interfaces;
 using Infrastructure.Models.Animations;
 
 namespace SpaceInvaders.Models
@@ -71,15 +69,15 @@ namespace SpaceInvaders.Models
         private void initializeAnimations()
         {
             m_HitAnimation = new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 9);
-            m_HitAnimation.Finished += HitAnimation_Finished;
-            m_HitAnimation.Finished += DeathAnimationOrHitAnimation_Finished;
+            m_HitAnimation.Finished += hitAnimation_Finished;
+            m_HitAnimation.Finished += deathAnimationOrHitAnimation_Finished;
 
             m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(2.6));
             m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(2.6), 3));
             m_DeathAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
 
             m_DeathAnimations.Finished += deathAnimations_Finished;
-            m_DeathAnimations.Finished += DeathAnimationOrHitAnimation_Finished;
+            m_DeathAnimations.Finished += deathAnimationOrHitAnimation_Finished;
         }
 
         public override void Initialize()
@@ -125,7 +123,7 @@ namespace SpaceInvaders.Models
             Position = new Vector2(MathHelper.Clamp(Position.X, 0, this.Game.GraphicsDevice.Viewport.Width - Width), Position.Y);
         }
 
-        private void HitAnimation_Finished(Animation i_Animation)
+        private void hitAnimation_Finished(Animation i_Animation)
         {
             Position = new Vector2(0f, Position.Y);
             m_HitAnimation.Reset();
@@ -136,7 +134,7 @@ namespace SpaceInvaders.Models
             this.DeleteComponent2D();
         }
 
-        private void DeathAnimationOrHitAnimation_Finished(Animation i_Animation)
+        private void deathAnimationOrHitAnimation_Finished(Animation i_Animation)
         {
             OnSoulLost();
         }

@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Infrastructure.Models; 
 
 namespace Infrastructure.ManagersInterfaces
 {
-    public enum eMouseButton
-    {
-        LeftButton,
-        RightButton,
-        MiddleButton
-    }
-    
     public interface IMouseManager
     {
         void Update(GameTime i_GameTime);

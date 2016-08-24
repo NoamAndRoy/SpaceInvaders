@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.ManagersInterfaces
 {
-    public delegate void CollidedEventHandler(ICollideable i_Source, ICollideable I_Collided);
+    public delegate void CollidedEventHandler(ICollideable i_Source, ICollideable i_Collided);
 
     public interface ICollideable
     {
