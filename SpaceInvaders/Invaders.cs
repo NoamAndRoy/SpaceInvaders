@@ -50,12 +50,12 @@ namespace SpaceInvaders
             r_PlayerShipOne = new PlayerShip(this, "Ship01_32x32");
             r_PlayerShipTwo = new PlayerShip(this, "Ship02_32x32");
 
-            r_PlayerOne = new Player(this, "Player1");
+            r_PlayerOne = new Player(this, "P1");
             r_PlayerOne.TextColor = Color.Blue;
             r_PlayerOne.PlayerShip = r_PlayerShipOne;
             r_PlayerOne.YPosition = 10;
 
-            r_PlayerTwo = new Player(this, "Player2");
+            r_PlayerTwo = new Player(this, "P2");
             r_PlayerTwo.TextColor = Color.Green;
             r_PlayerTwo.PlayerShip = r_PlayerShipTwo;
             r_PlayerTwo.YPosition = r_PlayerOne.YPosition + 20;
@@ -90,26 +90,27 @@ namespace SpaceInvaders
             r_Walls.YPosition = r_PlayerShipOne.TopLeftPosition.Y - (Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height * 2);
         }
 
-        protected override void Update(GameTime gameTime)
+        protected override void Update(GameTime i_GameTime)
         {
             if(r_PlayerOne.Souls == 0 && r_PlayerTwo.Souls == 0)
             {
                 endGame();
             }
 
-            base.Update(gameTime);
+            base.Update(i_GameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime i_GameTime)
         {
             m_SpriteBatch.Begin();
-            base.Draw(gameTime);
+            base.Draw(i_GameTime);
             m_SpriteBatch.End();
         }
 
         private void endGame()
         {
             string message;
+
             if (r_PlayerOne.PlayerScore != r_PlayerTwo.PlayerScore)
             {
                 message = string.Format(
