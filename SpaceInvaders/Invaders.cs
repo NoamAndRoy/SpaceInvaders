@@ -42,7 +42,7 @@ namespace SpaceInvaders
             r_PlayerOne = new PlayerShip(this, "Ship01_32x32");
             r_PlayerTwo = new PlayerShip(this, "Ship02_32x32"); 
 
-            //r_Aliens = new AlienMatrix(this);
+            r_Aliens = new AlienMatrix(this);
             r_Walls = new WallsLine(this);
         }
 

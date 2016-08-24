@@ -35,6 +35,7 @@ namespace SpaceInvaders.Models
                 else
                 {
                     this.Visible = false;
+                    this.Enabled = false;
                 }
             }
         }
@@ -46,10 +47,14 @@ namespace SpaceInvaders.Models
                 if ((BulletType == eBulletType.Player && (i_Collideable is Alien || i_Collideable is MotherShip || i_Collideable is Wall)) ||
                     (BulletType == eBulletType.Enemy && (i_Collideable is PlayerShip || i_Collideable is Wall)))
                 {
-                    base.Collided(i_Collideable);
                     if (BulletType == eBulletType.Enemy)
                     {
                         DeleteComponent2D();
+                    }
+                    else
+                    {
+                        this.Visible = false;
+                        this.Enabled = false;
                     }
                 }
             }
@@ -61,19 +66,20 @@ namespace SpaceInvaders.Models
                 {
                     if (BulletType == eBulletType.Player && bullet.BulletType == eBulletType.Enemy)
                     {
-                        base.Collided(i_Collideable);
-                        //DeleteComponent2D();
+                        this.Visible = false;
+                        this.Enabled = false;
                     }
                     else if (BulletType == eBulletType.Enemy && bullet.BulletType == eBulletType.Player)
                     {
                         if(s_RandomDestroy.Next(0, 2) == 0)
                         {
-                            base.Collided(i_Collideable);
                             DeleteComponent2D();
                         }
                     }
                 }
             }
+
+            base.Collided(i_Collideable);
         }
     }
 }
