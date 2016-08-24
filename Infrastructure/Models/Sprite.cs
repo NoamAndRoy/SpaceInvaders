@@ -70,7 +70,7 @@ namespace Infrastructure.Models
                 m_SpriteBatch.Begin();
             }
 
-            SpriteBatch.Draw(m_Texture, this.PositionForDraw, this.SourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
+            SpriteBatch.Draw(m_Texture, this.positionForDraw, this.SourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
 
             if (!m_UseSharedBatch || AlphaBlending)
             {

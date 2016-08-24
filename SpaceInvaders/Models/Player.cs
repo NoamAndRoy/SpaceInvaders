@@ -8,7 +8,7 @@ namespace SpaceInvaders.Models
 {
     public class Player : IGameComponent
     { 
-        private readonly string m_PlayerName;
+        private readonly string r_PlayerName;
 
         private readonly List<Sprite> r_SoulsSprites;
 
@@ -47,17 +47,17 @@ namespace SpaceInvaders.Models
         {
             get
             {
-                return m_PlayerName;
+                return r_PlayerName;
             }
         }
 
         public Player(Game i_Game, string i_PlayerName)
         {
-            m_PlayerName = i_PlayerName;
+            r_PlayerName = i_PlayerName;
             r_SoulsSprites = new List<Sprite>(3);
 
             r_ScoreText = new Text(i_Game, "Calibri");
-            r_ScoreText.Content = string.Format("{0} Score: 0", m_PlayerName);
+            r_ScoreText.Content = string.Format("{0} Score: 0", r_PlayerName);
 
             r_Game = i_Game;
 
@@ -92,9 +92,9 @@ namespace SpaceInvaders.Models
             initializeScore();
         }
 
-        private void playerShip_CollidedAction(ICollideable i_Source, ICollideable I_Collided)
+        private void playerShip_CollidedAction(ICollideable i_Source, ICollideable i_Collided)
         {
-            Bullet bullet = I_Collided as Bullet;
+            Bullet bullet = i_Collided as Bullet;
 
             if (PlayerShip.HitAnimation != null && PlayerShip.DeathAnimations != null && !PlayerShip.HitAnimation.Enabled && !PlayerShip.DeathAnimations.Enabled)
             {
@@ -114,7 +114,7 @@ namespace SpaceInvaders.Models
                 }
             }
 
-                if (I_Collided is Alien)
+                if (i_Collided is Alien)
                 {
                     Souls = 0;
                 }
@@ -126,7 +126,7 @@ namespace SpaceInvaders.Models
                 }
         }
 
-        private void playerShip_LostSoul(object sender, EventArgs e)
+        private void playerShip_LostSoul(object i_Sender, EventArgs i_EventArgs)
         {
             if (Souls > 0)
             {

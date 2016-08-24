@@ -81,7 +81,7 @@ namespace Infrastructure.Models
             bool areIntersects = false;
 
             if (CheckRectangleCollision(i_Collideable) &&
-                PixelsMatricesIntersects(m_PixelsMatrix, Bounds, i_Collideable.PixelsMatrix, i_Collideable.Bounds))
+                pixelsMatricesIntersects(m_PixelsMatrix, Bounds, i_Collideable.PixelsMatrix, i_Collideable.Bounds))
             {
                 areIntersects = true;
             }
@@ -102,7 +102,7 @@ namespace Infrastructure.Models
             }
         }
 
-        protected bool PixelsMatricesIntersects(Color[] i_MatrixOne, Rectangle i_MatrixOneBounds, Color[] i_MatrixTwo, Rectangle i_MatrixTwoBounds)
+        protected bool pixelsMatricesIntersects(Color[] i_MatrixOne, Rectangle i_MatrixOneBounds, Color[] i_MatrixTwo, Rectangle i_MatrixTwoBounds)
         {
             bool areIntersects = false;
 

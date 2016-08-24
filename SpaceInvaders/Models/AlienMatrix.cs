@@ -23,7 +23,7 @@ namespace SpaceInvaders.Models
 
         public int YBottomPosition { get; set; }
 
-        private float TimeToJump
+        private float timeToJump
         {
             get { return m_TimeToJump; }
             set
@@ -33,7 +33,7 @@ namespace SpaceInvaders.Models
                 {
                     for (int j = 0; j < k_Cols; j++)
                     {
-                        r_AlienMatrix[i, j].CelAnimation.AmountOfCellsInASecond = 1 / (m_TimeToJump / 1000);
+                        r_AlienMatrix[i, j].CelAnimation.AmountOfCellsInASecond = m_TimeToJump / 1000;
                     }
                 }
             }
@@ -87,7 +87,7 @@ namespace SpaceInvaders.Models
             Alien alien = i_Sender as Alien;
             if(!alien.Visible)
             {
-                TimeToJump = TimeToJump * 0.94f;
+                timeToJump = timeToJump * 0.94f;
                 m_AlienCounter--;
             }
 
@@ -128,7 +128,7 @@ namespace SpaceInvaders.Models
 
                 if (distanceToJump == 0)
                 {
-                    TimeToJump = TimeToJump * 0.94f;
+                    timeToJump = timeToJump * 0.94f;
                     m_JumpRight = !m_JumpRight;
 
                     for (int i = 0; i < k_Rows; i++)

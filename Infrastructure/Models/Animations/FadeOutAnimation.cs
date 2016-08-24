@@ -6,6 +6,7 @@ namespace Infrastructure.Models.Animations
     public class FadeOutAnimation : Animation
     {
         private readonly float r_AmountOfFadeOutInASecond;
+
         private float m_Opacity = 1;
 
         public FadeOutAnimation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength)

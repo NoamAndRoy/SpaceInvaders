@@ -82,10 +82,10 @@ namespace SpaceInvaders
             r_Walls.YPosition = r_PlayerShipOne.TopLeftPosition.Y - (Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height * 2);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime i_GameTime)
         {
             m_SpriteBatch.Begin();
-            base.Draw(gameTime);
+            base.Draw(i_GameTime);
             m_SpriteBatch.End();
         }
 

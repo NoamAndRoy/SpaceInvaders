@@ -6,6 +6,7 @@ namespace Infrastructure.Models.Animations
     public class BlinkAnimation : Animation
     {
         private readonly TimeSpan r_AmountOfSecondsTillBlink;
+
         private TimeSpan m_PassedTime = TimeSpan.Zero;
 
         public BlinkAnimation(Game i_Game, Sprite i_Sprite, TimeSpan i_AnimationLength, float i_AmountOfBlinksInASecond)

@@ -57,7 +57,7 @@ namespace SpaceInvaders.Models
             m_HitAnimations.AddAnimation(new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 5));
             m_HitAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
 
-            m_HitAnimations.Finished += HitAnimations_Finished;
+            m_HitAnimations.Finished += hitAnimations_Finished;
         }
 
         public override void Collided(ICollideable i_Collideable)
@@ -68,7 +68,7 @@ namespace SpaceInvaders.Models
             IsScoreAvailable = false;
         }
 
-        private void HitAnimations_Finished(Animation i_Animation)
+        private void hitAnimations_Finished(Animation i_Animation)
         {
             m_HitAnimations.Reset();
             Position = m_StartingPos;

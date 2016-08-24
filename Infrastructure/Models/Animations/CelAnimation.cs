@@ -6,6 +6,7 @@ namespace Infrastructure.Models.Animations
     public class CelAnimation : Animation
     {
         private readonly Rectangle[] r_SourceRectangles;
+
         private TimeSpan m_AmountOfSecondsTillNextSourceRectangle;
         private TimeSpan m_PassedTime = TimeSpan.Zero;
         private int m_CurrentSourceRectangleIndex = 0;
@@ -13,7 +14,7 @@ namespace Infrastructure.Models.Animations
         public float AmountOfCellsInASecond
         {
             get { return (float)(1 / m_AmountOfSecondsTillNextSourceRectangle.TotalSeconds); }
-            set { m_AmountOfSecondsTillNextSourceRectangle = TimeSpan.FromSeconds(1 / value); }
+            set { m_AmountOfSecondsTillNextSourceRectangle = TimeSpan.FromSeconds(value); }
         }
 
         public CelAnimation(Game i_Game, Sprite i_Sprite, float i_AmountOfCellsInASecond, params Rectangle[] i_SourceRectangles)

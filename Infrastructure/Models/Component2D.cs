@@ -45,7 +45,7 @@ namespace Infrastructure.Models
             set { m_RotationOrigin = value; }
         }
 
-        protected Vector2 PositionForDraw
+        protected Vector2 positionForDraw
         {
             get { return this.Position - this.PositionOrigin + this.RotationOrigin; }
         }

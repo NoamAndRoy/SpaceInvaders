@@ -71,7 +71,7 @@ namespace Infrastructure.Models
                 m_SpriteBatch.Begin();
             }
 
-            SpriteBatch.DrawString(m_Font, m_Content, this.PositionForDraw, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
+            SpriteBatch.DrawString(m_Font, m_Content, this.positionForDraw, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
 
             if (!m_UseSharedBatch || AlphaBlending)
             {

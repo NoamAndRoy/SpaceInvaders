@@ -66,7 +66,7 @@ namespace SpaceInvaders.Models
             m_DeathAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(1.8)));
             m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(1.8), 7));
 
-            m_DeathAnimations.Finished += DeathAnimations_Finished;
+            m_DeathAnimations.Finished += deathAnimations_Finished;
 
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
         }
@@ -102,7 +102,7 @@ namespace SpaceInvaders.Models
             base.Collided(i_Collideable);
         }
 
-        private void DeathAnimations_Finished(Animation i_Animation)
+        private void deathAnimations_Finished(Animation i_Animation)
         {
             DeleteComponent2D();
         }
