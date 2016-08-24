@@ -21,7 +21,7 @@ namespace SpaceInvaders.Models
         private float m_JumpDistance;
         private int m_AlienCounter;
 
-        public int YBottomPosition { get; set; }
+        public int MaxBottomPosition { get; set; }
 
         private float timeToJump
         {
@@ -206,7 +206,7 @@ namespace SpaceInvaders.Models
             {
                 for (int i = k_Rows - 1; i >= 0 && !isAtBottom; i--)
                 {
-                    if(r_AlienMatrix[i, j].Visible && r_AlienMatrix[i, j].Position.Y + r_AlienMatrix[i, j].Height >= YBottomPosition)
+                    if(r_AlienMatrix[i, j].Visible && r_AlienMatrix[i, j].Position.Y + r_AlienMatrix[i, j].Height >= MaxBottomPosition)
                     {
                         isAtBottom = true;
                     }

@@ -89,7 +89,7 @@ namespace SpaceInvaders
 
             r_Walls.YPosition = r_PlayerShipOne.TopLeftPosition.Y - (Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height * 2);
 
-            r_Aliens.YBottomPosition = (int)r_PlayerShipOne.TopLeftPosition.Y;
+            r_Aliens.MaxBottomPosition = (int)r_PlayerShipOne.TopLeftPosition.Y;
         }
 
         protected override void Update(GameTime i_GameTime)
