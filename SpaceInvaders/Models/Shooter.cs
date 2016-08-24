@@ -13,8 +13,6 @@ namespace SpaceInvaders.Models
     {
         public event CollidedEventHandler BulletCollided;
 
-        public event EventHandler<EventArgs> BulletVisibleChanged;
-
         private readonly int r_MaxAmountOfBullets;
 
         private Queue<Bullet> m_Bullets;
@@ -90,14 +88,6 @@ namespace SpaceInvaders.Models
                 {
                     bulletDead(i_Sender as Bullet);
                 }
-            }
-        }
-
-        private void OnBulletVisibleChanged(object i_Sender, EventArgs i_EventArgs)
-        {
-            if(BulletVisibleChanged != null)
-            {
-                BulletVisibleChanged.Invoke(i_Sender, i_EventArgs);
             }
         }
 

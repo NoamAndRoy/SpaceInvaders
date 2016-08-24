@@ -3,22 +3,29 @@ using System;
 using Infrastructure.Models;
 using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
+using SpaceInvaders.Interfaces;
 
 namespace SpaceInvaders.Models
 {
     public class Player : IGameComponent
     { 
         private readonly string m_PlayerName;
-
         private readonly List<Sprite> r_SoulsSprites;
-
         private readonly Text r_ScoreText;
-
         private readonly Game r_Game;
+        private int m_PlayerScore;
 
         private PlayerShip m_PlayerShip;
 
-        public int PlayerScore { get; private set; }
+        public int PlayerScore
+        {
+            get { return m_PlayerScore; }
+            private set
+            {
+                m_PlayerScore = value;
+                r_ScoreText.Content = string.Format("{0} Score: {1}", m_PlayerName, PlayerScore);
+            }
+        }
 
         public int YPosition { get; set; }
 
@@ -33,11 +40,13 @@ namespace SpaceInvaders.Models
                 {
                     m_PlayerShip.LostSoul -= playerShip_LostSoul;
                     m_PlayerShip.CollidedAction -= playerShip_CollidedAction;
+                    m_PlayerShip.Shooter.BulletCollided -= Shooter_BulletCollided;
                 }
 
                 m_PlayerShip = value;
                 m_PlayerShip.LostSoul += playerShip_LostSoul;
                 m_PlayerShip.CollidedAction += playerShip_CollidedAction;
+                m_PlayerShip.Shooter.BulletCollided += Shooter_BulletCollided;
             }
         }
 
@@ -57,7 +66,6 @@ namespace SpaceInvaders.Models
             r_SoulsSprites = new List<Sprite>(3);
 
             r_ScoreText = new Text(i_Game, "Calibri");
-            r_ScoreText.Content = string.Format("{0} Score: 0", m_PlayerName);
 
             r_Game = i_Game;
 
@@ -133,6 +141,19 @@ namespace SpaceInvaders.Models
                 Souls--;
                 r_SoulsSprites[Souls].DeleteComponent2D();
                 r_SoulsSprites.RemoveAt(Souls);
+            }
+        }
+
+        private void Shooter_BulletCollided(ICollideable i_Source, ICollideable I_Collided)
+        {
+            IScoreable scoreable = I_Collided as IScoreable;
+
+            if(scoreable != null)
+            {
+                if (scoreable.IsScoreAvailable)
+                {
+                    PlayerScore += scoreable.Score;
+                }
             }
         }
     }

@@ -42,20 +42,28 @@ namespace SpaceInvaders
             r_Background = new Background(this);
             r_MotherShip = new MotherShip(this);
             r_Aliens = new AlienMatrix(this);
+            r_Aliens.AllDead += endGameByAlienMatrix;
+            r_Aliens.ReachBottom += endGameByAlienMatrix;
+
             r_Walls = new WallsLine(this);
 
             r_PlayerShipOne = new PlayerShip(this, "Ship01_32x32");
             r_PlayerShipTwo = new PlayerShip(this, "Ship02_32x32");
 
-            r_PlayerOne = new Player(this, "P1");
+            r_PlayerOne = new Player(this, "Player1");
             r_PlayerOne.TextColor = Color.Blue;
             r_PlayerOne.PlayerShip = r_PlayerShipOne;
             r_PlayerOne.YPosition = 10;
 
-            r_PlayerTwo = new Player(this, "P2");
+            r_PlayerTwo = new Player(this, "Player2");
             r_PlayerTwo.TextColor = Color.Green;
             r_PlayerTwo.PlayerShip = r_PlayerShipTwo;
             r_PlayerTwo.YPosition = r_PlayerOne.YPosition + 20;
+        }
+
+        private void endGameByAlienMatrix(object sender, System.EventArgs e)
+        {
+            endGame();   
         }
 
         protected override void Initialize()
@@ -82,6 +90,16 @@ namespace SpaceInvaders
             r_Walls.YPosition = r_PlayerShipOne.TopLeftPosition.Y - (Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height * 2);
         }
 
+        protected override void Update(GameTime gameTime)
+        {
+            if(r_PlayerOne.Souls == 0 && r_PlayerTwo.Souls == 0)
+            {
+                endGame();
+            }
+
+            base.Update(gameTime);
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             m_SpriteBatch.Begin();
@@ -89,9 +107,12 @@ namespace SpaceInvaders
             m_SpriteBatch.End();
         }
 
-        public void EndGame()
+        private void endGame()
         {
-            string message = string.Format(
+            string message;
+            if (r_PlayerOne.PlayerScore != r_PlayerTwo.PlayerScore)
+            {
+                message = string.Format(
 @"The winner is {0}!
 {1} Score: {3}
 {2} Score: {4}",
@@ -100,8 +121,14 @@ r_PlayerOne.PlayerName,
 r_PlayerTwo.PlayerName,
 r_PlayerOne.PlayerScore,
 r_PlayerTwo.PlayerScore);
+            }
+            else
+            {
+                message = "Tie!!!";
+            }
 
             System.Windows.Forms.MessageBox.Show(message);
+            this.Exit();
         }
     }
 }
