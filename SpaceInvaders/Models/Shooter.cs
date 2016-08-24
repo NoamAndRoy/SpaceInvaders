@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Models;
-using SpaceInvaders.Interfaces;
-using Infrastructure.Models.Animations;
 
 namespace SpaceInvaders.Models
 {
@@ -91,16 +87,16 @@ namespace SpaceInvaders.Models
             }
         }
 
-        private void Bullet_CollidedAction(ICollideable i_Source, ICollideable I_Collided)
+        private void Bullet_CollidedAction(ICollideable i_Source, ICollideable i_Collided)
         {
-            OnBulletCollide(i_Source, I_Collided);
+            OnBulletCollide(i_Source, i_Collided);
         }
 
-        private void OnBulletCollide(ICollideable i_Source, ICollideable I_Collided)
+        private void OnBulletCollide(ICollideable i_Source, ICollideable i_Collided)
         {
             if (BulletCollided != null)
             {
-                BulletCollided.Invoke(i_Source, I_Collided);
+                BulletCollided.Invoke(i_Source, i_Collided);
             }
         }
 
