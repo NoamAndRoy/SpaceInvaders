@@ -161,8 +161,8 @@ namespace SpaceInvaders.Models
                 {
                     if (r_AlienMatrix[i, j].Visible)
                     {
-                        remainSpace = (r_AlienMatrix[i, j].Position.X + m_JumpDistance >= Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].Width) ?
-                            Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].Position.X - r_AlienMatrix[i, j].Width : m_JumpDistance;
+                        remainSpace = (r_AlienMatrix[i, j].Position.X + m_JumpDistance >= Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].WidthBeforeScale) ?
+                            Game.GraphicsDevice.Viewport.Width - r_AlienMatrix[i, j].Position.X - r_AlienMatrix[i, j].WidthBeforeScale : m_JumpDistance;
 
                         foundMostRight = true;
                     }
@@ -175,18 +175,18 @@ namespace SpaceInvaders.Models
         private float getDistanceToJumpLeft()
         {
             float remainSpace = 0;
-            bool foundMostRight = false;
+            bool foundMostLeft = false;
 
-            for (int j = 0; j < k_Cols && !foundMostRight; j++)
+            for (int j = 0; j < k_Cols && !foundMostLeft; j++)
             {
-                for (int i = 0; i < k_Rows && !foundMostRight; i++)
+                for (int i = 0; i < k_Rows && !foundMostLeft; i++)
                 {
                     if (r_AlienMatrix[i, j].Visible)
                     {
                         remainSpace = (r_AlienMatrix[i, j].Position.X - m_JumpDistance <= 0) ? 
                             -1 * r_AlienMatrix[i, j].Position.X : -1 * m_JumpDistance;
 
-                        foundMostRight = true;
+                        foundMostLeft = true;
                     }
                 }
             }
@@ -198,9 +198,9 @@ namespace SpaceInvaders.Models
         {
             bool isAtBottom = false;
 
-            for (int j = k_Cols - 1; j >= 0; j--)
+            for (int j = k_Cols - 1; j >= 0 && !isAtBottom; j--)
             {
-                for (int i = k_Rows - 1; i >= 0; i--)
+                for (int i = k_Rows - 1; i >= 0 && !isAtBottom; i--)
                 {
                     if(r_AlienMatrix[i, j].Visible && r_AlienMatrix[i, j].Position.Y + r_AlienMatrix[i, j].Height >= Game.GraphicsDevice.Viewport.Height)
                     {
