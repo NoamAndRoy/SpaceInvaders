@@ -18,7 +18,6 @@ namespace SpaceInvaders.Models
         private readonly IKeyboardManager r_KeyboardManager;
         private readonly IMouseManager r_MouseManager;
 
-        private int m_AmountOfAliveBullets;
         private bool m_CanShoot = true;
         private BlinkAnimation m_HitAnimation;
         private AnimationRepository m_DeathAnimations;
@@ -61,13 +60,10 @@ namespace SpaceInvaders.Models
         public PlayerShip(Game i_Game, string i_TexturePath)
             : base(i_Game, i_TexturePath)
         {
-            m_AmountOfAliveBullets = 0;
-
             r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
 
             m_Shooter = new Shooter(i_Game, new Vector2(0, -1), eBulletType.Player, k_MaxAmountOfBullets, Color.Red);
-            m_Shooter.BulletCollided += bulletCollided;
 
             AlphaBlending = true;
         }
@@ -127,22 +123,6 @@ namespace SpaceInvaders.Models
             base.Update(i_GameTime);
 
             Position = new Vector2(MathHelper.Clamp(Position.X, 0, this.Game.GraphicsDevice.Viewport.Width - Width), Position.Y);
-        }
-
-        private void bulletCollided(ICollideable i_Source, ICollideable i_Collided)
-        {
-            IScoreable scoreable = i_Collided as IScoreable;
-
-            if (scoreable != null && scoreable.IsScoreAvailable)
-            {
-                //PlayerScore += scoreable.Score;
-            }
-        }
-
-        public void DrawPlayerInfo()
-        {
-            Text score = new Text(Game, "Calibri");
-            score.Content = string.Empty;
         }
 
         private void HitAnimation_Finished(Animation i_Animation)

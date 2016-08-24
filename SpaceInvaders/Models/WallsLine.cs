@@ -79,7 +79,7 @@ namespace SpaceInvaders.Models
             {
                 if (r_WallsLine[i].Visible)
                 {
-                    remainSpace = Game.GraphicsDevice.Viewport.Width - r_WallsLine[i].Position.X - r_WallsLine[i].MostRightX - maxSpace;
+                    remainSpace = Game.GraphicsDevice.Viewport.Width - r_WallsLine[i].Position.X - r_WallsLine[i].Width - maxSpace;
                     found = true;
                 }
             }
@@ -97,7 +97,7 @@ namespace SpaceInvaders.Models
             {
                 if (r_WallsLine[i].Visible)
                 {
-                    remainSpace = r_WallsLine[i].Position.X + r_WallsLine[i].MostLeftX - maxSpace; 
+                    remainSpace = r_WallsLine[i].Position.X - maxSpace; 
                     found = true;
                 }
             }

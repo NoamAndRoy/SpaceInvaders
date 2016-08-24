@@ -6,6 +6,10 @@ namespace SpaceInvaders.Models
 {
     public class AlienMatrix : RegisteredComponent
     {
+        public event EventHandler ReachBottom;
+
+        public event EventHandler AllDead;
+
         private const int k_Rows = 5;
         private const int k_Cols = 9;
 
@@ -89,7 +93,7 @@ namespace SpaceInvaders.Models
 
             if(m_AlienCounter == 0)
             {
-                //Game.EndGame();
+                OnAllDead();
             }
         }
 
@@ -119,7 +123,7 @@ namespace SpaceInvaders.Models
 
                 if (isAtBottom())
                 {
-                    //Game.EndGame();
+                    OnReachBottom();
                 }
 
                 if (distanceToJump == 0)
@@ -175,18 +179,18 @@ namespace SpaceInvaders.Models
         private float getDistanceToJumpLeft()
         {
             float remainSpace = 0;
-            bool foundMostRight = false;
+            bool foundMostLeft = false;
 
-            for (int j = 0; j < k_Cols && !foundMostRight; j++)
+            for (int j = 0; j < k_Cols && !foundMostLeft; j++)
             {
-                for (int i = 0; i < k_Rows && !foundMostRight; i++)
+                for (int i = 0; i < k_Rows && !foundMostLeft; i++)
                 {
                     if (r_AlienMatrix[i, j].Visible)
                     {
                         remainSpace = (r_AlienMatrix[i, j].Position.X - m_JumpDistance <= 0) ? 
                             -1 * r_AlienMatrix[i, j].Position.X : -1 * m_JumpDistance;
 
-                        foundMostRight = true;
+                        foundMostLeft = true;
                     }
                 }
             }
@@ -210,6 +214,22 @@ namespace SpaceInvaders.Models
             }
 
             return isAtBottom;
+        }
+
+        protected virtual void OnAllDead()
+        {
+            if(AllDead != null)
+            {
+                AllDead.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        protected virtual void OnReachBottom()
+        {
+            if (ReachBottom != null)
+            {
+                ReachBottom.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

@@ -47,12 +47,12 @@ namespace SpaceInvaders
             r_PlayerShipOne = new PlayerShip(this, "Ship01_32x32");
             r_PlayerShipTwo = new PlayerShip(this, "Ship02_32x32");
 
-            r_PlayerOne = new Player(this, "Player1");
+            r_PlayerOne = new Player(this, "P1");
             r_PlayerOne.TextColor = Color.Blue;
             r_PlayerOne.PlayerShip = r_PlayerShipOne;
             r_PlayerOne.YPosition = 10;
 
-            r_PlayerTwo = new Player(this, "Player2");
+            r_PlayerTwo = new Player(this, "P2");
             r_PlayerTwo.TextColor = Color.Green;
             r_PlayerTwo.PlayerShip = r_PlayerShipTwo;
             r_PlayerTwo.YPosition = r_PlayerOne.YPosition + 20;

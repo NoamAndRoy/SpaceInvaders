@@ -15,10 +15,6 @@ namespace SpaceInvaders.Models
 
         public Vector2 SpeedFactor { get; set; }
 
-        public int MostLeftX { get; private set; }
-
-        public int MostRightX { get; private set; }
-
         public Wall(Game i_Game) 
             : base(i_Game, k_TexturePath)
         {
@@ -44,9 +40,6 @@ namespace SpaceInvaders.Models
             {
                 s_TextureUsed = true;
             }
-
-            MostLeftX = 0;
-            MostRightX = Texture.Width - 1;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -100,11 +93,7 @@ namespace SpaceInvaders.Models
             int matrixMaxInnerY = maxY - Bounds.Y,
                 matrixMinInnerY = minY - Bounds.Y,
                 matrixMaxInnerX = maxX - Bounds.X,
-                matrixMinInnerX = minX - Bounds.X,
-                tmpMostLeftX,
-                tmpMosRightX;
-
-            bool transparentRightCol = false, transparentLeftCol = false;
+                matrixMinInnerX = minX - Bounds.X;
 
             for (int i = matrixMinInnerX; i <= matrixMaxInnerX && matrixMaxInnerX < Bounds.Width; i++)
             {
@@ -115,58 +104,6 @@ namespace SpaceInvaders.Models
             }
 
             Texture.SetData<Color>(PixelsMatrix);
-
-            tmpMostLeftX = MostLeftX;
-            tmpMosRightX = MostRightX;
-
-            for (int i = MostLeftX, k = MostRightX; i <= MostRightX  || k >= MostLeftX; i++, k--)
-            {
-                if (k >= MostLeftX)
-                {
-                    transparentLeftCol = true;
-
-                    for (int j = 0; j < Bounds.Height; j++)
-                    {
-                        if (PixelsMatrix[(j * Bounds.Width) + k].A != 0)
-                        {
-                            transparentLeftCol = false;
-                            break;
-                        }
-                    }
-
-                    if (!transparentLeftCol)
-                    {
-                        tmpMostLeftX = k;
-                    }
-                }
-
-                if (i <= MostRightX)
-                {
-                    transparentRightCol = true;
-
-                    for (int j = 0; j < Bounds.Height; j++)
-                    {
-                        if (PixelsMatrix[(j * Bounds.Width) + i].A != 0)
-                        {
-                            transparentRightCol = false;
-                            break;
-                        }
-                    }
-
-                    if (!transparentRightCol)
-                    {
-                        tmpMosRightX = i;
-                    }
-                }
-            }
-
-            MostLeftX = tmpMostLeftX;
-            MostRightX = tmpMosRightX;
-
-            if (MostRightX - MostLeftX <= maxX - minX)
-            {
-                Visible = false;
-            }
         }
     }
 }
