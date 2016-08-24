@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
 {
-    public abstract class Sprite : Component2D
+    public class Sprite : Component2D
     {
         public const string k_SpritesPath = "Sprites/";
 

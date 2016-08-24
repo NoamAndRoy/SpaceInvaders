@@ -22,7 +22,6 @@ namespace SpaceInvaders.Models
         private bool m_CanShoot = true;
         private BlinkAnimation m_HitAnimation;
         private AnimationRepository m_DeathAnimations;
-        private Player m_Player;
         private HashSet<Bullet> m_Bullets;
 
         public bool UseMouse { get; set; }
@@ -107,9 +106,9 @@ namespace SpaceInvaders.Models
             {
                 if (m_CanShoot && m_AmountOfAliveBullets < k_MaxAmountOfBullets)
                 {
-                    m_Bullets.//[m_AmountOfAliveBullets].Position = new Vector2(Position.X + (Width / 2) - (m_BulletsArray[m_AmountOfAliveBullets].Width / 2), Position.Y - m_BulletsArray[m_AmountOfAliveBullets].Height);
-                    m_Bullets[m_AmountOfAliveBullets].Visible = true;
-                    m_Bullets[m_AmountOfAliveBullets].Enabled = true;
+                    //m_Bullets.//[m_AmountOfAliveBullets].Position = new Vector2(Position.X + (Width / 2) - (m_BulletsArray[m_AmountOfAliveBullets].Width / 2), Position.Y - m_BulletsArray[m_AmountOfAliveBullets].Height);
+                    //m_Bullets[m_AmountOfAliveBullets].Visible = true;
+                    //m_Bullets[m_AmountOfAliveBullets].Enabled = true;
 
                     m_AmountOfAliveBullets++;
                 }
