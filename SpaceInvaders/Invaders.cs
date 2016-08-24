@@ -88,6 +88,8 @@ namespace SpaceInvaders
             r_PlayerShipTwo.ShootKey = Keys.E;
 
             r_Walls.YPosition = r_PlayerShipOne.TopLeftPosition.Y - (Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height * 2);
+
+            r_Aliens.YBottomPosition = (int)r_PlayerShipOne.TopLeftPosition.Y;
         }
 
         protected override void Update(GameTime i_GameTime)

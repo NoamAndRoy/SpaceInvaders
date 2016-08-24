@@ -206,7 +206,7 @@ namespace SpaceInvaders.Models
             {
                 for (int i = k_Rows - 1; i >= 0 && !isAtBottom; i--)
                 {
-                    if(r_AlienMatrix[i, j].Visible && r_AlienMatrix[i, j].Position.Y + r_AlienMatrix[i, j].Height >= Game.GraphicsDevice.Viewport.Height)
+                    if(r_AlienMatrix[i, j].Visible && r_AlienMatrix[i, j].Position.Y + r_AlienMatrix[i, j].Height >= YBottomPosition)
                     {
                         isAtBottom = true;
                     }
