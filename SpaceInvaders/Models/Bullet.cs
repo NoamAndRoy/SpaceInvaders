@@ -31,16 +31,17 @@ namespace SpaceInvaders.Models
             switch (BulletType)
             {
                 case eBulletType.Player:
-                    yBullet = 1000;
+                    yBullet = Height;
                     break;
                 case eBulletType.Enemy:
                     yBullet = 0;
                     break;
                 default:
+                    yBullet = 0;
                     break;
             }
 
-            PositionOrigin = new Vector2(Width / 2, Height);
+            PositionOrigin = new Vector2(Width / 2, yBullet);
         }
 
         public override void Update(GameTime i_GameTime)
