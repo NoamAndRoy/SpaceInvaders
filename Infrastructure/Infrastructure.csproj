@@ -55,6 +55,7 @@
     <Compile Include="Models\Animations\CelAnimation.cs" />
     <Compile Include="Models\Animations\RotationAnimation.cs" />
     <Compile Include="Models\Animations\ShrinkAnimation.cs" />
+    <Compile Include="Models\BaseGame.cs" />
     <Compile Include="Models\CollideableSprite.cs" />
     <Compile Include="Models\Component2D.cs" />
     <Compile Include="Models\GameService.cs" />

@@ -10,8 +10,17 @@ namespace SpaceInvaders.Models
         private readonly Wall[] r_WallsLine;
 
         private bool m_JumpRight;
+        private float m_YPosition;
 
-        public float YPosition { get; set; }
+        public float YPosition
+        {
+            get { return m_YPosition; }
+            set
+            {
+                m_YPosition = value;
+                initializeLinePositions();
+            }
+        }
 
         public WallsLine(Game i_Game) 
             : base(i_Game)
@@ -23,8 +32,6 @@ namespace SpaceInvaders.Models
         public override void Initialize()
         {
             base.Initialize();
-
-            initializeLinePositions();
 
             m_JumpRight = true;
         }
@@ -39,16 +46,10 @@ namespace SpaceInvaders.Models
 
         private void initializeLinePositions()
         {
-            for (int i = 0; i < k_Cells; i++)
-            {
-                r_WallsLine[i].Initialize();
-            }
-
             int x = (Game.GraphicsDevice.Viewport.Width - (7 * (int)r_WallsLine[0].Width)) / 2;
-
             for (int i = 0; i < k_Cells; i++)
             {
-                r_WallsLine[i].Position = new Vector2( x + (i * 2 * r_WallsLine[i].SourceRectangle.Width), YPosition);
+                r_WallsLine[i].Position = new Vector2(x + (i * 2 * r_WallsLine[i].Width), YPosition);
                 r_WallsLine[i].SpeedFactor = new Vector2(1, 0);
             }
         }

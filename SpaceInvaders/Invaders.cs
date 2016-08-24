@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Models;
-using Infrastructure.Managers;
 using Microsoft.Xna.Framework.Input;
+using Infrastructure.Models;
 
 namespace SpaceInvaders
 {
-    public class Invaders : Game
+    public class Invaders : BaseGame
     {
         private readonly Background r_Background;
         private readonly PlayerShip r_PlayerOne;
@@ -15,45 +15,27 @@ namespace SpaceInvaders
         private readonly AlienMatrix r_Aliens;
         private readonly WallsLine r_Walls;
 
-        private readonly CollisionManager r_CollisionManager;
-        private readonly KeyboardManager r_KeyBoardManager;
-        private readonly MouseManager r_MouseManager;
-
-        private GraphicsDeviceManager m_Graphics;
-        private SpriteBatch m_SpriteBatch;
-
-        public Invaders()
-        {
-           m_Graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-
+        public Invaders() : base()
+        { 
             this.Window.Title = "Invaders";
             this.m_Graphics.PreferredBackBufferWidth = 800;
             this.m_Graphics.PreferredBackBufferHeight = 600;
 
-            r_CollisionManager = new CollisionManager(this);
-            r_KeyBoardManager = new KeyboardManager(this);
-            r_MouseManager = new MouseManager(this);
-
             r_Background = new Background(this);
-
             r_MotherShip = new MotherShip(this);
-
-            r_PlayerOne = new PlayerShip(this, "Ship01_32x32");
-            r_PlayerTwo = new PlayerShip(this, "Ship02_32x32"); 
-
             r_Aliens = new AlienMatrix(this);
             r_Walls = new WallsLine(this);
+
+            r_PlayerOne = new PlayerShip(this, "Ship01_32x32");
+            r_PlayerTwo = new PlayerShip(this, "Ship02_32x32");
         }
 
         protected override void Initialize()
         {
-            m_SpriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
+            base.Initialize();
 
             r_MotherShip.TintColor = Color.Red;
 
-            r_PlayerOne.Initialize();
             r_PlayerOne.Position = new Vector2(0f, GraphicsDevice.Viewport.Height - (r_PlayerOne.Height * 2 * 0.6f));
             r_PlayerOne.UseMouse = true;
             r_PlayerOne.MoveLeftKey = Keys.Left;
@@ -66,20 +48,15 @@ namespace SpaceInvaders
             r_PlayerTwo.MoveRightKey = Keys.F;
             r_PlayerTwo.ShootKey = Keys.E;
 
-            r_Walls.YPosition = r_PlayerOne.TopLeftPosition.Y - (2 * Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height);
-            base.Initialize();
+            r_Walls.YPosition = r_PlayerOne.TopLeftPosition.Y - (Content.Load<Texture2D>(Wall.k_SpritesPath + Wall.k_TexturePath).Height * 2);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void LoadContent()
         {
-            m_Graphics.GraphicsDevice.Clear(Color.Black);
-
-            m_SpriteBatch.Begin();
-            base.Draw(gameTime);
-            m_SpriteBatch.End();
+            base.LoadContent();
         }
 
-        public void EndGame()
+        public override void EndGame()
         {
             string message = string.Format(
 @"The winner is {0}!
@@ -90,7 +67,7 @@ r_PlayerOne.PlayerScore,
 r_PlayerTwo.PlayerScore);
 
             System.Windows.Forms.MessageBox.Show(message);
-            this.Exit();
+            base.EndGame();
         }
     }
 }
