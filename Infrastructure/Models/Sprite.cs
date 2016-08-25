@@ -79,7 +79,7 @@ namespace Infrastructure.Models
 
             if (!m_UseSharedBatch)
             {
-                SpriteBatch.Begin();
+                SpriteBatch.End();
             }
 
             base.Draw(i_GameTime);
