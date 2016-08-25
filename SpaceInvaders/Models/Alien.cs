@@ -13,6 +13,8 @@ namespace SpaceInvaders.Models
         private const int k_MaxTimeToShoot = 100;
         private const int k_MaxAmountOfBullets = 1;
         private const string k_TexturePath = "Enemies";
+        private const double k_AnimationLength = 1.8f;
+        private const float k_AmountOfRotationInASecond = 7;
 
         private static Random s_RandomShootTime = new Random();
 
@@ -62,9 +64,9 @@ namespace SpaceInvaders.Models
         {
             base.Initialize();
 
-            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(1.8));
-            m_DeathAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(1.8)));
-            m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(1.8), 7));
+            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(k_AnimationLength));
+            m_DeathAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
+            m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfRotationInASecond));
 
             m_DeathAnimations.Finished += deathAnimations_Finished;
 

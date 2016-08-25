@@ -12,6 +12,9 @@ namespace SpaceInvaders.Models
         private const int k_Speed = 140;
         public const int k_Score = -1500;
         private const int k_MaxAmountOfBullets = 2;
+        private const double k_AnimationLength = 2.6;
+        private const float k_AmountOfBlinksInASecond = 9;
+        private const float k_AmountOfRotationInASecond = 3;
 
         private readonly IKeyboardManager r_KeyboardManager;
         private readonly IMouseManager r_MouseManager;
@@ -68,13 +71,13 @@ namespace SpaceInvaders.Models
 
         private void initializeAnimations()
         {
-            m_HitAnimation = new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 9);
+            m_HitAnimation = new BlinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfBlinksInASecond);
             m_HitAnimation.Finished += hitAnimation_Finished;
             m_HitAnimation.Finished += deathAnimationOrHitAnimation_Finished;
 
-            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(2.6));
-            m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(2.6), 3));
-            m_DeathAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
+            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(k_AnimationLength));
+            m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfRotationInASecond));
+            m_DeathAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
 
             m_DeathAnimations.Finished += deathAnimations_Finished;
             m_DeathAnimations.Finished += deathAnimationOrHitAnimation_Finished;

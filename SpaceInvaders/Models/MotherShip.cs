@@ -13,6 +13,9 @@ namespace SpaceInvaders.Models
         private const int k_Score = 600;
         private const string k_TexturePath = "MotherShip_32x120";
 
+        private const double k_AnimationLength = 2.6;
+        private const float k_AmountOfBlinksInASecond = 5;
+
         private const int k_MinAppearTime = 5;
         private const int k_MaxAppearTime = 20;
 
@@ -53,10 +56,10 @@ namespace SpaceInvaders.Models
 
             m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
 
-            m_HitAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(2.6));
-            m_HitAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
-            m_HitAnimations.AddAnimation(new BlinkAnimation(Game, this, TimeSpan.FromSeconds(2.6), 5));
-            m_HitAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(2.6)));
+            m_HitAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(k_AnimationLength));
+            m_HitAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
+            m_HitAnimations.AddAnimation(new BlinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfBlinksInASecond));
+            m_HitAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
 
             m_HitAnimations.Finished += hitAnimations_Finished;
         }
