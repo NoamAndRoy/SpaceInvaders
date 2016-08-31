@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Models.Animations;
+using Infrastructure.Models.Animators;
 
 namespace SpaceInvaders.Models
 {
@@ -24,8 +24,6 @@ namespace SpaceInvaders.Models
         private Random m_RandomAppearTime;
         private int m_SecondsToNextAppear;
         private bool m_IsDead;
-
-        private AnimationRepository m_HitAnimations;
 
         public int Score
         {
@@ -56,24 +54,28 @@ namespace SpaceInvaders.Models
 
             m_SecondsToNextAppear = m_RandomAppearTime.Next(k_MinAppearTime, k_MaxAppearTime);
 
-            m_HitAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(k_AnimationLength));
-            m_HitAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
-            m_HitAnimations.AddAnimation(new BlinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfBlinksInASecond));
-            m_HitAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
+            Animator2D shrink = new SizeAnimator(TimeSpan.FromSeconds(k_AnimationLength), this.Scales, Vector2.Zero);
+            Animator2D blink = new BlinkAnimator(TimeSpan.FromSeconds(0.25), TimeSpan.FromSeconds(k_AnimationLength));
+            Animator2D fadeOut = new FadeAnimator(TimeSpan.FromSeconds(k_AnimationLength), this.Opacity, 0);
 
-            m_HitAnimations.Finished += hitAnimations_Finished;
+            Animations.Add(new CompositeAnimator("HitAnimations", TimeSpan.FromSeconds(k_AnimationLength), this, shrink, blink, fadeOut));
+            Animations.Enabled = true;
+            Animations["HitAnimations"].Enabled = false;
+
+            Animations["HitAnimations"].Finished += hitAnimations_Finished;
         }
 
         public override void Collided(ICollideable i_Collideable)
         {
-            m_HitAnimations.Start();
+            Animations["HitAnimations"].Resume();
             OnCollide(i_Collideable);
         }
 
-        private void hitAnimations_Finished(Animation i_Animation)
+        private void hitAnimations_Finished(object sender, EventArgs e)
         {
-            m_HitAnimations.Reset();
             resetMotherShip();
+            Animations["HitAnimations"].Pause();
+            Animations["HitAnimations"].Reset();
         }
 
         public override void Update(GameTime i_GameTime)

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
-using Infrastructure.Models.Animations;
+using Infrastructure.Models.Animators;
 
 namespace SpaceInvaders.Models
 {
@@ -20,8 +20,6 @@ namespace SpaceInvaders.Models
         private readonly IMouseManager r_MouseManager;
 
         private bool m_CanShoot = true;
-        private BlinkAnimation m_HitAnimation;
-        private AnimationRepository m_DeathAnimations;
         private Shooter m_Shooter;
 
         public bool UseMouse { get; set; }
@@ -31,16 +29,6 @@ namespace SpaceInvaders.Models
         public Keys MoveRightKey { get; set; }
 
         public Keys ShootKey { get; set; }
-
-        public BlinkAnimation HitAnimation
-        {
-            get { return m_HitAnimation; }
-        }
-
-        public AnimationRepository DeathAnimations
-        {
-            get { return m_DeathAnimations; }
-        }
 
         public bool CanShoot
         {
@@ -71,16 +59,20 @@ namespace SpaceInvaders.Models
 
         private void initializeAnimations()
         {
-            m_HitAnimation = new BlinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfBlinksInASecond);
-            m_HitAnimation.Finished += hitAnimation_Finished;
-            m_HitAnimation.Finished += deathAnimationOrHitAnimation_Finished;
+            Animations.Add(new BlinkAnimator("HitAnimation", TimeSpan.FromSeconds(1f / 9f), TimeSpan.FromSeconds(k_AnimationLength)));
+            Animations["HitAnimation"].Finished += hitAnimation_Finished;
+            Animations["HitAnimation"].Finished += deathAnimationOrHitAnimation_Finished;
+            Animations["HitAnimation"].Enabled = false;
 
-            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(k_AnimationLength));
-            m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfRotationInASecond));
-            m_DeathAnimations.AddAnimation(new FadeOutAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
+            Animator2D rotation = new RotationAnimator(TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfRotationInASecond);
+            Animator2D fadeOut = new FadeAnimator(TimeSpan.FromSeconds(k_AnimationLength), this.Opacity, 0);
 
-            m_DeathAnimations.Finished += deathAnimations_Finished;
-            m_DeathAnimations.Finished += deathAnimationOrHitAnimation_Finished;
+            Animations.Add(new CompositeAnimator("DeathAnimations", TimeSpan.FromSeconds(k_AnimationLength), this, rotation, fadeOut));
+            Animations.Enabled = true;
+
+            Animations["DeathAnimations"].Finished += deathAnimations_Finished;
+            Animations["DeathAnimations"].Finished += deathAnimationOrHitAnimation_Finished;
+            Animations["DeathAnimations"].Enabled = false;
         }
 
         public override void Initialize()
@@ -126,18 +118,19 @@ namespace SpaceInvaders.Models
             Position = new Vector2(MathHelper.Clamp(Position.X, 0, this.Game.GraphicsDevice.Viewport.Width - Width), Position.Y);
         }
 
-        private void hitAnimation_Finished(Animation i_Animation)
+        private void hitAnimation_Finished(object sender,  EventArgs e)
         {
             Position = new Vector2(0f, Position.Y);
-            m_HitAnimation.Reset();
+            Animations["HitAnimation"].Pause();
+            Animations["HitAnimation"].Reset();
         }
 
-        private void deathAnimations_Finished(Animation i_Animation)
+        private void deathAnimations_Finished(object sender, EventArgs e)
         {
             this.DeleteComponent2D();
         }
 
-        private void deathAnimationOrHitAnimation_Finished(Animation i_Animation)
+        private void deathAnimationOrHitAnimation_Finished(object sender, EventArgs e)
         {
             OnSoulLost();
         }

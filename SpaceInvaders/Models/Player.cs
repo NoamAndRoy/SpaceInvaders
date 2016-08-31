@@ -104,7 +104,7 @@ namespace SpaceInvaders.Models
         {
             Bullet bullet = i_Collided as Bullet;
 
-            if (PlayerShip.HitAnimation != null && PlayerShip.DeathAnimations != null && !PlayerShip.HitAnimation.Enabled && !PlayerShip.DeathAnimations.Enabled)
+            if (PlayerShip.Animations["HitAnimation"] != null && PlayerShip.Animations["DeathAnimations"] != null && !PlayerShip.Animations["HitAnimation"].Enabled && !PlayerShip.Animations["DeathAnimations"].Enabled)
             {
                 if (bullet != null && bullet.BulletType == eBulletType.Enemy)
                 {
@@ -113,7 +113,7 @@ namespace SpaceInvaders.Models
 
                     if (Souls > 1)
                     {
-                        PlayerShip.HitAnimation.Start();
+                        PlayerShip.Animations["HitAnimation"].Resume();
                     }
                 }
             }
@@ -123,9 +123,9 @@ namespace SpaceInvaders.Models
                     Souls = 0;
                 }
 
-                if (Souls == 0)
+                if (Souls <= 1)
                 {
-                    PlayerShip.DeathAnimations.Start();
+                    PlayerShip.Animations["DeathAnimations"].Resume();
                     PlayerShip.CanShoot = false;
                 }
         }

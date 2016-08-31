@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Models.Animations;
+using Infrastructure.Models.Animators;
 
 namespace SpaceInvaders.Models
 {
@@ -20,10 +20,9 @@ namespace SpaceInvaders.Models
 
         private readonly int r_Score;
 
-        public CelAnimation CelAnimation { get; private set; }
-
-        private AnimationRepository m_DeathAnimations;
         private Shooter m_Shooter;
+
+        public Rectangle[] SourceRectangles;
 
         public int Score
         {
@@ -46,16 +45,12 @@ namespace SpaceInvaders.Models
 
         private int m_SecondsToNextShoot;
 
-        public Alien(Game i_Game, int i_Score, params Rectangle[] i_SourceRectangles)
+        public Alien(Game i_Game, int i_Score)
             : base(i_Game, k_TexturePath)
         {
             r_Score = i_Score;
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
-            CelAnimation = new CelAnimation(Game, this, 2, i_SourceRectangles);
-            CelAnimation.Enabled = true;
             IsScoreAvailable = true;
-
-            SourceRectangle = i_SourceRectangles[0];
 
             m_Shooter = new Shooter(i_Game, new Vector2(0, 1), eBulletType.Enemy, k_MaxAmountOfBullets, Color.Blue);
         }
@@ -64,12 +59,16 @@ namespace SpaceInvaders.Models
         {
             base.Initialize();
 
-            m_DeathAnimations = new AnimationRepository(Game, this, TimeSpan.FromSeconds(k_AnimationLength));
-            m_DeathAnimations.AddAnimation(new ShrinkAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength)));
-            m_DeathAnimations.AddAnimation(new RotationAnimation(Game, this, TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfRotationInASecond));
+            Animator2D shrink = new SizeAnimator(TimeSpan.FromSeconds(k_AnimationLength), this.Scales, new Vector2(0, 0));
+            Animator2D rotation = new RotationAnimator(TimeSpan.FromSeconds(k_AnimationLength), k_AmountOfRotationInASecond);
+            Animations.Add(new CompositeAnimator("DeathAnimations", TimeSpan.FromSeconds(k_AnimationLength), this, shrink, rotation));
+            Animations["DeathAnimations"].Enabled = false;
 
-            m_DeathAnimations.Finished += deathAnimations_Finished;
+            Animations["DeathAnimations"].Finished += deathAnimations_Finished;
 
+            Animations.Add(new CelAnimator(TimeSpan.FromSeconds(0.5), TimeSpan.Zero, SourceRectangles));
+
+            Animations.Resume();
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
         }
 
@@ -77,6 +76,8 @@ namespace SpaceInvaders.Models
         {
             Width = 32;
             Height = 32;
+
+            SourceRectangle = new Rectangle(0, 0, (int)WidthBeforeScale, (int)HeightBeforeScale);
             
             RotationOrigin = new Vector2(WidthBeforeScale / 2, HeightBeforeScale / 2);
         }
@@ -90,6 +91,8 @@ namespace SpaceInvaders.Models
 
                 m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
             }
+
+            Animations.Update(i_GameTime);
         }
 
         public override void Collided(ICollideable i_Collideable)
@@ -98,13 +101,13 @@ namespace SpaceInvaders.Models
 
             if (bullet != null && bullet.BulletType == eBulletType.Player)
             {
-                m_DeathAnimations.Start();
+                Animations["DeathAnimations"].Resume();
             }
 
             base.Collided(i_Collideable);
         }
 
-        private void deathAnimations_Finished(Animation i_Animation)
+        private void deathAnimations_Finished(object sender, EventArgs e)
         {
             DeleteComponent2D();
         }

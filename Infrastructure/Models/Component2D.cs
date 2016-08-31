@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Infrastructure.Models.Animators;
 
 namespace Infrastructure.Models
 {
@@ -19,6 +20,7 @@ namespace Infrastructure.Models
         private SpriteEffects m_SpriteEffects = SpriteEffects.None;
         protected SpriteBatch m_SpriteBatch;
         protected bool m_UseSharedBatch = true;
+        protected CompositeAnimator m_Animations;
 
         public Vector2 Position
         {
@@ -146,6 +148,12 @@ namespace Infrastructure.Models
             }
         }
 
+        public CompositeAnimator Animations
+        {
+            get { return m_Animations; }
+            set { m_Animations = value; }
+        }
+
         public float Opacity
         {
             get { return (float)m_TintColor.A / (float)byte.MaxValue; }
@@ -164,6 +172,7 @@ namespace Infrastructure.Models
         {
             base.Initialize();
 
+            m_Animations = new CompositeAnimator(this);
             initBounds();
         }
 
@@ -194,6 +203,8 @@ namespace Infrastructure.Models
             this.Rotation += this.AngularVelocity * totalSeconds;
 
             base.Update(i_GameTime);
+
+            this.Animations.Update(i_GameTime);
         }
 
         public override void Draw(GameTime i_GameTime)
@@ -208,9 +219,9 @@ namespace Infrastructure.Models
             Game.Components.Remove(this);
         }
 
-        public Sprite ShallowClone()
+        public Component2D ShallowClone()
         {
-            return (Sprite)this.MemberwiseClone();
+            return (Component2D)this.MemberwiseClone();
         }
     }
 }

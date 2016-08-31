@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Infrastructure.Models;
+using Infrastructure.Models.Animators;
 
 namespace SpaceInvaders.Models
 {
@@ -33,7 +34,7 @@ namespace SpaceInvaders.Models
                 {
                     for (int j = 0; j < k_Cols; j++)
                     {
-                        r_AlienMatrix[i, j].CelAnimation.AmountOfCellsInASecond = m_TimeToJump / 1000;
+                        (r_AlienMatrix[i, j].Animations["CelAnimation"] as CelAnimator).CellTime = TimeSpan.FromSeconds(m_TimeToJump / 1000);
                     }
                 }
             }
@@ -63,17 +64,20 @@ namespace SpaceInvaders.Models
                 {
                     if (i == 0)
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, 220, new Rectangle[] { new Rectangle(0, 0, 32, 32), new Rectangle(32, 0, 32, 32) });
+                        r_AlienMatrix[i, j] = new Alien(Game, 220);
+                        r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(0, 0, 32, 32), new Rectangle(32, 0, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.Pink;
                     }
                     else if (i >= 1 && i <= 2)
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, 160, new Rectangle[] { new Rectangle(32 * (i % 2), 32, 32, 32), new Rectangle(32 * ((i + 1) % 2), 32, 32, 32) });
+                        r_AlienMatrix[i, j] = new Alien(Game, 160);
+                        r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(32 * (i % 2), 32, 32, 32), new Rectangle(32 * ((i + 1) % 2), 32, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.PowderBlue;
                     }
                     else
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, 90, new Rectangle[] { new Rectangle(32 * (i % 2), 64, 32, 32), new Rectangle(32 * ((i + 1) % 2), 64, 32, 32) });
+                        r_AlienMatrix[i, j] = new Alien(Game, 90);
+                        r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(32 * (i % 2), 64, 32, 32), new Rectangle(32 * ((i + 1) % 2), 64, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.LightGoldenrodYellow;
                     }
 
@@ -99,15 +103,16 @@ namespace SpaceInvaders.Models
 
         private void initializeBoardPositions()
         {
-            m_JumpDistance = r_AlienMatrix[0, 0].SourceRectangle.Width / 2;
-
             for (int i = 0; i < k_Rows; i++)
             {
                 for (int j = 0; j < k_Cols; j++)
                 {
+                    r_AlienMatrix[i, j].Initialize();
                     r_AlienMatrix[i, j].Position = new Vector2(0, r_AlienMatrix[i, j].SourceRectangle.Height * 3) + new Vector2((int)Math.Round(j * r_AlienMatrix[i, j].SourceRectangle.Width * 1.6), (int)Math.Round(i * r_AlienMatrix[i, j].SourceRectangle.Height * 1.6f));
                 }
             }
+
+            m_JumpDistance = r_AlienMatrix[0, 0].SourceRectangle.Width / 2;
         }
 
         public override void Update(GameTime i_GameTime)
