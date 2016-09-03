@@ -175,3 +175,15 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Calibri.spritefont
 
+#begin Fonts/Headline.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Headline.spritefont
+
+#begin Fonts/Button.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Button.spritefont
+

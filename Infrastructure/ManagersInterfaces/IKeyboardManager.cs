@@ -5,7 +5,9 @@ namespace Infrastructure.ManagersInterfaces
 {
     public interface IKeyboardManager
     {
-        void Update(GameTime i_GameTime);
+        KeyboardState CurrentState { get; }
+
+        KeyboardState PrevState { get; }
 
         bool IsKeyPressed(Keys i_Key);
 

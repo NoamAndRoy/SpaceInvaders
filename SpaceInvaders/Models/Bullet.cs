@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Infrastructure.Models;
 using Infrastructure.ManagersInterfaces;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {

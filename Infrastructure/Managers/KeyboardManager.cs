@@ -28,6 +28,16 @@ namespace Infrastructure.Managers
             base.Update(i_GameTime);
         }
 
+        public KeyboardState CurrentState
+        {
+            get { return m_KeyboardState; }
+        }
+
+        public KeyboardState PrevState
+        {
+            get { return m_PrevKeyboardState; }
+        }
+
         public bool IsKeyPressed(Keys i_Key)
         {
             return m_KeyboardState.IsKeyDown(i_Key) && m_PrevKeyboardState.IsKeyUp(i_Key);

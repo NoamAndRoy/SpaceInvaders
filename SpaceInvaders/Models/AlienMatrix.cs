@@ -5,7 +5,7 @@ using Infrastructure.Models.Animators;
 
 namespace SpaceInvaders.Models
 {
-    public class AlienMatrix : RegisteredComponent
+    public class AlienMatrix : CompositeDrawableComponent<Alien>
     {
         public event EventHandler ReachBottom;
 
@@ -42,6 +42,7 @@ namespace SpaceInvaders.Models
 
         public AlienMatrix(Game i_Game) : base(i_Game)
         {
+            this.DrawOrder = int.MaxValue;
             m_PasssedTime = 0;
             m_JumpRight = true;
             m_AlienCounter = k_Rows * k_Cols;
@@ -82,6 +83,7 @@ namespace SpaceInvaders.Models
                     }
 
                     r_AlienMatrix[i, j].VisibleChanged += alienStatusChanged;
+                    this.Add(r_AlienMatrix[i, j]);
                 }
             }
         }

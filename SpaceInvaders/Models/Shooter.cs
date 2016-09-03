@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
+using Infrastructure.Models;
 
 namespace SpaceInvaders.Models
 {
-    public class Shooter
+    public class Shooter : CompositeDrawableComponent<Bullet>
     {
         public event CollidedEventHandler BulletCollided;
 
@@ -41,7 +42,7 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public Shooter(Game i_Game, Vector2 i_Direction, eBulletType i_BulletType, int i_MaxAmountOfBullets, Color i_Tint)
+        public Shooter(Game i_Game, Vector2 i_Direction, eBulletType i_BulletType, int i_MaxAmountOfBullets, Color i_Tint) : base(i_Game)
         {
             Direction = i_Direction;
             m_BulletType = i_BulletType;
@@ -54,11 +55,13 @@ namespace SpaceInvaders.Models
             {
                 Bullet bullet = new Bullet(i_Game, Direction, m_BulletType);
                 bullet.Visible = false;
+                bullet.Enabled = false;
                 bullet.VisibleChanged += bullet_VisibleChanged;
                 bullet.CollidedAction += bullet_CollidedAction;
                 bullet.TintColor = i_Tint;
 
                 m_Bullets.Enqueue(bullet);
+                this.Add(bullet);
             }
         }
 

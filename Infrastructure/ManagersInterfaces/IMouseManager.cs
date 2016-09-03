@@ -1,19 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
-using Infrastructure.Models; 
+using Infrastructure.Models;
+using Microsoft.Xna.Framework.Input;
 
 namespace Infrastructure.ManagersInterfaces
 {
     public interface IMouseManager
     {
-        void Update(GameTime i_GameTime);
-
         int X { get; }
 
+        int PrevX { get; }
+
         int Y { get; }
+
+        int PrevY { get; }
+
+        int MouseWheel { get; }
 
         int DeltaX { get; }
 
         int DeltaY { get; }
+
+        int MouseWheelDelta { get; }
 
         bool IsKeyPressed(eMouseButton i_MouseButton);
 

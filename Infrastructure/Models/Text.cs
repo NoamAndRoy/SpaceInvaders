@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.Models.Screens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
@@ -8,7 +9,7 @@ namespace Infrastructure.Models
         public const string k_FontsPath = "Fonts/";
 
         private SpriteFont m_Font;
-        private string m_Content;
+        private string m_Content = string.Empty;
 
         public SpriteFont Font
         {
@@ -34,6 +35,11 @@ namespace Infrastructure.Models
             set
             {
                 m_Content = value;
+
+                if (m_Font != null)
+                {
+                    initBounds();
+                }
             }
         }
 
@@ -71,7 +77,7 @@ namespace Infrastructure.Models
                 m_SpriteBatch.Begin();
             }
 
-            SpriteBatch.DrawString(m_Font, m_Content, this.positionForDraw, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
+            SpriteBatch.DrawString(m_Font, m_Content, this.positionForDraw, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, this.SpriteEffects, this.LayerDepth);
 
             if (!m_UseSharedBatch || AlphaBlending)
             {

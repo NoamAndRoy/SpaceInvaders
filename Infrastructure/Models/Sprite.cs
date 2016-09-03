@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.Models.Screens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
@@ -75,7 +76,7 @@ namespace Infrastructure.Models
                 SpriteBatch.Begin();
             }
 
-            SpriteBatch.Draw(m_Texture, this.positionForDraw, this.SourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
+            SpriteBatch.Draw(m_Texture, this.positionForDraw, this.SourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, this.SpriteEffects, this.LayerDepth);
 
             if (!m_UseSharedBatch)
             {

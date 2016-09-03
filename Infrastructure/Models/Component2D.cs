@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Infrastructure.Models.Animators;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {
@@ -79,26 +80,40 @@ namespace Infrastructure.Models
 
         public float Width
         {
-            get { return m_WidthBeforeScale * m_Scales.X; }
-            set { m_WidthBeforeScale = value / m_Scales.X; }
+            get { return WidthBeforeScale * m_Scales.X; }
+            set { WidthBeforeScale = value / m_Scales.X; }
         }
 
         public float Height
         {
-            get { return m_HeightBeforeScale * m_Scales.Y; }
-            set { m_HeightBeforeScale = value / m_Scales.Y; }
+            get { return HeightBeforeScale * m_Scales.Y; }
+            set { HeightBeforeScale = value / m_Scales.Y; }
         }
 
         public float WidthBeforeScale
         {
             get { return m_WidthBeforeScale; }
-            set { m_WidthBeforeScale = value; }
+            set
+            {
+                if (m_WidthBeforeScale != value)
+                {
+                    m_WidthBeforeScale = value;
+                    OnSizeChanged();
+                }
+            }
         }
 
         public float HeightBeforeScale
         {
             get { return m_HeightBeforeScale; }
-            set { m_HeightBeforeScale = value; }
+            set
+            {
+                if (m_HeightBeforeScale != value)
+                {
+                    m_HeightBeforeScale = value;
+                    OnSizeChanged();
+                }
+            }
         }
 
         public float Rotation
@@ -184,13 +199,8 @@ namespace Infrastructure.Models
         {
             if (m_SpriteBatch == null)
             {
-                m_SpriteBatch = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-
-                if (m_SpriteBatch == null)
-                {
-                    m_SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
-                    m_UseSharedBatch = false;
-                }
+                m_SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
+                m_UseSharedBatch = false;
             }
 
             base.LoadContent();
@@ -205,10 +215,6 @@ namespace Infrastructure.Models
             base.Update(i_GameTime);
 
             this.Animations.Update(i_GameTime);
-        }
-
-        public override void Draw(GameTime i_GameTime)
-        {
         }
 
         public virtual void DeleteComponent2D()

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.Models
 {
-    public class WallsLine : RegisteredComponent
+    public class WallsLine : CompositeDrawableComponent<Wall>
     {
         private const int k_Cells = 4;
 
@@ -41,6 +41,7 @@ namespace SpaceInvaders.Models
             for (int i = 0; i < k_Cells; i++)
             {
                 r_WallsLine[i] = new Wall(Game);
+                this.Add(r_WallsLine[i]);
             }
         }
 

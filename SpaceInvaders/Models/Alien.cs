@@ -4,6 +4,7 @@ using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models.Animators;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {

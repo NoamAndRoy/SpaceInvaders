@@ -10,6 +10,7 @@ namespace SpaceInvaders.Models
         public Background(Game i_Game)
             : base(i_Game, k_TexturePath)
         {
+            this.DrawOrder = int.MinValue;
             TintColor = new Color(0.4f, 0.4f, 0.4f);
         }
     }

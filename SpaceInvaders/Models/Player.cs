@@ -7,7 +7,7 @@ using SpaceInvaders.Interfaces;
 
 namespace SpaceInvaders.Models
 {
-    public class Player : IGameComponent
+    public class Player : CompositeDrawableComponent<Component2D>
     { 
         private readonly string r_PlayerName;
         private readonly List<Sprite> r_SoulsSprites;
@@ -60,19 +60,18 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public Player(Game i_Game, string i_PlayerName)
+        public Player(Game i_Game, string i_PlayerName) : base(i_Game)
         {
             r_PlayerName = i_PlayerName;
             r_SoulsSprites = new List<Sprite>(3);
 
             r_ScoreText = new Text(i_Game, "Calibri");
+            this.Add(r_ScoreText);
 
             r_Game = i_Game;
 
             Souls = 3;
             PlayerScore = 0;
-
-            i_Game.Components.Add(this);
         }
 
         private void initializeSouls()
@@ -85,6 +84,7 @@ namespace SpaceInvaders.Models
                 r_SoulsSprites[i].Opacity = 0.5f;
                 r_SoulsSprites[i].Scales = new Vector2(0.5f, 0.5f);
                 r_SoulsSprites[i].Position = new Vector2(r_Game.GraphicsDevice.Viewport.Width - (r_SoulsSprites[i].Width * Souls * 1.5f) + (i * r_SoulsSprites[i].Width * 1.5f), YPosition);
+                this.Add(r_SoulsSprites[i]);
             }
         }
 
@@ -94,8 +94,10 @@ namespace SpaceInvaders.Models
             r_ScoreText.TintColor = TextColor;
         }
 
-        public void Initialize()
+        public override void Initialize()
         {
+            base.Initialize();
+
             initializeSouls();
             initializeScore();
         }

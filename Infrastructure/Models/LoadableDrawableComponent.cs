@@ -1,6 +1,7 @@
 ﻿using System;
 using Infrastructure.ManagersInterfaces;
 using Microsoft.Xna.Framework;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {
@@ -49,8 +50,6 @@ namespace Infrastructure.Models
             this.r_AssetName = i_AssetName;
             this.UpdateOrder = int.MaxValue;
             this.DrawOrder = int.MaxValue;
-
-            this.Game.Components.Add(this);
         }
 
         public override void Initialize()

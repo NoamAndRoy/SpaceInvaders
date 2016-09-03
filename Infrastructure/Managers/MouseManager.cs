@@ -10,9 +10,25 @@ namespace Infrastructure.Managers
         private MouseState m_PrevMouseState;
         private MouseState m_MouseState;
 
+        private Vector2 m_OriginalWindowSize;
+        private Vector2 m_MouseScale;
+
         public MouseManager(Game i_Game)
             : base(i_Game)
         {
+            i_Game.Window.ClientSizeChanged += window_ClientSizeChanged;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            m_OriginalWindowSize = new Vector2(Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
+            m_MouseScale = new Vector2(1);
+        }
+
+        private void window_ClientSizeChanged(object sender, System.EventArgs e)
+        {
+            m_MouseScale = new Vector2(Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height) / m_OriginalWindowSize;
         }
 
         protected override void registerService()
@@ -30,12 +46,27 @@ namespace Infrastructure.Managers
 
         public int X
         {
-            get { return m_MouseState.X; }
+            get { return (int)(m_MouseState.X / m_MouseScale.X); }
+        }
+
+        public int PrevX
+        {
+            get { return (int)(m_PrevMouseState.X / m_MouseScale.X); }
         }
 
         public int Y
         {
-            get { return m_MouseState.Y; }
+            get { return (int)(m_MouseState.Y / m_MouseScale.Y); }
+        }
+
+        public int PrevY
+        {
+            get { return (int)(m_PrevMouseState.Y / m_MouseScale.Y); }
+        }
+
+        public int MouseWheel
+        {
+            get { return m_MouseState.ScrollWheelValue; }
         }
 
         public int DeltaX
@@ -46,6 +77,11 @@ namespace Infrastructure.Managers
         public int DeltaY
         {
             get { return m_MouseState.Y - m_PrevMouseState.Y; }
+        }
+
+        public int MouseWheelDelta
+        {
+            get { return m_MouseState.ScrollWheelValue - m_PrevMouseState.ScrollWheelValue; }
         }
 
         public bool IsKeyPressed(eMouseButton i_MouseButton)
