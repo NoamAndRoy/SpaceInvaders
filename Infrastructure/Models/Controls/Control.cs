@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Infrastructure.ManagersInterfaces;
-using Microsoft.Xna.Framework.Input;
 using Infrastructure.Managers;
+using Infrastructure.ManagersInterfaces;
+using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Models.Controls
 {
@@ -49,8 +44,8 @@ namespace Infrastructure.Models.Controls
             get { return IsMouseOn(m_MouseManager.X, m_MouseManager.Y) && Game.IsMouseVisible ? m_MouseManager : m_DummyMouseManager; }
         }
 
-        public Color InActiveColor = Color.White;
-        public Color ActiveColor = Color.Gray;
+        public Color InActiveColor = Color.Gray;
+        public Color ActiveColor = Color.White;
 
         public Control(Game i_Game, string i_Name, Text i_Text)
             : base(i_Game, i_Text.AssetName)
@@ -63,17 +58,17 @@ namespace Infrastructure.Models.Controls
             r_Name = i_Name;
         }
 
-        private void text_SizeChanged(object sender, EventArgs e)
-        {
-            Width = Math.Max(Width, Math.Max(Text.Width, Texture.Width));
-            Height = Math.Max(Height, Math.Max(Text.Height, Texture.Height));
-        }
-
         public Control(Game i_Game, string i_Name, Text i_Text, Sprite i_Texture)
             : this(i_Game, i_Name, i_Text)
         {
             r_Texture = i_Texture;
             isTextureBlank = false;
+        }
+
+        private void text_SizeChanged(object sender, EventArgs e)
+        {
+            Width = Math.Max(Width, Math.Max(Text.Width, Texture.Width));
+            Height = Math.Max(Height, Math.Max(Text.Height, Texture.Height));
         }
 
         public override void Initialize()
@@ -96,8 +91,8 @@ namespace Infrastructure.Models.Controls
             }
             else
             {
-                WidthBeforeScale = Texture.WidthBeforeScale;
-                HeightBeforeScale = Texture.HeightBeforeScale;
+                WidthBeforeScale = Math.Max(Texture.WidthBeforeScale, Text.WidthBeforeScale);
+                HeightBeforeScale = Math.Max(Texture.HeightBeforeScale, Text.HeightBeforeScale);
             }
         }
 

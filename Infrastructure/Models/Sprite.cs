@@ -1,5 +1,4 @@
-﻿using Infrastructure.Models.Screens;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
@@ -61,18 +60,8 @@ namespace Infrastructure.Models
 
         public override void Draw(GameTime i_GameTime)
         {
-            if (AlphaBlending)
+            if (!m_UseSharedBatch)
             {
-                SpriteBatch.End();
-                SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-            }
-            else if (!m_UseSharedBatch)
-            {
-                SpriteBatch.Begin();
-            }
-            else
-            {
-                SpriteBatch.End();
                 SpriteBatch.Begin();
             }
 

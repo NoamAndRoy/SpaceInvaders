@@ -1,5 +1,4 @@
-﻿using Infrastructure.Models.Screens;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
@@ -79,7 +78,7 @@ namespace Infrastructure.Models
 
             SpriteBatch.DrawString(m_Font, m_Content, this.positionForDraw, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, this.SpriteEffects, this.LayerDepth);
 
-            if (!m_UseSharedBatch || AlphaBlending)
+            if (!m_UseSharedBatch)
             {
                 m_SpriteBatch.End();
             }

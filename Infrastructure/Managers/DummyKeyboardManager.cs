@@ -1,5 +1,4 @@
-﻿using System;
-using Infrastructure.ManagersInterfaces;
+﻿using Infrastructure.ManagersInterfaces;
 using Microsoft.Xna.Framework.Input;
 
 namespace Infrastructure.Managers

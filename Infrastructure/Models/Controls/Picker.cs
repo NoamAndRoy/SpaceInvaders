@@ -93,6 +93,7 @@ namespace Infrastructure.Models.Controls
         public void SetSelectionOption(T i_Value)
         {
             int index = r_Options.FindIndex((option) => i_Value.Equals(option.Value));
+
             if(index >= 0)
             {
                 m_SelectedIndex = index;

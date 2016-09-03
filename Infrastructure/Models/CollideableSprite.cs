@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
-using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {

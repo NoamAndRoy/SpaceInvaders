@@ -196,12 +196,14 @@ namespace Infrastructure.Models.Screens
         public override void Initialize()
         {
             m_KeyboardManager = Game.Services.GetService(typeof(IKeyboardManager)) as IKeyboardManager;
+
             if (m_KeyboardManager == null)
             {
                 m_KeyboardManager = m_DummyKeyboardManager;
             }
 
             m_MouseManager = Game.Services.GetService(typeof(IMouseManager)) as IMouseManager;
+
             if (m_MouseManager == null)
             {
                 m_MouseManager = m_DummyMouseManager;
@@ -260,6 +262,7 @@ namespace Infrastructure.Models.Screens
         protected void ExitScreen()
         {
             this.State = eScreenState.Closing;
+
             if (DeactivationLength == TimeSpan.Zero)
             {
                 this.State = eScreenState.Closed;

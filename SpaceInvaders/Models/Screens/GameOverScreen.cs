@@ -1,10 +1,10 @@
-﻿using Infrastructure.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Infrastructure.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Models.Texts;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SpaceInvaders.Models.Screens
 {
@@ -78,7 +78,7 @@ Press H to navigate to the Main Menu";
                 {
                     if (i != playersThatWon.Count - 1)
                     {
-                        winners.AppendFormat("{0}, ",playersThatWon[i]);
+                        winners.AppendFormat("{0}, ", playersThatWon[i]);
                     }
                     else
                     {

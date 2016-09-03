@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Infrastructure.Models.Animators;
-using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {

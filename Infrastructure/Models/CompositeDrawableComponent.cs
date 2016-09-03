@@ -51,6 +51,7 @@ namespace Infrastructure.Models
             // 1. find a spot for it on the updateable list 
             // 2. hook it's UpdateOrderChanged event
             IUpdateable updatable = e.GameComponent as IUpdateable;
+
             if (updatable != null)
             {
                 insertSorted(updatable);
@@ -61,6 +62,7 @@ namespace Infrastructure.Models
             // 1. find a spot for it on the drawable lists (IDrawble/Sprite) 
             // 2. hook it's DrawOrderChanged event
             IDrawable drawable = e.GameComponent as IDrawable;
+
             if (drawable != null)
             {
                 insertSorted(drawable);
@@ -132,6 +134,7 @@ namespace Infrastructure.Models
             IDrawable drawable = sender as IDrawable;
 
             Component2D component2D = sender as Component2D;
+
             if (component2D != null)
             {
                 m_2DComponents.Remove(component2D);
@@ -152,6 +155,7 @@ namespace Infrastructure.Models
         private void insertSorted(IUpdateable i_Updatable)
         {
             int idx = m_UpdateableComponents.BinarySearch(i_Updatable, UpdateableComparer.Default);
+
             if (idx < 0)
             {
                 idx = ~idx;
@@ -163,9 +167,11 @@ namespace Infrastructure.Models
         private void insertSorted(IDrawable i_Drawable)
         {
             Component2D component2D = i_Drawable as Component2D;
+
             if (component2D != null)
             {
                 int idx = m_2DComponents.BinarySearch(component2D, DrawableComparer<Component2D>.Default);
+
                 if (idx < 0)
                 {
                     idx = ~idx;
@@ -176,6 +182,7 @@ namespace Infrastructure.Models
             else
             {
                 int idx = m_DrawableComponents.BinarySearch(i_Drawable, DrawableComparer<IDrawable>.Default);
+
                 if (idx < 0)
                 {
                     idx = ~idx;
@@ -237,6 +244,7 @@ namespace Infrastructure.Models
             for (int i = 0; i < m_UpdateableComponents.Count; i++)
             {
                 IUpdateable updatable = m_UpdateableComponents[i];
+
                 if (updatable.Enabled)
                 {
                     updatable.Update(gameTime);
@@ -284,6 +292,7 @@ namespace Infrastructure.Models
                 for (int i = 0; i < Count; i++)
                 {
                     IDisposable disposable = m_Components[i] as IDisposable;
+
                     if (disposable != null)
                     {
                         disposable.Dispose();

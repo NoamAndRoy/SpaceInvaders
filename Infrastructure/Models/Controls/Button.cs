@@ -1,8 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Infrastructure.ManagersInterfaces;
 using Microsoft.Xna.Framework.Input;
-using Infrastructure.Models;
 
 namespace Infrastructure.Models.Controls
 {

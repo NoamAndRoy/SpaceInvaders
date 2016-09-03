@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Infrastructure.Models;
-using Microsoft.Xna.Framework.Input;
+﻿using Infrastructure.Models;
 
 namespace Infrastructure.ManagersInterfaces
 {
