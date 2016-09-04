@@ -61,6 +61,7 @@
     <Compile Include="Models\Animators\BlinkAnimator.cs" />
     <Compile Include="Models\Animators\CelAnimator.cs" />
     <Compile Include="Models\Animators\RotationAnimator.cs" />
+    <Compile Include="Models\Animators\PulseAnimator.cs" />
     <Compile Include="Models\Animators\SizeAnimator.cs" />
     <Compile Include="Models\Controls\Button.cs" />
     <Compile Include="Models\CollideableSprite.cs" />

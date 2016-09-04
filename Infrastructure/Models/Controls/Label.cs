@@ -9,13 +9,11 @@ namespace Infrastructure.Models.Controls
         public Label(Game i_Game, string i_Name, Text i_Text)
             : base(i_Game, i_Name, i_Text, false)
         {
-            TintColor = Color.Transparent;
         }
 
         public Label(Game i_Game, string i_Name, Text i_Text, Sprite i_Texture)
             : base(i_Game, i_Name, i_Text, i_Texture, false)
         {
-            TintColor = Color.Transparent;
         }
     }
 }

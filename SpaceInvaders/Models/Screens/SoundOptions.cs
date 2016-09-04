@@ -23,13 +23,13 @@ namespace SpaceInvaders.Models.Screens
 
         protected override void addControls()
         {
-            Label title = new Label(Game, "Title", new Text(Game, "Button"));
+            InvadersLabel title = new InvadersLabel(Game, "Title", new Text(Game, "Button"));
             title.Text.Content = "Sound Options";
             title.Text.TintColor = Color.White;
             r_Menu.Add(title);
 
-            Picker <int> backgroundMusicVolume = new Picker<int>(Game, "BackgroundMusicVolume", "Background Music Volume", new Text(Game, "Button"));
-            Picker<int> soundEffectsVolume = new Picker<int>(Game, "SoundEffectsVolume", "Sound Effects Volume", new Text(Game, "Button"));
+            InvadersPicker <int> backgroundMusicVolume = new InvadersPicker<int>(Game, "BackgroundMusicVolume", "Background Music Volume", new Text(Game, "Button"));
+            InvadersPicker<int> soundEffectsVolume = new InvadersPicker<int>(Game, "SoundEffectsVolume", "Sound Effects Volume", new Text(Game, "Button"));
 
             for (int i = 100; i >= 0; i-=10)
             {
@@ -45,7 +45,7 @@ namespace SpaceInvaders.Models.Screens
             soundEffectsVolume.SelectedOptionChanged += SoundEffectsVolume_SelectedOptionChanged;
             r_Menu.Add(soundEffectsVolume);
 
-            Picker<bool> toggleSound = new Picker<bool>(Game, "ToggleSound", "Toggle Sound", new Text(Game, "Button"));
+            InvadersPicker<bool> toggleSound = new InvadersPicker<bool>(Game, "ToggleSound", "Toggle Sound", new Text(Game, "Button"));
             toggleSound.Options.Add(new KeyValuePair<string, bool>("On", true));
             toggleSound.Options.Add(new KeyValuePair<string, bool>("Off", false));
             toggleSound.SetSelectionOption(AppSettings.Instance.AllowResizing);

@@ -1,11 +1,9 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
-using Infrastructure.Models;
-using SpaceInvaders.Interfaces;
 using Infrastructure.ManagersInterfaces;
+using Infrastructure.Models;
 using Infrastructure.Models.Animators;
-using Infrastructure.Models.Screens;
-using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework;
+using SpaceInvaders.Interfaces;
 
 namespace SpaceInvaders.Models
 {

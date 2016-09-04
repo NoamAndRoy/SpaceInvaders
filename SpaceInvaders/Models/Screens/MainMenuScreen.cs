@@ -15,29 +15,29 @@ namespace SpaceInvaders.Models.Screens
 
         protected override void addControls()
         {
-            Label title = new Label(Game, "Title", new Text(Game, "Button"));
+            InvadersLabel title = new InvadersLabel(Game, "Title", new Text(Game, "Button"));
             title.Text.Content = "Main Menu";
             title.Text.TintColor = Color.White;
             r_Menu.Add(title);
 
-            Button soundOptions = new Button(Game, "SoundOptions", new Text(Game, "Button"));
+            InvadersButton soundOptions = new InvadersButton(Game, "SoundOptions", new Text(Game, "Button"));
             soundOptions.Text.Content = "Sound Options";
             soundOptions.Click += soundOptions_Select;
             r_Menu.Add(soundOptions);
 
-            Button screenOptions = new Button(Game, "ScreenOptions", new Text(Game, "Button"));
+            InvadersButton screenOptions = new InvadersButton(Game, "ScreenOptions", new Text(Game, "Button"));
             screenOptions.Text.Content = "Screen Options";
             screenOptions.Click += screenOptions_Select;
             r_Menu.Add(screenOptions);
 
-            Picker<int> amountOfPlayers = new Picker<int>(Game, "AmountOfPlayers", "Players", new Text(Game, "Button"));
+            InvadersPicker<int> amountOfPlayers = new InvadersPicker<int>(Game, "AmountOfPlayers", "Players", new Text(Game, "Button"));
             amountOfPlayers.Options.Add(new KeyValuePair<string, int>("One", 1));
             amountOfPlayers.Options.Add(new KeyValuePair<string, int>("Two", 2));
             amountOfPlayers.SelectedOptionChanged += amountOfPlayers_SelectedOptionChanged;
             amountOfPlayers.SetSelectionOption(AppSettings.Instance.AmountOfPlayers);
             r_Menu.Add(amountOfPlayers);
 
-            Button play = new Button(Game, "Play", new Text(Game, "Button"));
+            InvadersButton play = new InvadersButton(Game, "Play", new Text(Game, "Button"));
             play.Text.Content = "Play";
             play.Click += play_Select;
             r_Menu.Add(play);
