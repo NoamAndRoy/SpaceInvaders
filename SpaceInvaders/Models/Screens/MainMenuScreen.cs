@@ -8,12 +8,18 @@ namespace SpaceInvaders.Models.Screens
 {
     public class MainMenuScreen : InvadersMenuScreen
     {        
-        public MainMenuScreen(Game i_Game) : base(i_Game, eMenuExitOption.Exit)
+        public MainMenuScreen(Game i_Game) 
+            : base(i_Game, eMenuExitOption.Exit)
         {
         }
 
         protected override void addControls()
         {
+            Label title = new Label(Game, "Title", new Text(Game, "Button"));
+            title.Text.Content = "Main Menu";
+            title.Text.TintColor = Color.White;
+            r_Menu.Add(title);
+
             Button soundOptions = new Button(Game, "SoundOptions", new Text(Game, "Button"));
             soundOptions.Text.Content = "Sound Options";
             soundOptions.Click += soundOptions_Select;

@@ -8,13 +8,19 @@ namespace SpaceInvaders.Models.Screens
 {
     public class ScreenOptions : InvadersMenuScreen
     {
-        public ScreenOptions(Game i_Game) : base(i_Game, eMenuExitOption.Back)
+        public ScreenOptions(Game i_Game) 
+            : base(i_Game, eMenuExitOption.Back)
         {
             r_Menu.Width = 400;
         }
 
         protected override void addControls()
         {
+            Label title = new Label(Game, "Title", new Text(Game, "Button"));
+            title.Text.Content = "Screen Options";
+            title.Text.TintColor = Color.White;
+            r_Menu.Add(title);
+
             Picker<bool> mouseVisability = new Picker<bool>(Game, "MouseVisability", "Mouse Visability", new Text(Game, "Button"));
             mouseVisability.Options.Add(new KeyValuePair<string, bool>("Visible", true));
             mouseVisability.Options.Add(new KeyValuePair<string, bool>("Invisible", false));

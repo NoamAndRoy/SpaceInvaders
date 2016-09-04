@@ -23,7 +23,12 @@ namespace SpaceInvaders.Models.Screens
 
         protected override void addControls()
         {
-            Picker<int> backgroundMusicVolume = new Picker<int>(Game, "BackgroundMusicVolume", "Background Music Volume", new Text(Game, "Button"));
+            Label title = new Label(Game, "Title", new Text(Game, "Button"));
+            title.Text.Content = "Sound Options";
+            title.Text.TintColor = Color.White;
+            r_Menu.Add(title);
+
+            Picker <int> backgroundMusicVolume = new Picker<int>(Game, "BackgroundMusicVolume", "Background Music Volume", new Text(Game, "Button"));
             Picker<int> soundEffectsVolume = new Picker<int>(Game, "SoundEffectsVolume", "Sound Effects Volume", new Text(Game, "Button"));
 
             for (int i = 100; i >= 0; i-=10)

@@ -44,10 +44,20 @@ namespace Infrastructure.Models.Controls
             get { return IsMouseOn(m_MouseManager.X, m_MouseManager.Y) && Game.IsMouseVisible ? m_MouseManager : m_DummyMouseManager; }
         }
 
+        private readonly bool r_IsActiveable;
+
+        protected bool IsActiveable
+        {
+            get
+            {
+                return r_IsActiveable;
+            }
+        }
+
         public Color InActiveColor = Color.Gray;
         public Color ActiveColor = Color.White;
 
-        public Control(Game i_Game, string i_Name, Text i_Text)
+        public Control(Game i_Game, string i_Name, Text i_Text, bool i_IsActiveable = true)
             : base(i_Game, i_Text.AssetName)
         {
             r_Texture = new Sprite(i_Game, @"..\Screens\blank");
@@ -56,13 +66,15 @@ namespace Infrastructure.Models.Controls
             Text.TintColor = Color.Black;
 
             r_Name = i_Name;
+            r_IsActiveable = i_IsActiveable;
         }
 
-        public Control(Game i_Game, string i_Name, Text i_Text, Sprite i_Texture)
+        public Control(Game i_Game, string i_Name, Text i_Text, Sprite i_Texture, bool i_IsActiveable = true)
             : this(i_Game, i_Name, i_Text)
         {
             r_Texture = i_Texture;
             isTextureBlank = false;
+            r_IsActiveable = i_IsActiveable;
         }
 
         private void text_SizeChanged(object sender, EventArgs e)
@@ -134,7 +146,10 @@ namespace Infrastructure.Models.Controls
 
         protected override void OnEnabledChanged(object sender, EventArgs args)
         {
-            TintColor = Enabled ? ActiveColor : InActiveColor;
+            if (IsActiveable)
+            {
+                TintColor = Enabled ? ActiveColor : InActiveColor;
+            }
 
             base.OnEnabledChanged(sender, args);
         }

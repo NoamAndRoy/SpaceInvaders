@@ -24,6 +24,7 @@ namespace SpaceInvaders.Models.Screens
         protected override void addControls()
         {
             base.addControls();
+
             r_Menu.Position = CenterOfViewPort - new Vector2(r_Menu.Width / 2, CenterOfViewPort.Y - 100);
         }
     }

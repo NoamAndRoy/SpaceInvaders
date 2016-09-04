@@ -48,6 +48,7 @@ namespace Infrastructure.Models.Screens
             Button quitOrBack = new Button(Game, text, new Text(Game, "Button"));
             quitOrBack.Text.Content = text;
             quitOrBack.Click += quitOrBack_Select;
+
             r_Menu.Add(quitOrBack);
         }
 

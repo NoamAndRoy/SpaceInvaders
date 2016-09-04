@@ -67,6 +67,7 @@
     <Compile Include="Models\Component2D.cs" />
     <Compile Include="Models\CompositeDrawableComponent.cs" />
     <Compile Include="Models\Controls\Control.cs" />
+    <Compile Include="Models\Controls\Label.cs" />
     <Compile Include="Models\Controls\Picker.cs" />
     <Compile Include="Models\eMouseButton.cs" />
     <Compile Include="Models\GameService.cs" />
