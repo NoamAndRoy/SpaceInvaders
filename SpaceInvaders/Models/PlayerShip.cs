@@ -11,7 +11,7 @@ namespace SpaceInvaders.Models
     {
         private const int k_Speed = 140;
         public const int k_Score = -1500;
-        private const int k_MaxAmountOfBullets = 2;
+        private const int k_MaxAmountOfBullets = 2000;
         private const double k_AnimationLength = 2.6;
         private const float k_AmountOfBlinksInASecond = 9;
         private const float k_AmountOfRotationInASecond = 3;

@@ -13,7 +13,6 @@ namespace SpaceInvaders.Models
     { 
         private const int k_MinTimeToShoot = 30;
         private const int k_MaxTimeToShoot = 100;
-        private const int k_MaxAmountOfBullets = 1;
         private const string k_TexturePath = "Enemies";
         private const double k_AnimationLength = 1.8f;
         private const float k_AmountOfRotationInASecond = 7;
@@ -48,14 +47,14 @@ namespace SpaceInvaders.Models
 
         private int m_SecondsToNextShoot;
 
-        public Alien(Game i_Game, int i_Score)
+        public Alien(Game i_Game, int i_Score, int i_MaxAmountOfBullets)
             : base(i_Game, k_TexturePath)
         {
             r_Score = i_Score;
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
             IsScoreAvailable = true;
 
-            m_Shooter = new Shooter(i_Game, new Vector2(0, 1), eBulletType.Enemy, k_MaxAmountOfBullets, Color.Blue);
+            m_Shooter = new Shooter(i_Game, new Vector2(0, 1), eBulletType.Enemy, i_MaxAmountOfBullets, Color.Blue);
         }
 
         public override void Initialize()

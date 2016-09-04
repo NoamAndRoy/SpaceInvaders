@@ -32,7 +32,6 @@ namespace SpaceInvaders
             this.soundManager = new SoundManager(this);
 
             this.screensManager = new ScreensMananger(this);
-            this.screensManager.Push(new GameOverScreen(this));
             this.screensManager.SetCurrentScreen(new WelcomeScreen(this));   
         }
 

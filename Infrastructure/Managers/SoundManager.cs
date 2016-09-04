@@ -33,8 +33,8 @@ namespace Infrastructure.Managers
         public void PlaySound(string i_AssetName, bool i_IsLooped = false, bool i_IsBackgroundMusic = false)
         {
             SoundEffectInstance soundEffectInstance = Game.Content.Load<SoundEffect>(k_SoundsPath + i_AssetName).CreateInstance();
-            soundEffectInstance.Volume = i_IsBackgroundMusic ? BackgroundMusicVolume : SoundsEffectsVolum;
-            soundEffectInstance.IsLooped = i_IsLooped;
+            soundEffectInstance.Volume = 1;// i_IsBackgroundMusic ? BackgroundMusicVolume : SoundsEffectsVolum;
+            soundEffectInstance.IsLooped = true;// i_IsLooped;
             soundEffectInstance.Play();
         }
 

@@ -12,11 +12,15 @@ namespace SpaceInvaders.Models
         public event EventHandler AllDead;
 
         private const int k_Rows = 5;
-        private const int k_Cols = 9;
         private const string k_LevelWinSound = "LevelWin";
         private const string k_EnemyKillSound = "EnemyKill";
 
         private readonly Alien[,] r_AlienMatrix;
+        private readonly int r_Cols;
+        private readonly int r_FirstTypeAlienScore;
+        private readonly int r_SecondTypeAlienScore;
+        private readonly int r_ThirdTypeAlienScore;
+        private readonly int r_MaxAmountOfBullets;
 
         private double m_PasssedTime;
         private float m_TimeToJump = 500;
@@ -34,7 +38,7 @@ namespace SpaceInvaders.Models
                 m_TimeToJump = value;
                 for (int i = 0; i < k_Rows; i++)
                 {
-                    for (int j = 0; j < k_Cols; j++)
+                    for (int j = 0; j < r_Cols; j++)
                     {
                         (r_AlienMatrix[i, j].Animations["CelAnimation"] as CelAnimator).CellTime = TimeSpan.FromSeconds(m_TimeToJump / 1000);
                     }
@@ -42,14 +46,21 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public AlienMatrix(Game i_Game) : base(i_Game)
+        public AlienMatrix(Game i_Game, int i_FirstTypeAlienScore, int i_SecondTypeAlienScore, int i_ThirdTypeAlienScore, int i_MaxAmountOfBullets, int i_Cols = 9) 
+            : base(i_Game)
         {
             this.DrawOrder = int.MaxValue;
             m_PasssedTime = 0;
             m_JumpRight = true;
-            m_AlienCounter = k_Rows * k_Cols;
+            r_Cols = i_Cols;
+            m_AlienCounter = k_Rows * r_Cols;
 
-            r_AlienMatrix = new Alien[k_Rows, k_Cols];
+            r_FirstTypeAlienScore = i_FirstTypeAlienScore;
+            r_SecondTypeAlienScore = i_SecondTypeAlienScore;
+            r_ThirdTypeAlienScore = i_ThirdTypeAlienScore;
+            r_MaxAmountOfBullets = i_MaxAmountOfBullets;
+
+            r_AlienMatrix = new Alien[k_Rows, r_Cols];
             initializeBoard();
         }
 
@@ -63,23 +74,23 @@ namespace SpaceInvaders.Models
         { 
             for (int i = 0; i < k_Rows; i++)
             {
-                for (int j = 0; j < k_Cols; j++)
+                for (int j = 0; j < r_Cols; j++)
                 {
                     if (i == 0)
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, 220);
+                        r_AlienMatrix[i, j] = new Alien(Game, r_FirstTypeAlienScore, r_MaxAmountOfBullets);//220
                         r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(0, 0, 32, 32), new Rectangle(32, 0, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.Pink;
                     }
                     else if (i >= 1 && i <= 2)
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, 160);
+                        r_AlienMatrix[i, j] = new Alien(Game, r_SecondTypeAlienScore, r_MaxAmountOfBullets);//160
                         r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(32 * (i % 2), 32, 32, 32), new Rectangle(32 * ((i + 1) % 2), 32, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.PowderBlue;
                     }
                     else
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, 90);
+                        r_AlienMatrix[i, j] = new Alien(Game, r_ThirdTypeAlienScore, r_MaxAmountOfBullets);//90
                         r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(32 * (i % 2), 64, 32, 32), new Rectangle(32 * ((i + 1) % 2), 64, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.LightGoldenrodYellow;
                     }
@@ -112,7 +123,7 @@ namespace SpaceInvaders.Models
         {
             for (int i = 0; i < k_Rows; i++)
             {
-                for (int j = 0; j < k_Cols; j++)
+                for (int j = 0; j < r_Cols; j++)
                 {
                     r_AlienMatrix[i, j].Initialize();
                     r_AlienMatrix[i, j].Position = new Vector2(0, r_AlienMatrix[i, j].SourceRectangle.Height * 3) + new Vector2((int)Math.Round(j * r_AlienMatrix[i, j].SourceRectangle.Width * 1.6), (int)Math.Round(i * r_AlienMatrix[i, j].SourceRectangle.Height * 1.6f));
@@ -145,7 +156,7 @@ namespace SpaceInvaders.Models
 
                     for (int i = 0; i < k_Rows; i++)
                     {
-                        for (int j = 0; j < k_Cols; j++)
+                        for (int j = 0; j < r_Cols; j++)
                         {
                             r_AlienMatrix[i, j].Position += new Vector2(0, m_JumpDistance);
                         }
@@ -155,7 +166,7 @@ namespace SpaceInvaders.Models
                 {
                     for (int i = 0; i < k_Rows; i++)
                     {
-                        for (int j = 0; j < k_Cols; j++)
+                        for (int j = 0; j < r_Cols; j++)
                         {
                             r_AlienMatrix[i, j].Position += new Vector2(distanceToJump, 0);
                         }
@@ -171,7 +182,7 @@ namespace SpaceInvaders.Models
             float remainSpace = 0;
             bool foundMostRight = false;
 
-            for (int j = k_Cols - 1; j >= 0 && !foundMostRight; j--)
+            for (int j = r_Cols - 1; j >= 0 && !foundMostRight; j--)
             {
                 for (int i = 0; i < k_Rows && !foundMostRight; i++)
                 {
@@ -193,7 +204,7 @@ namespace SpaceInvaders.Models
             float remainSpace = 0;
             bool foundMostLeft = false;
 
-            for (int j = 0; j < k_Cols && !foundMostLeft; j++)
+            for (int j = 0; j < r_Cols && !foundMostLeft; j++)
             {
                 for (int i = 0; i < k_Rows && !foundMostLeft; i++)
                 {
@@ -214,7 +225,7 @@ namespace SpaceInvaders.Models
         {
             bool isAtBottom = false;
 
-            for (int j = k_Cols - 1; j >= 0 && !isAtBottom; j--)
+            for (int j = r_Cols - 1; j >= 0 && !isAtBottom; j--)
             {
                 for (int i = k_Rows - 1; i >= 0 && !isAtBottom; i--)
                 {

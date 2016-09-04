@@ -34,6 +34,7 @@ namespace SpaceInvaders.Models.Screens
             amountOfPlayers.Options.Add(new KeyValuePair<string, int>("One", 1));
             amountOfPlayers.Options.Add(new KeyValuePair<string, int>("Two", 2));
             amountOfPlayers.SelectedOptionChanged += amountOfPlayers_SelectedOptionChanged;
+            amountOfPlayers.SetSelectionOption(AppSettings.Instance.AmountOfPlayers);
             r_Menu.Add(amountOfPlayers);
 
             Button play = new Button(Game, "Play", new Text(Game, "Button"));
@@ -56,8 +57,8 @@ namespace SpaceInvaders.Models.Screens
 
         private void play_Select(object sender, EventArgs e)
         {
-            ExitScreen();
             ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
+            ExitScreen();
         }
 
         private void screenOptions_Select(object sender, EventArgs e)

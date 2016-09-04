@@ -12,5 +12,7 @@ namespace Infrastructure.ManagersInterfaces
         bool Remove(GameScreen i_Screen);
 
         void Add(GameScreen i_Screen);
+
+        void Push(GameScreen i_GameScreen);
     }
 }

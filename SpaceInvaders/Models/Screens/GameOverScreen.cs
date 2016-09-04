@@ -13,10 +13,15 @@ namespace SpaceInvaders.Models.Screens
         private readonly Headline r_GameOverText;
         private readonly Headline r_Score;
         private readonly Text r_Instructions;
+        private readonly int r_LevelNumber;
+
         private Player[] m_Players;
 
-        public GameOverScreen(Game i_Game) : base(i_Game)
+        public GameOverScreen(Game i_Game, int i_LevelNumber) 
+            : base(i_Game)
         {
+            r_LevelNumber = i_LevelNumber;
+
             r_GameOverText = new Headline(Game);
             r_GameOverText.Content = "Game Over";
             this.Add(r_GameOverText);
@@ -104,13 +109,13 @@ Press H to navigate to the Main Menu";
             }
             else if (KeyboardManager.IsKeyPressed(Keys.R))
             {
+                ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, r_LevelNumber));
                 ExitScreen();
-                ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
             }
             else if (KeyboardManager.IsKeyPressed(Keys.H))
             {
-                ExitScreen();
                 ScreensManager.SetCurrentScreen(new MainMenuScreen(Game));
+                ExitScreen();
             }
         }
     }

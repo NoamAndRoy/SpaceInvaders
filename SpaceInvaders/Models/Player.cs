@@ -62,7 +62,7 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public Player(Game i_Game, string i_PlayerName) : base(i_Game)
+        public Player(Game i_Game, string i_PlayerName, int i_Score) : base(i_Game)
         {
             r_PlayerName = i_PlayerName;
             r_SoulsSprites = new List<Sprite>(3);
@@ -73,7 +73,7 @@ namespace SpaceInvaders.Models
             r_Game = i_Game;
 
             Souls = 3;
-            PlayerScore = 0;
+            PlayerScore = i_Score;
         }
 
         private void initializeSouls()

@@ -7,16 +7,24 @@ namespace SpaceInvaders.Models.Screens
 {
     public class LevelTransitionScreen : InvadersGameScreen
     {
-        private readonly Headline r_Level;
+        private readonly Headline r_LevelTitle;
         private readonly Headline r_CountDown;
+        private readonly int r_LevelNumber;
+        private readonly int r_playerOneScore;
+        private readonly int r_playerTwoScore;
 
         private int m_Count = 3;
 
-        public LevelTransitionScreen(Game i_Game, int i_LevelNumber) : base(i_Game)
+        public LevelTransitionScreen(Game i_Game, int i_LevelNumber, int i_playerOneScore = 0, int i_playerTwoScore = 0) 
+            : base(i_Game)
         {
-            r_Level = new Headline(Game);
-            r_Level.Content = "Level " + i_LevelNumber;
-            this.Add(r_Level);
+            r_LevelNumber = i_LevelNumber;
+            r_playerOneScore = i_playerOneScore;
+            r_playerTwoScore = i_playerTwoScore;
+
+            r_LevelTitle = new Headline(Game);
+            r_LevelTitle.Content = "Level " + i_LevelNumber;
+            this.Add(r_LevelTitle);
 
             r_CountDown = new Headline(Game);
             r_CountDown.Content = m_Count.ToString();
@@ -27,7 +35,7 @@ namespace SpaceInvaders.Models.Screens
         {
             base.Initialize();
 
-            r_Level.Position = new Vector2(CenterOfViewPort.X - (r_Level.Width / 2), r_Level.Height);
+            r_LevelTitle.Position = new Vector2(CenterOfViewPort.X - (r_LevelTitle.Width / 2), r_LevelTitle.Height);
 
             r_CountDown.Position = CenterOfViewPort - (new Vector2(r_CountDown.Width, r_CountDown.Height) / 2);
             r_CountDown.RotationOrigin = r_CountDown.TextureCenter;
@@ -46,8 +54,8 @@ namespace SpaceInvaders.Models.Screens
 
             if(m_Count == 0)
             {
+                ScreensManager.SetCurrentScreen(new PlayScreen(Game, r_LevelNumber, r_playerOneScore, r_playerTwoScore));
                 ExitScreen();
-                ScreensManager.SetCurrentScreen(new PlayScreen(Game));
             }
         }
     }

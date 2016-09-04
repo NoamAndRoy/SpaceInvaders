@@ -41,17 +41,21 @@ Press H to navigate to the Main Menu";
             if (KeyboardManager.IsKeyPressed(Keys.Escape))
             {
                 Game.Exit();
+                
+
             }
             else if(KeyboardManager.IsKeyPressed(Keys.Enter))
             {
-                ExitScreen();
                 ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game, 1));
+                ExitScreen();
             }
             else if(KeyboardManager.IsKeyPressed(Keys.H))
             {
-                ExitScreen();
                 ScreensManager.SetCurrentScreen(new MainMenuScreen(Game));
+                ExitScreen();
             }
         }
+
+       
     }
 }

@@ -9,18 +9,20 @@ namespace SpaceInvaders.Models
     public class Wall : CollideableSprite
     {
         public const string k_TexturePath = "Barrier_44x32";
-        private const int k_Speed = 40;
         private const string k_BarrierHitSound = "BarrierHit";
+
+        private readonly int r_Speed;
 
         private static bool s_TextureUsed = false;
 
         public Vector2 SpeedFactor { get; set; }
 
-        public Wall(Game i_Game) 
+        public Wall(Game i_Game, int i_Speed) 
             : base(i_Game, k_TexturePath)
         {
             SpeedFactor = Vector2.Zero;
-            Velocity = k_Speed * SpeedFactor;
+            r_Speed = i_Speed;
+            Velocity = r_Speed * SpeedFactor;
             PixelBasedCollision = true;
             AlphaBlending = true;
         }
@@ -45,7 +47,7 @@ namespace SpaceInvaders.Models
 
         public override void Update(GameTime i_GameTime)
         {
-            Velocity = k_Speed * SpeedFactor;
+            Velocity = r_Speed * SpeedFactor;
 
             base.Update(i_GameTime);
         }

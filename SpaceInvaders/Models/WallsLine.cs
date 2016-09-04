@@ -8,8 +8,9 @@ namespace SpaceInvaders.Models
         private const int k_Cells = 4;
 
         private readonly Wall[] r_WallsLine;
+        private readonly int r_Speed;
 
-        private bool m_JumpRight;
+        private bool m_MoveRight;
         private float m_YPosition;
 
         public float YPosition
@@ -22,10 +23,12 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public WallsLine(Game i_Game) 
+        public WallsLine(Game i_Game, int i_Speed) 
             : base(i_Game)
         {
             r_WallsLine = new Wall[k_Cells];
+            r_Speed = i_Speed;
+
             initializeLine();
         }
 
@@ -33,14 +36,14 @@ namespace SpaceInvaders.Models
         {
             base.Initialize();
 
-            m_JumpRight = true;
+            m_MoveRight = true;
         }
 
         private void initializeLine()
         {
             for (int i = 0; i < k_Cells; i++)
             {
-                r_WallsLine[i] = new Wall(Game);
+                r_WallsLine[i] = new Wall(Game, r_Speed);
                 this.Add(r_WallsLine[i]);
             }
         }
@@ -59,12 +62,12 @@ namespace SpaceInvaders.Models
         {
             if(getDistanceToRight() <= 0 || getDistanceToLeft() <= 0)
             {
-                m_JumpRight = !m_JumpRight;
+                m_MoveRight = !m_MoveRight;
             }
 
             for (int i = 0; i < k_Cells; i++)
             {
-                r_WallsLine[i].SpeedFactor *= new Vector2(m_JumpRight ? 1 : -1, 0);
+                r_WallsLine[i].SpeedFactor *= new Vector2(m_MoveRight ? 1 : -1, 0);
             }
             
             base.Update(i_GameTime);
