@@ -5,6 +5,7 @@ using SpaceInvaders.Interfaces;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models.Animators;
 using Infrastructure.Models.Screens;
+using Microsoft.Xna.Framework.Audio;
 
 namespace SpaceInvaders.Models
 {
@@ -16,6 +17,7 @@ namespace SpaceInvaders.Models
         private const string k_TexturePath = "Enemies";
         private const double k_AnimationLength = 1.8f;
         private const float k_AmountOfRotationInASecond = 7;
+        private const string k_EnemyGunShotSound = "EnemyGunShot";
 
         private static Random s_RandomShootTime = new Random();
 
@@ -91,6 +93,8 @@ namespace SpaceInvaders.Models
                 m_Shooter.Shoot();
 
                 m_SecondsToNextShoot = s_RandomShootTime.Next(k_MinTimeToShoot, k_MaxTimeToShoot);
+
+                ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_EnemyGunShotSound);
             }
 
             Animations.Update(i_GameTime);

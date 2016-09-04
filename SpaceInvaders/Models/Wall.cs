@@ -10,6 +10,7 @@ namespace SpaceInvaders.Models
     {
         public const string k_TexturePath = "Barrier_44x32";
         private const int k_Speed = 40;
+        private const string k_BarrierHitSound = "BarrierHit";
 
         private static bool s_TextureUsed = false;
 
@@ -71,6 +72,8 @@ namespace SpaceInvaders.Models
                 }
 
                 ClearArea(minX, maxX, minY, maxY);
+
+                ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_BarrierHitSound);
             }
             else
             {

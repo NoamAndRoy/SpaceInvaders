@@ -2,17 +2,19 @@
 using Microsoft.Xna.Framework;
 using Infrastructure.Models;
 using Infrastructure.Models.Animators;
+using Infrastructure.ManagersInterfaces;
 
 namespace SpaceInvaders.Models
 {
     public class AlienMatrix : CompositeDrawableComponent<Alien>
     {
         public event EventHandler ReachBottom;
-
         public event EventHandler AllDead;
 
         private const int k_Rows = 5;
         private const int k_Cols = 9;
+        private const string k_LevelWinSound = "LevelWin";
+        private const string k_EnemyKillSound = "EnemyKill";
 
         private readonly Alien[,] r_AlienMatrix;
 
@@ -91,13 +93,16 @@ namespace SpaceInvaders.Models
         private void alienStatusChanged(object i_Sender, EventArgs i_EventArgs)
         {
             Alien alien = i_Sender as Alien;
+
             if(!alien.Visible)
             {
                 timeToJump = timeToJump * 0.94f;
                 m_AlienCounter--;
+
+                ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_EnemyKillSound);
             }
 
-            if(m_AlienCounter == 0)
+            if (m_AlienCounter == 0)
             {
                 OnAllDead();
             }
@@ -225,7 +230,9 @@ namespace SpaceInvaders.Models
 
         protected virtual void OnAllDead()
         {
-            if(AllDead != null)
+            ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_LevelWinSound);
+
+            if (AllDead != null)
             {
                 AllDead.Invoke(this, EventArgs.Empty);
             }

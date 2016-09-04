@@ -8,7 +8,9 @@ using SpaceInvaders.Interfaces;
 namespace SpaceInvaders.Models
 {
     public class Player : CompositeDrawableComponent<Component2D>
-    { 
+    {
+        private const string k_LifeDieSound = "LifeDie";
+
         private readonly string r_PlayerName;
         private readonly List<Sprite> r_SoulsSprites;
         private readonly Text r_ScoreText;
@@ -134,6 +136,8 @@ namespace SpaceInvaders.Models
 
         private void playerShip_LostSoul(object i_Sender, EventArgs i_EventArgs)
         {
+            ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_LifeDieSound);
+
             if (Souls > 0)
             {
                 Souls--;

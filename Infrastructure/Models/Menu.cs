@@ -2,12 +2,15 @@
 using Infrastructure.Models.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Infrastructure.Models
 {
     public class Menu : CompositeDrawableComponent<Control>
     {
+        public event EventHandler<EventArgs> ActiveControlChanged;
+
         private IKeyboardManager m_KeyboardManager;
         private IMouseManager m_MouseManager;
         private int m_CurrentControlIdx = -1;
@@ -27,7 +30,10 @@ namespace Infrastructure.Models
                 {
                     r_ControlsList[m_CurrentControlIdx].Enabled = false;
                     m_CurrentControlIdx = r_ControlsList.IndexOf(value);
-                    if(value != null)
+
+                    OnActiveControlChanged();
+
+                    if (value != null)
                     {
                         value.Enabled = true;
                     }
@@ -159,6 +165,8 @@ namespace Infrastructure.Models
                     {
                         m_CurrentControlIdx = 0;
                     }
+
+                    OnActiveControlChanged();
                 }
                 else if (isKeyUpPressed)
                 {
@@ -168,6 +176,8 @@ namespace Infrastructure.Models
                     {
                         m_CurrentControlIdx = r_ControlsList.Count - 1;
                     }
+
+                    OnActiveControlChanged();
                 }
 
                 if (m_CurrentControlIdx >= 0 && m_CurrentControlIdx < r_ControlsList.Count)
@@ -188,6 +198,8 @@ namespace Infrastructure.Models
 
                         m_CurrentControlIdx = i;
                         r_ControlsList[i].Enabled = true;
+
+                        OnActiveControlChanged();
                     }
                     else if (r_ControlsList[i].IsMouseOn(m_MouseManager.PrevX, m_MouseManager.PrevY) && !r_ControlsList[i].IsMouseOn(m_MouseManager.PrevX, m_MouseManager.PrevY))
                     {
@@ -200,6 +212,14 @@ namespace Infrastructure.Models
             }
 
             base.Update(gameTime);
+        }
+
+        private void OnActiveControlChanged()
+        {
+            if(ActiveControlChanged != null)
+            {
+                ActiveControlChanged.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

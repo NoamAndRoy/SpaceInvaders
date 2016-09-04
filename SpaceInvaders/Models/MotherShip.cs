@@ -12,6 +12,7 @@ namespace SpaceInvaders.Models
         private const int k_Speed = 95;
         private const int k_Score = 600;
         private const string k_TexturePath = "MotherShip_32x120";
+        private const string k_MotherShipKillSound = "MotherShipKill";
 
         private const double k_AnimationLength = 2.6;
         private const float k_AmountOfBlinksInASecond = 5;
@@ -69,6 +70,8 @@ namespace SpaceInvaders.Models
         {
             Animations["HitAnimations"].Resume();
             OnCollide(i_Collideable);
+
+            ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_MotherShipKillSound);
         }
 
         private void hitAnimations_Finished(object sender, EventArgs e)

@@ -58,6 +58,7 @@
     <Compile Include="Models\Screens\PauseScreen.cs" />
     <Compile Include="Models\Screens\PlayScreen.cs" />
     <Compile Include="Models\Screens\ScreenOptions.cs" />
+    <Compile Include="Models\Screens\SoundOptions.cs" />
     <Compile Include="Models\Shooter.cs" />
     <Compile Include="Models\Texts\Headline.cs" />
     <Compile Include="Models\Wall.cs" />

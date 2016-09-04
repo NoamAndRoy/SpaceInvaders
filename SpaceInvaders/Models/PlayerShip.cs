@@ -15,6 +15,7 @@ namespace SpaceInvaders.Models
         private const double k_AnimationLength = 2.6;
         private const float k_AmountOfBlinksInASecond = 9;
         private const float k_AmountOfRotationInASecond = 3;
+        private const string k_SSGunShotSound = "SSGunShot";
 
         private readonly IKeyboardManager r_KeyboardManager;
         private readonly IMouseManager r_MouseManager;
@@ -110,6 +111,8 @@ namespace SpaceInvaders.Models
                 {
                     m_Shooter.Position = new Vector2(Position.X + (Width / 2), Position.Y);
                     m_Shooter.Shoot();
+
+                    ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_SSGunShotSound);
                 }
             }
 

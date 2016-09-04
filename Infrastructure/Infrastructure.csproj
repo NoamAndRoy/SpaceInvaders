@@ -46,12 +46,14 @@
     <Compile Include="ManagersInterfaces\IKeyboardManager.cs" />
     <Compile Include="ManagersInterfaces\IMouseManager.cs" />
     <Compile Include="ManagersInterfaces\IScreensManager.cs" />
+    <Compile Include="ManagersInterfaces\ISoundManager.cs" />
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\DummyKeyboardManager.cs" />
     <Compile Include="Managers\DummyMouseManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MouseManager.cs" />
     <Compile Include="Managers\ScreensManager.cs" />
+    <Compile Include="Managers\SoundManager.cs" />
     <Compile Include="Models\Animators\CompositeAnimator.cs" />
     <Compile Include="Models\Animators\FadeAnimator.cs" />
     <Compile Include="Models\Animators\SequencialAnimator.cs" />

@@ -61,7 +61,7 @@ namespace SpaceInvaders.Models.Screens
 
         private void soundOptions_Select(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Sound Options");
+            ScreensManager.SetCurrentScreen(new SoundOptions(Game));
         }
     }
 }

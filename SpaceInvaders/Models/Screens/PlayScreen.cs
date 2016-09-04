@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models.Screens;
+﻿using Infrastructure.ManagersInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -7,6 +7,8 @@ namespace SpaceInvaders.Models.Screens
 {
     public class PlayScreen : InvadersGameScreen
     {
+        private const string k_GameOverSound = "GameOver";
+
         private readonly Player r_PlayerOne;
         private readonly Player r_PlayerTwo;
         private readonly MotherShip r_MotherShip;
@@ -52,6 +54,8 @@ namespace SpaceInvaders.Models.Screens
 
         private void endGameByAlienMatrix(object sender, System.EventArgs e)
         {
+            ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_GameOverSound);
+
             ExitScreen();
         }
 
@@ -88,10 +92,14 @@ namespace SpaceInvaders.Models.Screens
             if(KeyboardManager.IsKeyPressed(Keys.P))
             {
                 ScreensManager.SetCurrentScreen(new PauseScreen(Game));
+
+                //Microsoft.Xna.Framework.Media.MediaPlayer.Play(Game.Content.Load<Microsoft.Xna.Framework.Media.Song>("Sounds/BGMusic") as Microsoft.Xna.Framework.Media.Song);
             }
 
             if (r_PlayerOne.Souls == 0 && r_PlayerTwo.Souls == 0)
             {
+                ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_GameOverSound);
+
                 ExitScreen();
             }
             else
