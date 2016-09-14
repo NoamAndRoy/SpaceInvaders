@@ -73,7 +73,7 @@ namespace Infrastructure.Managers
                 case eScreenState.Deactivating:
                     break;
                 case eScreenState.Closing:
-                    Pop(sender as GameScreen);
+                    removeFromStack(sender as GameScreen);
                     break;
                 case eScreenState.Inactive:
                     break;
@@ -87,9 +87,20 @@ namespace Infrastructure.Managers
             OnScreenStateChanged(sender, e);
         }
 
-        private void Pop(GameScreen i_GameScreen)
+        private void removeFromStack(GameScreen i_GameScreen)
         {
+            Stack<GameScreen> savedPoped = new Stack<GameScreen>();
+            while (m_ScreensStack.Peek() != i_GameScreen)
+            {
+                savedPoped.Push(m_ScreensStack.Pop());
+            }
+
             m_ScreensStack.Pop();
+
+            while(savedPoped.Count > 0)
+            {
+                m_ScreensStack.Push(savedPoped.Pop());
+            }
 
             if (m_ScreensStack.Count > 0)
             {
@@ -135,6 +146,16 @@ namespace Infrastructure.Managers
             Game.Services.AddService(typeof(IScreensMananger), this);
 
             base.Initialize();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                ScreenStateChanged = null;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

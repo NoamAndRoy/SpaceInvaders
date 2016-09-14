@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 using Infrastructure.Models;
 using Infrastructure.Models.Animators;
 using Infrastructure.ManagersInterfaces;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {
     public class AlienMatrix : CompositeDrawableComponent<Alien>
     {
         public event EventHandler ReachBottom;
+
         public event EventHandler AllDead;
 
         private const int k_Rows = 5;
@@ -36,6 +38,7 @@ namespace SpaceInvaders.Models
             set
             {
                 m_TimeToJump = value;
+
                 for (int i = 0; i < k_Rows; i++)
                 {
                     for (int j = 0; j < r_Cols; j++)
@@ -46,8 +49,8 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public AlienMatrix(Game i_Game, int i_FirstTypeAlienScore, int i_SecondTypeAlienScore, int i_ThirdTypeAlienScore, int i_MaxAmountOfBullets, int i_Cols = 9) 
-            : base(i_Game)
+        public AlienMatrix(GameScreen i_GameScreen, int i_FirstTypeAlienScore, int i_SecondTypeAlienScore, int i_ThirdTypeAlienScore, int i_MaxAmountOfBullets, int i_Cols) 
+            : base(i_GameScreen)
         {
             this.DrawOrder = int.MaxValue;
             m_PasssedTime = 0;
@@ -78,19 +81,19 @@ namespace SpaceInvaders.Models
                 {
                     if (i == 0)
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, r_FirstTypeAlienScore, r_MaxAmountOfBullets);//220
+                        r_AlienMatrix[i, j] = new Alien(GameScreen, r_FirstTypeAlienScore, r_MaxAmountOfBullets); //220
                         r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(0, 0, 32, 32), new Rectangle(32, 0, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.Pink;
                     }
                     else if (i >= 1 && i <= 2)
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, r_SecondTypeAlienScore, r_MaxAmountOfBullets);//160
+                        r_AlienMatrix[i, j] = new Alien(GameScreen, r_SecondTypeAlienScore, r_MaxAmountOfBullets); //160
                         r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(32 * (i % 2), 32, 32, 32), new Rectangle(32 * ((i + 1) % 2), 32, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.PowderBlue;
                     }
                     else
                     {
-                        r_AlienMatrix[i, j] = new Alien(Game, r_ThirdTypeAlienScore, r_MaxAmountOfBullets);//90
+                        r_AlienMatrix[i, j] = new Alien(GameScreen, r_ThirdTypeAlienScore, r_MaxAmountOfBullets); //90
                         r_AlienMatrix[i, j].SourceRectangles = new Rectangle[] { new Rectangle(32 * (i % 2), 64, 32, 32), new Rectangle(32 * ((i + 1) % 2), 64, 32, 32) };
                         r_AlienMatrix[i, j].TintColor = Color.LightGoldenrodYellow;
                     }
@@ -105,17 +108,17 @@ namespace SpaceInvaders.Models
         {
             Alien alien = i_Sender as Alien;
 
-            if(!alien.Visible)
+            if (!alien.Visible)
             {
                 timeToJump = timeToJump * 0.94f;
                 m_AlienCounter--;
 
                 ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_EnemyKillSound);
-            }
 
-            if (m_AlienCounter == 0)
-            {
-                OnAllDead();
+                if (m_AlienCounter == 0)
+                {
+                    OnAllDead();
+                }
             }
         }
 
@@ -255,6 +258,14 @@ namespace SpaceInvaders.Models
             {
                 ReachBottom.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            AllDead = null;
+            ReachBottom = null;
+
+            base.Dispose(disposing);
         }
     }
 }

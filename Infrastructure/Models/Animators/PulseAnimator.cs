@@ -33,6 +33,8 @@ namespace Infrastructure.Models.Animators
 
         protected override void DoFrame(GameTime i_GameTime)
         {
+            BoundComponent2D.Scales = m_OriginalComponent2DInfo.Scales/2;
+
             m_TimeLeftForNextPulse -= i_GameTime.ElapsedGameTime;
 
             if (m_TimeLeftForNextPulse.TotalSeconds < 0)
@@ -43,14 +45,13 @@ namespace Infrastructure.Models.Animators
 
             m_SizeChangeVelocity = new Vector2((float)((m_InitialSize.X - m_PulseSize.X) / m_TimeLeftForNextPulse.TotalSeconds), (float)((m_InitialSize.Y - m_PulseSize.Y) / m_TimeLeftForNextPulse.TotalSeconds));
 
-            if
-                (m_ToPulseSize)
+            if(m_ToPulseSize)
             {
                 BoundComponent2D.Scales -= m_SizeChangeVelocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
             }
             else
             {
-                BoundComponent2D.Scales -= -1 * m_SizeChangeVelocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
+                BoundComponent2D.Scales += m_SizeChangeVelocity * (float)i_GameTime.ElapsedGameTime.TotalSeconds;
             }
         }
 

@@ -1,15 +1,18 @@
-﻿using Infrastructure.Managers;
+﻿using System.Collections.Generic;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using Infrastructure.Models.Controls;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 
 namespace SpaceInvaders.Models.Screens
 {
-    class SoundOptions : InvadersMenuScreen
+    public class SoundOptions : InvadersMenuScreen
     {
         private ISoundManager m_SoundManager;
+        private Label m_Title;
+        private Picker<int> m_BackgroundMusicVolume;
+        private Picker<int> m_SoundEffectsVolume;
+        private Picker<bool> m_ToggleSound;
 
         public SoundOptions(Game i_Game) 
             : base(i_Game, eMenuExitOption.Back)
@@ -23,51 +26,63 @@ namespace SpaceInvaders.Models.Screens
 
         protected override void addControls()
         {
-            InvadersLabel title = new InvadersLabel(Game, "Title", new Text(Game, "Button"));
-            title.Text.Content = "Sound Options";
-            title.Text.TintColor = Color.White;
-            r_Menu.Add(title);
+            m_Title = new Label(this, "Title", new Text(this, "Button"));
+            m_Title.Text.Content = "Sound Options";
+            m_Title.Text.TintColor = Color.White;
+            r_Menu.Add(m_Title);
 
-            InvadersPicker <int> backgroundMusicVolume = new InvadersPicker<int>(Game, "BackgroundMusicVolume", "Background Music Volume", new Text(Game, "Button"));
-            InvadersPicker<int> soundEffectsVolume = new InvadersPicker<int>(Game, "SoundEffectsVolume", "Sound Effects Volume", new Text(Game, "Button"));
+            m_BackgroundMusicVolume = new Picker<int>(this, "BackgroundMusicVolume", "Background Music Volume", new Text(this, "Button"));
+            m_SoundEffectsVolume = new Picker<int>(this, "SoundEffectsVolume", "Sound Effects Volume", new Text(this, "Button"));
 
-            for (int i = 100; i >= 0; i-=10)
+            for (int i = 100; i >= 0; i -= 10)
             {
-                backgroundMusicVolume.Options.Add(new KeyValuePair<string, int>(i.ToString(), i));
-                soundEffectsVolume.Options.Add(new KeyValuePair<string, int>(i.ToString(), i));
+                m_BackgroundMusicVolume.Options.Add(new KeyValuePair<string, int>(i.ToString(), i));
+                m_SoundEffectsVolume.Options.Add(new KeyValuePair<string, int>(i.ToString(), i));
             }
 
-            backgroundMusicVolume.SetSelectionOption((int)(m_SoundManager.BackgroundMusicVolume * 100));
-            backgroundMusicVolume.SelectedOptionChanged += BackgroundMusicVolume_SelectedOptionChanged;
-            r_Menu.Add(backgroundMusicVolume);
+            m_BackgroundMusicVolume.SetSelectionOption((int)(m_SoundManager.RealBackgroundMusicVolume * 100));
+            m_BackgroundMusicVolume.SelectedOptionChanged += BackgroundMusicVolume_SelectedOptionChanged;
+            r_Menu.Add(m_BackgroundMusicVolume);
 
-            soundEffectsVolume.SetSelectionOption((int)(m_SoundManager.SoundsEffectsVolum * 100));
-            soundEffectsVolume.SelectedOptionChanged += SoundEffectsVolume_SelectedOptionChanged;
-            r_Menu.Add(soundEffectsVolume);
+            m_SoundEffectsVolume.SetSelectionOption((int)(m_SoundManager.RealSoundEffectsVolume * 100));
+            m_SoundEffectsVolume.SelectedOptionChanged += SoundEffectsVolume_SelectedOptionChanged;
+            r_Menu.Add(m_SoundEffectsVolume);
 
-            InvadersPicker<bool> toggleSound = new InvadersPicker<bool>(Game, "ToggleSound", "Toggle Sound", new Text(Game, "Button"));
-            toggleSound.Options.Add(new KeyValuePair<string, bool>("On", true));
-            toggleSound.Options.Add(new KeyValuePair<string, bool>("Off", false));
-            toggleSound.SetSelectionOption(AppSettings.Instance.AllowResizing);
-            toggleSound.SelectedOptionChanged += ToggleSound_SelectedOptionChanged;
-            r_Menu.Add(toggleSound);
+            m_ToggleSound = new Picker<bool>(this, "ToggleSound", "Toggle Sound", new Text(this, "Button"));
+            m_ToggleSound.Options.Add(new KeyValuePair<string, bool>("On", true));
+            m_ToggleSound.Options.Add(new KeyValuePair<string, bool>("Off", false));
+            m_ToggleSound.SetSelectionOption(m_SoundManager.ToggleSound);
+            m_ToggleSound.SelectedOptionChanged += ToggleSound_SelectedOptionChanged;
+            r_Menu.Add(m_ToggleSound);
+
+
+           m_SoundManager.ToggleSoundChanged += SoundManager_ToggleSoundChanged;
 
             base.addControls();
         }
 
+        private void SoundManager_ToggleSoundChanged(object sender, System.EventArgs e)
+        {
+            m_ToggleSound.SetSelectionOption(m_SoundManager.ToggleSound);
+            AppSettings.Instance.ToggleSound = m_SoundManager.ToggleSound;
+        }
+
         private void SoundEffectsVolume_SelectedOptionChanged(object sender, PickerEventArgs<int> e)
         {
-            m_SoundManager.SoundsEffectsVolum = e.SelectedValue / 100f;
+            m_SoundManager.SoundEffectsVolume = e.SelectedValue / 100f;
+            AppSettings.Instance.SoundEffectsVolume = m_SoundManager.SoundEffectsVolume;
         }
 
         private void BackgroundMusicVolume_SelectedOptionChanged(object sender, PickerEventArgs<int> e)
         {
-            m_SoundManager.SoundsEffectsVolum = e.SelectedValue / 100f;
+            m_SoundManager.BackgroundMusicVolume = e.SelectedValue / 100f;
+            AppSettings.Instance.BackgroundMusicVolume = m_SoundManager.BackgroundMusicVolume;
         }
 
         private void ToggleSound_SelectedOptionChanged(object sender, PickerEventArgs<bool> e)
         {
             m_SoundManager.ToggleSound = e.SelectedValue;
+            AppSettings.Instance.ToggleSound = m_SoundManager.ToggleSound;
         }
     }
 }

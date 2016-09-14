@@ -1,9 +1,8 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
 using Infrastructure.Managers;
-using SpaceInvaders.Models.Screens;
-using Infrastructure.ManagersInterfaces;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using SpaceInvaders.Models.Screens;
 
 namespace SpaceInvaders
 {
@@ -44,7 +43,11 @@ namespace SpaceInvaders
             this.m_Graphics.IsFullScreen = AppSettings.Instance.FullScreen;
             m_Graphics.ApplyChanges();
 
-            soundManager.PlaySound(k_BGMusicSound, true, true);
+            soundManager.SoundEffectsVolume = AppSettings.Instance.SoundEffectsVolume;
+            soundManager.BackgroundMusicVolume = AppSettings.Instance.BackgroundMusicVolume;
+            soundManager.ToggleSound = AppSettings.Instance.ToggleSound;
+
+            soundManager.PlayContinuousSound(k_BGMusicSound, true);
         }
 
         protected override void Update(GameTime gameTime)

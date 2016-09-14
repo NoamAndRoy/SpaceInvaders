@@ -16,11 +16,11 @@ namespace SpaceInvaders.Models.Screens
             this.IsOverlayed = true;
             this.BlackTintAlpha = 0.4f;
 
-            r_Headline = new Headline(Game);
+            r_Headline = new Headline(this);
             r_Headline.Content = "Pause";
             this.Add(r_Headline);
 
-            r_ResumeText = new Text(Game, "Calibri");
+            r_ResumeText = new Text(this, "Calibri");
             r_ResumeText.Content = "To resume press R";
             this.Add(r_ResumeText);
         }

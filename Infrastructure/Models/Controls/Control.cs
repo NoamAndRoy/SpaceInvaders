@@ -2,6 +2,7 @@
 using Infrastructure.Managers;
 using Infrastructure.ManagersInterfaces;
 using Microsoft.Xna.Framework;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models.Controls
 {
@@ -12,6 +13,14 @@ namespace Infrastructure.Models.Controls
         public Sprite Texture
         {
             get { return r_Texture; }
+        }
+
+        private bool m_DrawTexture = true;
+
+        public bool DrawTexture
+        {
+            get { return m_DrawTexture; }
+            set { m_DrawTexture = value; }
         }
 
         protected readonly Text r_Text;
@@ -46,7 +55,7 @@ namespace Infrastructure.Models.Controls
 
         private readonly bool r_IsActiveable;
 
-        protected bool IsActiveable
+        public bool IsActiveable
         {
             get
             {
@@ -57,10 +66,10 @@ namespace Infrastructure.Models.Controls
         public Color InActiveColor = Color.Gray;
         public Color ActiveColor = Color.White;
 
-        public Control(Game i_Game, string i_Name, Text i_Text, bool i_IsActiveable = true)
-            : base(i_Game, i_Text.AssetName)
+        public Control(GameScreen i_GameScreen, string i_Name, Text i_Text, bool i_IsActiveable = true)
+            : base(i_GameScreen, i_Text.AssetName)
         {
-            r_Texture = new Sprite(i_Game, @"..\Screens\blank");
+            r_Texture = new Sprite(i_GameScreen, @"..\Screens\blank");
             r_Text = i_Text;
             r_Text.SizeChanged += text_SizeChanged;
             Text.TintColor = Color.Black;
@@ -69,8 +78,8 @@ namespace Infrastructure.Models.Controls
             r_IsActiveable = i_IsActiveable;
         }
 
-        public Control(Game i_Game, string i_Name, Text i_Text, Sprite i_Texture, bool i_IsActiveable = true)
-            : this(i_Game, i_Name, i_Text)
+        public Control(GameScreen i_GameScreen, string i_Name, Text i_Text, Sprite i_Texture, bool i_IsActiveable = true)
+            : this(i_GameScreen, i_Name, i_Text)
         {
             r_Texture = i_Texture;
             isTextureBlank = false;
@@ -137,9 +146,12 @@ namespace Infrastructure.Models.Controls
                 sourceRectangle = Texture.SourceRectangle;
             }
 
-            SpriteBatch.Draw(Texture.Texture, new Rectangle((int)this.TopLeftPosition.X, (int)this.TopLeftPosition.Y, (int)Width, (int)Height), sourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.SpriteEffects, this.LayerDepth);
+            if (DrawTexture)
+            {
+                SpriteBatch.Draw(Texture.Texture, new Rectangle((int)positionForDraw.X, (int)positionForDraw.Y, (int)Width, (int)Height), sourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.SpriteEffects, this.LayerDepth);
+            }
 
-            SpriteBatch.DrawString(Text.Font, Text.Content, this.TopLeftPosition + new Vector2(Width / 2, Height / 2) - Text.TextureCenter, new Color(Text.TintColor, this.Opacity), this.Rotation, this.RotationOrigin, this.Scales, this.SpriteEffects, this.LayerDepth);
+            SpriteBatch.DrawString(Text.Font, Text.Content, this.positionForDraw + new Vector2(Width / 2, Height / 2) - Text.TextureCenter, new Color(Text.TintColor, this.Opacity), this.Rotation, this.RotationOrigin, this.Scales, this.SpriteEffects, this.LayerDepth);
 
             base.Draw(i_GameTime);
         }

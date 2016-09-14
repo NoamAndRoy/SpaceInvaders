@@ -3,6 +3,7 @@ using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {
@@ -11,20 +12,19 @@ namespace SpaceInvaders.Models
         public const string k_TexturePath = "Barrier_44x32";
         private const string k_BarrierHitSound = "BarrierHit";
 
-        private readonly int r_Speed;
-
         private static bool s_TextureUsed = false;
+
+        private readonly int r_Speed;
 
         public Vector2 SpeedFactor { get; set; }
 
-        public Wall(Game i_Game, int i_Speed) 
-            : base(i_Game, k_TexturePath)
+        public Wall(GameScreen i_GameScreen, int i_Speed) 
+            : base(i_GameScreen, k_TexturePath)
         {
             SpeedFactor = Vector2.Zero;
             r_Speed = i_Speed;
             Velocity = r_Speed * SpeedFactor;
             PixelBasedCollision = true;
-            AlphaBlending = true;
         }
 
         protected override void LoadContent()

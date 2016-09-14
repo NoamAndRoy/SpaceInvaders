@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.ManagersInterfaces
 {
@@ -15,6 +16,8 @@ namespace Infrastructure.ManagersInterfaces
 
         event EventHandler<EventArgs> RotationChanged;
 
+        event EventHandler<EventArgs> Disposed;
+
         event CollidedEventHandler CollidedAction;
 
         bool CheckRectangleCollision(ICollideable i_Collideable);
@@ -24,6 +27,8 @@ namespace Infrastructure.ManagersInterfaces
         void Collided(ICollideable i_Collideable);
 
         Rectangle Bounds { get; }
+
+        GameScreen GameScreen { get; }
 
         bool PixelBasedCollision { get; set; }
 

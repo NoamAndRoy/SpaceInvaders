@@ -43,10 +43,6 @@
     <Compile Include="Invaders.cs" />
     <Compile Include="Models\Alien.cs" />
     <Compile Include="Models\AlienMatrix.cs" />
-    <Compile Include="Models\Controls\InvadersButton.cs" />
-    <Compile Include="Models\Controls\InvadersControl.cs" />
-    <Compile Include="Models\Controls\InvadersLabel.cs" />
-    <Compile Include="Models\Controls\InvadersPicker.cs" />
     <Compile Include="Models\eBulletType.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Background.cs" />
@@ -54,6 +50,7 @@
     <Compile Include="Interfaces\IScoreable.cs" />
     <Compile Include="Models\MotherShip.cs" />
     <Compile Include="Models\PlayerShip.cs" />
+    <Compile Include="Models\Score.cs" />
     <Compile Include="Models\Screens\GameOverScreen.cs" />
     <Compile Include="Models\Screens\InvadersGameScreen.cs" />
     <Compile Include="Models\Screens\InvadersMenuScreen.cs" />

@@ -4,6 +4,7 @@ using Infrastructure.Models;
 using SpaceInvaders.Interfaces;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models.Animators;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {
@@ -37,12 +38,11 @@ namespace SpaceInvaders.Models
 
         public bool IsScoreAvailable { get; private set; }
 
-        public MotherShip(Game i_Game)
-            : base(i_Game, k_TexturePath)
+        public MotherShip(GameScreen i_GameScreen)
+            : base(i_GameScreen, k_TexturePath)
         {
             m_RandomAppearTime = new Random();
             m_IsDead = true;
-            AlphaBlending = true;
             IsScoreAvailable = true;
         }
 
@@ -70,8 +70,6 @@ namespace SpaceInvaders.Models
         {
             Animations["HitAnimations"].Resume();
             OnCollide(i_Collideable);
-
-            ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_MotherShipKillSound);
         }
 
         private void hitAnimations_Finished(object sender, EventArgs e)
@@ -79,6 +77,8 @@ namespace SpaceInvaders.Models
             resetMotherShip();
             Animations["HitAnimations"].Pause();
             Animations["HitAnimations"].Reset();
+
+            ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_MotherShipKillSound);
         }
 
         public override void Update(GameTime i_GameTime)

@@ -2,6 +2,7 @@
 using Infrastructure.Models.Animators;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Models.Texts;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models.Screens
 {
@@ -22,11 +23,11 @@ namespace SpaceInvaders.Models.Screens
             r_playerOneScore = i_playerOneScore;
             r_playerTwoScore = i_playerTwoScore;
 
-            r_LevelTitle = new Headline(Game);
+            r_LevelTitle = new Headline(this);
             r_LevelTitle.Content = "Level " + i_LevelNumber;
             this.Add(r_LevelTitle);
 
-            r_CountDown = new Headline(Game);
+            r_CountDown = new Headline(this);
             r_CountDown.Content = m_Count.ToString();
             this.Add(r_CountDown);
         }

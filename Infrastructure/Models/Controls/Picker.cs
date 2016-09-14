@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models.Controls
 {
@@ -43,14 +44,14 @@ namespace Infrastructure.Models.Controls
 
         public event EventHandler<PickerEventArgs<T>> SelectedOptionChanged;
 
-        public Picker(Game i_Game, string i_Name, string i_Title, Text i_Text)
-            : base(i_Game, i_Name, i_Text)
+        public Picker(GameScreen i_GameScreen, string i_Name, string i_Title, Text i_Text)
+            : base(i_GameScreen, i_Name, i_Text)
         {
             m_Title = i_Title;
         }
 
-        public Picker(Game i_Game, string i_Name, string i_Title, Text i_Text, Sprite i_Texture)
-            : base(i_Game, i_Name, i_Text, i_Texture)
+        public Picker(GameScreen i_GameScreen, string i_Name, string i_Title, Text i_Text, Sprite i_Texture)
+            : base(i_GameScreen, i_Name, i_Text, i_Texture)
         {
             m_Title = i_Title;
         }
@@ -97,6 +98,7 @@ namespace Infrastructure.Models.Controls
             if(index >= 0)
             {
                 m_SelectedIndex = index;
+                SelectedOption = r_Options[m_SelectedIndex];
             }
         }
 
@@ -113,6 +115,16 @@ namespace Infrastructure.Models.Controls
         private void setTextContent()
         {
             Text.Content = string.Format("{0}: {1}", m_Title, SelectedOption.Key);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                SelectedOptionChanged = null;
+            }
+
+            base.Dispose(disposing);
         }
     }
 

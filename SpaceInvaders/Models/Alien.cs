@@ -4,6 +4,7 @@ using Infrastructure.Models;
 using Infrastructure.Models.Animators;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Interfaces;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {
@@ -45,14 +46,14 @@ namespace SpaceInvaders.Models
 
         private int m_SecondsToNextShoot;
 
-        public Alien(Game i_Game, int i_Score, int i_MaxAmountOfBullets)
-            : base(i_Game, k_TexturePath)
+        public Alien(GameScreen i_GameScreen, int i_Score, int i_MaxAmountOfBullets)
+            : base(i_GameScreen, k_TexturePath)
         {
             r_Score = i_Score;
             m_SecondsToNextShoot = s_RandomShootTime.Next(1, k_MaxTimeToShoot);
             IsScoreAvailable = true;
 
-            m_Shooter = new Shooter(i_Game, new Vector2(0, 1), eBulletType.Enemy, i_MaxAmountOfBullets, Color.Blue);
+            m_Shooter = new Shooter(GameScreen, new Vector2(0, 1), eBulletType.Enemy, i_MaxAmountOfBullets, Color.Blue);
         }
 
         public override void Initialize()
@@ -111,7 +112,7 @@ namespace SpaceInvaders.Models
 
         private void deathAnimations_Finished(object sender, EventArgs e)
         {
-            DeleteComponent2D();
+            Dispose();
         }
     }
 }

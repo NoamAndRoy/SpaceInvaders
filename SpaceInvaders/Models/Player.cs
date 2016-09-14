@@ -4,6 +4,7 @@ using Infrastructure.Models;
 using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
 using SpaceInvaders.Interfaces;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {
@@ -14,7 +15,6 @@ namespace SpaceInvaders.Models
         private readonly string r_PlayerName;
         private readonly List<Sprite> r_SoulsSprites;
         private readonly Text r_ScoreText;
-        private readonly Game r_Game;
 
         private int m_PlayerScore;
         private PlayerShip m_PlayerShip;
@@ -62,15 +62,13 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public Player(Game i_Game, string i_PlayerName, int i_Score) : base(i_Game)
+        public Player(GameScreen i_GameScreen, string i_PlayerName, int i_Score) : base(i_GameScreen.Game)
         {
             r_PlayerName = i_PlayerName;
             r_SoulsSprites = new List<Sprite>(3);
 
-            r_ScoreText = new Text(i_Game, "Calibri");
+            r_ScoreText = new Text(i_GameScreen, "Calibri");
             this.Add(r_ScoreText);
-
-            r_Game = i_Game;
 
             Souls = 3;
             PlayerScore = i_Score;
@@ -80,12 +78,11 @@ namespace SpaceInvaders.Models
         {
             for(int i = 0; i < Souls; i++)
             {
-                r_SoulsSprites.Add(new Sprite(PlayerShip.Game, PlayerShip.AssetName));
+                r_SoulsSprites.Add(new Sprite(PlayerShip.GameScreen, PlayerShip.AssetName));
                 r_SoulsSprites[i].Initialize();
-                r_SoulsSprites[i].AlphaBlending = true;
                 r_SoulsSprites[i].Opacity = 0.5f;
                 r_SoulsSprites[i].Scales = new Vector2(0.5f, 0.5f);
-                r_SoulsSprites[i].Position = new Vector2(r_Game.GraphicsDevice.Viewport.Width - (r_SoulsSprites[i].Width * Souls * 1.5f) + (i * r_SoulsSprites[i].Width * 1.5f), YPosition);
+                r_SoulsSprites[i].Position = new Vector2(Game.GraphicsDevice.Viewport.Width - (r_SoulsSprites[i].Width * Souls * 1.5f) + (i * r_SoulsSprites[i].Width * 1.5f), YPosition);
                 this.Add(r_SoulsSprites[i]);
             }
         }
@@ -130,7 +127,7 @@ namespace SpaceInvaders.Models
                 if (Souls <= 1)
                 {
                     PlayerShip.Animations["DeathAnimations"].Resume();
-                    PlayerShip.CanShoot = false;
+                    PlayerShip.IsFunctional = false;
                 }
         }
 
@@ -141,7 +138,7 @@ namespace SpaceInvaders.Models
             if (Souls > 0)
             {
                 Souls--;
-                r_SoulsSprites[Souls].DeleteComponent2D();
+                r_SoulsSprites[Souls].Dispose();
                 r_SoulsSprites.RemoveAt(Souls);
             }
         }

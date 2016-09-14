@@ -1,8 +1,9 @@
-﻿using Infrastructure.ManagersInterfaces;
+﻿using System;
+using System.Collections.Generic;
+using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using System;
 
 namespace Infrastructure.Managers
 {
@@ -11,12 +12,17 @@ namespace Infrastructure.Managers
         public const string k_SoundsPath = "Sounds/";
 
         public event EventHandler<EventArgs> BackgroundMusicVolumeChanged;
+
         public event EventHandler<EventArgs> SoundsEffectsVolumChanged;
+
         public event EventHandler<EventArgs> ToggleSoundChanged;
 
-        float m_BackgroundMusicVolume;
-        float m_SoundsEffectsVolume;
-        bool m_ToggleSound;
+        private float m_BackgroundMusicVolume;
+        private float m_SoundsEffectsVolume;
+        private bool m_ToggleSound;
+
+        private readonly List<SoundEffectInstance> r_Sounds = new List<SoundEffectInstance>();
+        private readonly List<SoundEffectInstance> r_BackgroundMusic = new List<SoundEffectInstance>();
 
         public SoundManager(Game i_Game) : base(i_Game)
         {
@@ -30,12 +36,37 @@ namespace Infrastructure.Managers
             this.Game.Services.AddService(typeof(ISoundManager), this);
         }
 
-        public void PlaySound(string i_AssetName, bool i_IsLooped = false, bool i_IsBackgroundMusic = false)
+        public void PlaySound(string i_AssetName, float i_Pitch = 0, float i_Pan = 0)
         {
-            SoundEffectInstance soundEffectInstance = Game.Content.Load<SoundEffect>(k_SoundsPath + i_AssetName).CreateInstance();
-            soundEffectInstance.Volume = 1;// i_IsBackgroundMusic ? BackgroundMusicVolume : SoundsEffectsVolum;
-            soundEffectInstance.IsLooped = true;// i_IsLooped;
+            if (ToggleSound && SoundEffectsVolume > 0)
+            {
+                SoundEffect soundEffect = loadSoundEffect(i_AssetName);
+                soundEffect.Play(SoundEffectsVolume, i_Pitch, i_Pan);
+            }
+        }
+
+        public SoundEffectInstance PlayContinuousSound(string i_AssetName, bool i_IsBackgroundMusic = false)
+        {
+            SoundEffectInstance soundEffectInstance = loadSoundEffect(i_AssetName).CreateInstance();
+            soundEffectInstance.Volume = i_IsBackgroundMusic ? BackgroundMusicVolume : SoundEffectsVolume;
+            soundEffectInstance.IsLooped = i_IsBackgroundMusic;
             soundEffectInstance.Play();
+
+            if(i_IsBackgroundMusic)
+            {
+                r_BackgroundMusic.Add(soundEffectInstance);
+            }
+            else
+            {
+                r_Sounds.Add(soundEffectInstance);
+            }
+
+            return soundEffectInstance;
+        }
+
+        private SoundEffect loadSoundEffect(string i_AssetName)
+        {
+            return Game.Content.Load<SoundEffect>(k_SoundsPath + i_AssetName);
         }
 
         public float BackgroundMusicVolume
@@ -58,7 +89,15 @@ namespace Infrastructure.Managers
             }
         }
 
-        public float SoundsEffectsVolum
+        public float RealBackgroundMusicVolume
+        {
+            get
+            {
+                return m_BackgroundMusicVolume;
+            }
+        }
+
+        public float SoundEffectsVolume
         {
             get
             {
@@ -78,6 +117,14 @@ namespace Infrastructure.Managers
             }
         }
 
+        public float RealSoundEffectsVolume
+        {
+            get
+            {
+                return m_SoundsEffectsVolume;
+            }
+        }
+
         public bool ToggleSound
         {
             get
@@ -93,28 +140,57 @@ namespace Infrastructure.Managers
             }
         }
 
-        private void OnBackgroundMusicVolumeChanged()
+        protected virtual void OnBackgroundMusicVolumeChanged()
         {
+            foreach(SoundEffectInstance backgroundMusic in r_BackgroundMusic)
+            {
+                backgroundMusic.Volume = BackgroundMusicVolume;
+            }
+
             if (BackgroundMusicVolumeChanged != null)
             {
                 BackgroundMusicVolumeChanged.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private void OnSoundsEffectsVolumChanged()
+        protected virtual void OnSoundsEffectsVolumChanged()
         {
+            foreach (SoundEffectInstance soundEffects in r_Sounds)
+            {
+                soundEffects.Volume = SoundEffectsVolume;
+            }
+
             if (SoundsEffectsVolumChanged != null)
             {
                 SoundsEffectsVolumChanged.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private void OnToggleSoundChanged()
+        protected virtual void OnToggleSoundChanged()
         {
+            foreach (SoundEffectInstance soundInstance in r_Sounds)
+            {
+                soundInstance.Volume = SoundEffectsVolume;
+            }
+
+            foreach (SoundEffectInstance soundInstance in r_BackgroundMusic)
+            {
+                soundInstance.Volume = BackgroundMusicVolume;
+            }
+
             if (ToggleSoundChanged != null)
             {
                 ToggleSoundChanged.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            BackgroundMusicVolumeChanged = null;
+            SoundsEffectsVolumChanged = null;
+            ToggleSoundChanged = null;
+
+            base.Dispose(disposing);
         }
     }
 }

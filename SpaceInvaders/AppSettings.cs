@@ -33,12 +33,21 @@ namespace SpaceInvaders
 
         public int AmountOfPlayers { get; set; }
 
+        public float SoundEffectsVolume { get; set; }
+
+        public float BackgroundMusicVolume { get; set; }
+
+        public bool ToggleSound { get; set; }
+
         private AppSettings()
         {
             IsMouseVisible = false;
             AllowResizing = false;
             FullScreen = false;
             AmountOfPlayers = 2;
+            SoundEffectsVolume = 1;
+            BackgroundMusicVolume = 1;
+            ToggleSound = true;
         }
 
         private static AppSettings loadSettingsOrDefault()

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Infrastructure.Models.Animators;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {
@@ -174,12 +175,9 @@ namespace Infrastructure.Models
             set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
         }
 
-        public bool AlphaBlending { get; set; }
-
-        public Component2D(Game i_Game, string i_TexturePath)
-            : base(i_Game, i_TexturePath)
+        public Component2D(GameScreen i_GameScreen, string i_TexturePath)
+            : base(i_GameScreen, i_TexturePath)
         {
-            AlphaBlending = false;
         }
 
         public override void Initialize()
@@ -216,12 +214,11 @@ namespace Infrastructure.Models
             this.Animations.Update(i_GameTime);
         }
 
-        public virtual void DeleteComponent2D()
+        protected override void Dispose(bool disposing)
         {
             Visible = false;
             Enabled = false;
-            this.Dispose();
-            Game.Components.Remove(this);
+            base.Dispose(disposing);
         }
 
         public Component2D ShallowClone()

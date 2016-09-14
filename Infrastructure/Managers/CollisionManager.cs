@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Infrastructure.Models;
 using Infrastructure.ManagersInterfaces;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Managers
 {
     public class CollisionManager : GameService, ICollisionManager
     {
-        private readonly List<ICollideable> r_Collideables;
+        private readonly Dictionary<GameScreen, List<ICollideable>> r_CollideablesScreens;
 
         public CollisionManager(Game i_Game)
             : base(i_Game)
         {
-            r_Collideables = new List<ICollideable>();
-
-            Game.Components.ComponentRemoved += componentRemoved;
+            r_CollideablesScreens = new Dictionary<GameScreen, List<ICollideable>>();
         }
 
         protected override void registerService()
@@ -25,28 +24,44 @@ namespace Infrastructure.Managers
 
         public void AddComponent(ICollideable i_Collideable)
         {
-            if (i_Collideable != null && !r_Collideables.Contains(i_Collideable))
+            if (i_Collideable != null)
             {
-                r_Collideables.Add(i_Collideable);
-                i_Collideable.PositionChanged += collideable_Changed;
-                i_Collideable.VisibleChanged += collideable_Changed;
-                i_Collideable.SizeChanged += collideable_Changed;
-                i_Collideable.RotationChanged += collideable_Changed;
+                List<ICollideable> collideables;
+
+                if (r_CollideablesScreens.ContainsKey(i_Collideable.GameScreen))
+                {
+                    collideables = r_CollideablesScreens[i_Collideable.GameScreen];
+                }
+                else
+                {
+                    collideables = new List<ICollideable>();
+                    r_CollideablesScreens[i_Collideable.GameScreen] = collideables;
+                }
+
+                if (!collideables.Contains(i_Collideable))
+                {
+                    collideables.Add(i_Collideable);
+                    i_Collideable.PositionChanged += collideable_Changed;
+                    i_Collideable.VisibleChanged += collideable_Changed;
+                    i_Collideable.SizeChanged += collideable_Changed;
+                    i_Collideable.RotationChanged += collideable_Changed;
+
+                    i_Collideable.Disposed += collideable_Disposed;
+                }
             }
         }
 
-        private void componentRemoved(object i_Sender, EventArgs i_EventArgs)
+        private void collideable_Disposed(object i_Sender, EventArgs e)
         {
             ICollideable collideable = i_Sender as ICollideable;
 
-            if (collideable != null && this.r_Collideables.Contains(collideable))
-            {
-                r_Collideables.Remove(collideable);
-                collideable.PositionChanged -= collideable_Changed;
-                collideable.VisibleChanged -= collideable_Changed;
-                collideable.SizeChanged -= collideable_Changed;
-                collideable.RotationChanged -= collideable_Changed;
-            }
+            r_CollideablesScreens[collideable.GameScreen].Remove(collideable);
+            collideable.PositionChanged -= collideable_Changed;
+            collideable.VisibleChanged -= collideable_Changed;
+            collideable.SizeChanged -= collideable_Changed;
+            collideable.RotationChanged -= collideable_Changed;
+
+            collideable.Disposed -= collideable_Disposed;
         }
 
         private void collideable_Changed(object i_Sender, EventArgs i_EventArgs)
@@ -56,7 +71,7 @@ namespace Infrastructure.Managers
 
             if (source.Visible)
             {
-                foreach (ICollideable collideable in r_Collideables)
+                foreach (ICollideable collideable in r_CollideablesScreens[source.GameScreen])
                 {
                     if (source != collideable && collideable.Visible)
                     {

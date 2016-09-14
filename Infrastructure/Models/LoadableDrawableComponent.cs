@@ -1,11 +1,14 @@
 ﻿using System;
 using Infrastructure.ManagersInterfaces;
 using Microsoft.Xna.Framework;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {
     public abstract class LoadableDrawableComponent : DrawableGameComponent
     {
+        protected readonly GameScreen r_GameScreen;
+
         protected readonly string r_AssetName;
 
         public event EventHandler<EventArgs> PositionChanged;
@@ -13,6 +16,13 @@ namespace Infrastructure.Models
         public event EventHandler<EventArgs> SizeChanged;
 
         public event EventHandler<EventArgs> RotationChanged;
+
+        public event EventHandler<EventArgs> Disposed;
+
+        public GameScreen GameScreen
+        {
+            get { return r_GameScreen; }
+        }
 
         public string AssetName
         {
@@ -43,9 +53,18 @@ namespace Infrastructure.Models
             }
         }
 
-        public LoadableDrawableComponent(Game i_Game, string i_AssetName)
-            : base(i_Game)
+        protected virtual void OnDisposed(object sender, EventArgs args)
         {
+            if (Disposed != null)
+            {
+                Disposed.Invoke(sender, args);
+            }
+        }
+
+        public LoadableDrawableComponent(GameScreen i_GameScreen, string i_AssetName)
+            : base(i_GameScreen.Game)
+        {
+            this.r_GameScreen = i_GameScreen;
             this.r_AssetName = i_AssetName;
             this.UpdateOrder = int.MaxValue;
             this.DrawOrder = int.MaxValue;
@@ -64,6 +83,12 @@ namespace Infrastructure.Models
                     collisionManager.AddComponent(this as ICollideable);
                 }
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            OnDisposed(this, EventArgs.Empty);
         }
     }
 }

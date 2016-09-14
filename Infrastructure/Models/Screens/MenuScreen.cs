@@ -45,7 +45,7 @@ namespace Infrastructure.Models.Screens
         protected virtual void addControls()
         {
             string text = r_ExitOption == eMenuExitOption.Back ? "Done" : "Quit";
-            Button quitOrBack = new Button(Game, text, new Text(Game, "Button"));
+            Button quitOrBack = new Button(this, text, new Text(this, "Button"));
             quitOrBack.Text.Content = text;
             quitOrBack.Click += quitOrBack_Select;
 

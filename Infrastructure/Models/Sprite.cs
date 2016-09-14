@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.Models.Screens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
@@ -30,8 +31,8 @@ namespace Infrastructure.Models
             set { m_SourceRectangle = value; }
         }
 
-        public Sprite(Game i_Game, string i_TexturePath)
-            : base(i_Game, i_TexturePath)
+        public Sprite(GameScreen i_GameScreen, string i_TexturePath)
+            : base(i_GameScreen, i_TexturePath)
         {
         }
 

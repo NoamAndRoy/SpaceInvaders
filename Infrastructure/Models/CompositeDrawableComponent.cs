@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {
@@ -18,12 +19,19 @@ namespace Infrastructure.Models
         DrawableGameComponent, ICollection<ComponentType>
         where ComponentType : IGameComponent
     {
+        protected readonly GameScreen r_GameScreen;
+
+        public GameScreen GameScreen
+        {
+            get { return r_GameScreen; }
+        }
+
         // the entire collection, for general collection methods (count, foreach, etc.):
-        private Collection<ComponentType> m_Components = new Collection<ComponentType>();
+        protected Collection<ComponentType> m_Components = new Collection<ComponentType>();
 
         #region Selective Collections
         // selective holders for specific operations each frame:
-        protected List<ComponentType> m_UninitializedComponents = new List<ComponentType>();
+        private List<ComponentType> m_UninitializedComponents = new List<ComponentType>();
         protected List<IUpdateable> m_UpdateableComponents = new List<IUpdateable>();
         protected List<IDrawable> m_DrawableComponents = new List<IDrawable>();
         protected List<Component2D> m_2DComponents = new List<Component2D>();
@@ -147,9 +155,15 @@ namespace Infrastructure.Models
             insertSorted(drawable);
         }
 
-        public CompositeDrawableComponent(Game i_Game)
-            : base(i_Game)
+        public CompositeDrawableComponent(GameScreen i_GameScreen)
+            : base(i_GameScreen.Game)
         {
+            r_GameScreen = i_GameScreen;
+        }
+
+        public CompositeDrawableComponent(Game i_Game) : base(i_Game)
+        {
+            r_GameScreen = null;
         }
 
         private void insertSorted(IUpdateable i_Updatable)
@@ -298,6 +312,9 @@ namespace Infrastructure.Models
                         disposable.Dispose();
                     }
                 }
+
+                ComponentAdded = null;
+                ComponentRemoved = null;
             }
 
             base.Dispose(disposing);

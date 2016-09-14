@@ -7,7 +7,7 @@ namespace SpaceInvaders.Models.Screens
     {
         public InvadersGameScreen(Game i_Game) : base(i_Game)
         {
-            Background = new Background(i_Game);
+            Background = new Background(this);
             Game.IsMouseVisible = AppSettings.Instance.IsMouseVisible;
         }
     }

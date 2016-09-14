@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.Models.Screens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.Models
@@ -42,8 +43,8 @@ namespace Infrastructure.Models
             }
         }
 
-        public Text(Game i_Game, string i_FontPath)
-            : base(i_Game, i_FontPath)
+        public Text(GameScreen i_GameScreen, string i_FontPath)
+            : base(i_GameScreen, i_FontPath)
         {
         }
 

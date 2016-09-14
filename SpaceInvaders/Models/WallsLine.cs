@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Models;
+using Infrastructure.Models.Screens;
 using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.Models
@@ -23,8 +24,8 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public WallsLine(Game i_Game, int i_Speed) 
-            : base(i_Game)
+        public WallsLine(GameScreen i_GameScreen, int i_Speed) 
+            : base(i_GameScreen)
         {
             r_WallsLine = new Wall[k_Cells];
             r_Speed = i_Speed;
@@ -43,7 +44,7 @@ namespace SpaceInvaders.Models
         {
             for (int i = 0; i < k_Cells; i++)
             {
-                r_WallsLine[i] = new Wall(Game, r_Speed);
+                r_WallsLine[i] = new Wall(GameScreen, r_Speed);
                 this.Add(r_WallsLine[i]);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models
 {
@@ -44,8 +45,8 @@ namespace Infrastructure.Models
 
         public bool PixelBasedCollision { get; set; }
 
-        public CollideableSprite(Game i_Game, string i_TexturePath)
-            : base(i_Game, i_TexturePath)
+        public CollideableSprite(GameScreen i_GameScreen, string i_TexturePath)
+            : base(i_GameScreen, i_TexturePath)
         {
             PixelBasedCollision = false;
         }
@@ -133,6 +134,16 @@ namespace Infrastructure.Models
             }
 
             return areIntersects; 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                CollidedAction = null;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

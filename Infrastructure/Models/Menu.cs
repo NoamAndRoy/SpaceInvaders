@@ -26,7 +26,7 @@ namespace Infrastructure.Models
 
             set
             {
-                if (r_ControlsList[m_CurrentControlIdx] != value)
+                if (m_CurrentControlIdx > -1 && r_ControlsList[m_CurrentControlIdx] != value)
                 {
                     r_ControlsList[m_CurrentControlIdx].Enabled = false;
                     m_CurrentControlIdx = r_ControlsList.IndexOf(value);
@@ -110,11 +110,12 @@ namespace Infrastructure.Models
             m_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
 
             bool isFirst = true;
+
             foreach(Control control in r_ControlsList)
             {
                 control.Width = Width;
-
                 control.Position += Position + new Vector2(0, m_Height + (isFirst ? 0 : Margin));
+
                 m_Height = (int)(control.Position.Y - Position.Y + control.Height);
 
                 isFirst = false;
@@ -136,6 +137,11 @@ namespace Infrastructure.Models
             r_ControlsDictionary.Remove(e.GameComponent.Name);
             r_ControlsList.Remove(e.GameComponent);
             base.OnComponentRemoved(e);
+        }
+
+        public override void Draw(GameTime i_GameTime)
+        {
+            base.Draw(i_GameTime);
         }
 
         public override void Update(GameTime gameTime)
@@ -160,7 +166,6 @@ namespace Infrastructure.Models
                 if (isKeyDownPressed)
                 {
                     m_CurrentControlIdx++;
-
                     if (m_CurrentControlIdx >= r_ControlsList.Count)
                     {
                         m_CurrentControlIdx = 0;
@@ -171,7 +176,6 @@ namespace Infrastructure.Models
                 else if (isKeyUpPressed)
                 {
                     m_CurrentControlIdx--;
-
                     if (m_CurrentControlIdx < 0)
                     {
                         m_CurrentControlIdx = r_ControlsList.Count - 1;
@@ -189,7 +193,7 @@ namespace Infrastructure.Models
             {
                 for (int i = 0; i < r_ControlsList.Count; i++)
                 {
-                    if (r_ControlsList[i].IsMouseOn(m_MouseManager.X, m_MouseManager.Y))
+                    if (r_ControlsList[i].IsMouseOn(m_MouseManager.X, m_MouseManager.Y) && i != m_CurrentControlIdx)
                     {
                         if (m_CurrentControlIdx != -1)
                         {

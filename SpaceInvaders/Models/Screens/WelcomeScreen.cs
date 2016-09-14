@@ -13,11 +13,11 @@ namespace SpaceInvaders.Models.Screens
         public WelcomeScreen(Game i_Game)
             : base(i_Game)
         {
-            r_WelcomeText = new Headline(Game);
+            r_WelcomeText = new Headline(this);
             r_WelcomeText.Content = "Welcome to Space Invaders!";
             this.Add(r_WelcomeText);
 
-            r_Instructions = new Text(Game, "Calibri");
+            r_Instructions = new Text(this, "Calibri");
             r_Instructions.Content = 
 @"Press Enter to start the Game
 Press Esc to Exit
@@ -41,8 +41,6 @@ Press H to navigate to the Main Menu";
             if (KeyboardManager.IsKeyPressed(Keys.Escape))
             {
                 Game.Exit();
-                
-
             }
             else if(KeyboardManager.IsKeyPressed(Keys.Enter))
             {
@@ -54,8 +52,6 @@ Press H to navigate to the Main Menu";
                 ScreensManager.SetCurrentScreen(new MainMenuScreen(Game));
                 ExitScreen();
             }
-        }
-
-       
+        }       
     }
 }

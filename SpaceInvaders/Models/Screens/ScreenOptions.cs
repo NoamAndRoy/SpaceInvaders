@@ -16,26 +16,26 @@ namespace SpaceInvaders.Models.Screens
 
         protected override void addControls()
         {
-            InvadersLabel title = new InvadersLabel(Game, "Title", new Text(Game, "Button"));
+            Label title = new Label(this, "Title", new Text(this, "Button"));
             title.Text.Content = "Screen Options";
             title.Text.TintColor = Color.White;
             r_Menu.Add(title);
 
-            InvadersPicker<bool> mouseVisability = new InvadersPicker<bool>(Game, "MouseVisability", "Mouse Visability", new Text(Game, "Button"));
+            Picker<bool> mouseVisability = new Picker<bool>(this, "MouseVisability", "Mouse Visability", new Text(this, "Button"));
             mouseVisability.Options.Add(new KeyValuePair<string, bool>("Visible", true));
             mouseVisability.Options.Add(new KeyValuePair<string, bool>("Invisible", false));
             mouseVisability.SetSelectionOption(AppSettings.Instance.IsMouseVisible);
             mouseVisability.SelectedOptionChanged += mouseVisability_SelectedOptionChanged;
             r_Menu.Add(mouseVisability);
 
-            InvadersPicker<bool> allowResizing = new InvadersPicker<bool>(Game, "AllowResizing", "Allow Resizing", new Text(Game, "Button"));
+            Picker<bool> allowResizing = new Picker<bool>(this, "AllowResizing", "Allow Resizing", new Text(this, "Button"));
             allowResizing.Options.Add(new KeyValuePair<string, bool>("On", true));
             allowResizing.Options.Add(new KeyValuePair<string, bool>("Off", false));
             allowResizing.SetSelectionOption(AppSettings.Instance.AllowResizing);
             allowResizing.SelectedOptionChanged += allowResizing_SelectedOptionChanged;
             r_Menu.Add(allowResizing);
 
-            InvadersPicker<bool> fullScreen = new InvadersPicker<bool>(Game, "FullScreen", "Full Screen", new Text(Game, "Button"));
+            Picker<bool> fullScreen = new Picker<bool>(this, "FullScreen", "Full Screen", new Text(this, "Button"));
             fullScreen.Options.Add(new KeyValuePair<string, bool>("On", true));
             fullScreen.Options.Add(new KeyValuePair<string, bool>("Off", false));
             fullScreen.SetSelectionOption(AppSettings.Instance.FullScreen);

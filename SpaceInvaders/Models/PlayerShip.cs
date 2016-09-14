@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
 using Infrastructure.Models.Animators;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {
@@ -11,7 +12,7 @@ namespace SpaceInvaders.Models
     {
         private const int k_Speed = 140;
         public const int k_Score = -1500;
-        private const int k_MaxAmountOfBullets = 2000;
+        private const int k_MaxAmountOfBullets = 2;
         private const double k_AnimationLength = 2.6;
         private const float k_AmountOfBlinksInASecond = 9;
         private const float k_AmountOfRotationInASecond = 3;
@@ -20,7 +21,7 @@ namespace SpaceInvaders.Models
         private readonly IKeyboardManager r_KeyboardManager;
         private readonly IMouseManager r_MouseManager;
 
-        private bool m_CanShoot = true;
+        private bool m_IsFunctional = true;
         private Shooter m_Shooter;
 
         public bool UseMouse { get; set; }
@@ -31,10 +32,10 @@ namespace SpaceInvaders.Models
 
         public Keys ShootKey { get; set; }
 
-        public bool CanShoot
+        public bool IsFunctional
         {
-            get { return m_CanShoot; }
-            set { m_CanShoot = value; }
+            get { return m_IsFunctional; }
+            set { m_IsFunctional = value; }
         }
 
         public Shooter Shooter
@@ -47,15 +48,13 @@ namespace SpaceInvaders.Models
 
         public event EventHandler LostSoul;
 
-        public PlayerShip(Game i_Game, string i_TexturePath)
-            : base(i_Game, i_TexturePath)
+        public PlayerShip(GameScreen i_GameScreen, string i_TexturePath)
+            : base(i_GameScreen, i_TexturePath)
         {
             r_KeyboardManager = (IKeyboardManager)Game.Services.GetService(typeof(IKeyboardManager));
             r_MouseManager = (IMouseManager)Game.Services.GetService(typeof(IMouseManager));
 
-            m_Shooter = new Shooter(i_Game, new Vector2(0, -1), eBulletType.Player, k_MaxAmountOfBullets, Color.Red);
-
-            AlphaBlending = true;
+            m_Shooter = new Shooter(GameScreen, new Vector2(0, -1), eBulletType.Player, k_MaxAmountOfBullets, Color.Red);
         }
 
         private void initializeAnimations()
@@ -87,32 +86,35 @@ namespace SpaceInvaders.Models
 
         public override void Update(GameTime i_GameTime)
         {
-            if (r_KeyboardManager.IsKeyHeld(MoveRightKey))
+            if (IsFunctional)
             {
-                Velocity = k_Speed * new Vector2(1, 0);
-            }
-            else if (r_KeyboardManager.IsKeyHeld(MoveLeftKey))
-            {
-                Velocity = k_Speed * new Vector2(-1, 0);
-            }
-            else if (UseMouse)
-            {
-                Velocity = new Vector2(r_MouseManager.DeltaX / (float)i_GameTime.ElapsedGameTime.TotalSeconds, 0);
-            }
-            else
-            {
-                Velocity = Vector2.Zero;
-            }
-
-            if (r_KeyboardManager.IsKeyPressed(ShootKey) ||
-                (UseMouse && r_MouseManager.IsKeyPressed(eMouseButton.LeftButton)))
-            {
-                if (m_CanShoot)
+                if (r_KeyboardManager.IsKeyHeld(MoveRightKey))
                 {
-                    m_Shooter.Position = new Vector2(Position.X + (Width / 2), Position.Y);
-                    m_Shooter.Shoot();
+                    Velocity = k_Speed * new Vector2(1, 0);
+                }
+                else if (r_KeyboardManager.IsKeyHeld(MoveLeftKey))
+                {
+                    Velocity = k_Speed * new Vector2(-1, 0);
+                }
+                else if (UseMouse)
+                {
+                    Velocity = new Vector2(r_MouseManager.DeltaX / (float)i_GameTime.ElapsedGameTime.TotalSeconds, 0);
+                }
+                else
+                {
+                    Velocity = Vector2.Zero;
+                }
 
-                    ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_SSGunShotSound);
+                if (r_KeyboardManager.IsKeyPressed(ShootKey) ||
+                    (UseMouse && r_MouseManager.IsKeyPressed(eMouseButton.LeftButton)))
+                {
+                    if (m_IsFunctional)
+                    {
+                        m_Shooter.Position = new Vector2(Position.X + (Width / 2), Position.Y);
+                        m_Shooter.Shoot();
+
+                        ((ISoundManager)Game.Services.GetService(typeof(ISoundManager))).PlaySound(k_SSGunShotSound);
+                    }
                 }
             }
 
@@ -130,7 +132,7 @@ namespace SpaceInvaders.Models
 
         private void deathAnimations_Finished(object sender, EventArgs e)
         {
-            this.DeleteComponent2D();
+            this.Dispose();
         }
 
         private void deathAnimationOrHitAnimation_Finished(object sender, EventArgs e)

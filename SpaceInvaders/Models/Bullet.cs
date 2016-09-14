@@ -15,8 +15,8 @@ namespace SpaceInvaders.Models
 
         public eBulletType BulletType { get; }
 
-        public Bullet(Game i_Game, Vector2 i_Direction, eBulletType i_BulletType)
-            : base(i_Game, k_TexturePath)
+        public Bullet(GameScreen i_GameScreen, Vector2 i_Direction, eBulletType i_BulletType)
+            : base(i_GameScreen, k_TexturePath)
         {
             Velocity = i_Direction * k_Speed;
             BulletType = i_BulletType;

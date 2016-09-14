@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Infrastructure.Models.Screens;
 
 namespace Infrastructure.Models.Controls
 {
@@ -8,13 +9,13 @@ namespace Infrastructure.Models.Controls
     {
         public event EventHandler Click;
 
-        public Button(Game i_Game, string i_Name, Text i_Text)
-            : base(i_Game, i_Name, i_Text)
+        public Button(GameScreen i_GameScreen, string i_Name, Text i_Text)
+            : base(i_GameScreen, i_Name, i_Text)
         {
         }
 
-        public Button(Game i_Game, string i_Name, Text i_Text, Sprite i_Texture)
-            : base(i_Game, i_Name, i_Text, i_Texture)
+        public Button(GameScreen i_GameScreen, string i_Name, Text i_Text, Sprite i_Texture)
+            : base(i_GameScreen, i_Name, i_Text, i_Texture)
         {
         }
 
@@ -34,6 +35,16 @@ namespace Infrastructure.Models.Controls
             {
                 Click.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                Click = null;
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

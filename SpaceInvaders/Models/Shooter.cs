@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Infrastructure.ManagersInterfaces;
 using Infrastructure.Models;
+using Infrastructure.Models.Screens;
 
 namespace SpaceInvaders.Models
 {
@@ -42,7 +43,7 @@ namespace SpaceInvaders.Models
             }
         }
 
-        public Shooter(Game i_Game, Vector2 i_Direction, eBulletType i_BulletType, int i_MaxAmountOfBullets, Color i_Tint) : base(i_Game)
+        public Shooter(GameScreen i_GameScreen, Vector2 i_Direction, eBulletType i_BulletType, int i_MaxAmountOfBullets, Color i_Tint) : base(i_GameScreen)
         {
             Direction = i_Direction;
             m_BulletType = i_BulletType;
@@ -53,7 +54,7 @@ namespace SpaceInvaders.Models
 
             for (int i = 0; i < i_MaxAmountOfBullets; i++)
             {
-                Bullet bullet = new Bullet(i_Game, Direction, m_BulletType);
+                Bullet bullet = new Bullet(i_GameScreen, Direction, m_BulletType);
                 bullet.Visible = false;
                 bullet.Enabled = false;
                 bullet.VisibleChanged += bullet_VisibleChanged;
